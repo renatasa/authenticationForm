@@ -1,4 +1,4 @@
-.container {
+.containerAuth {
     width: 30%;
     top: 20%;
     margin-left: 32%;
@@ -9,14 +9,14 @@
     background: #ffffff;
 }
 
-.form__title {
+.form__titleAuth {
     margin-bottom: 0.8rem;
     font-weight: 700;
     font-size: 2rem;
     text-align: center;
 }
 
-.form__input {
+.form__inputAuth {
     display: block;
     width: 100%;
     padding: 0.75rem;
@@ -29,12 +29,12 @@
     text-align: center;
 }
 
-.form__input:focus {
+.form__inputAuth:focus {
     border-color: #50a27a;
     background: #ffffff;
 }
 
-.form__button {
+.form__buttonAuth {
     width: 100%;
     padding: 1rem 2rem;
     font-weight: bold;
@@ -47,40 +47,40 @@
     background:  #50a27a;
 }
 
-.form__button:hover {
+.form__buttonAuth:hover {
     background: #3e7b5e;
 }
 
-.form__button:active {
+.form__buttonAuth:active {
     transform: scale(0.98);
 }
 
-.form__link {
+.form__linkAuth {
     cursor: pointer;
     text-align: center;
     margin: .5rem 0rem 0rem 0rem;
 }
 
-.form__link:hover {
+.form__linkAuth:hover {
     text-decoration: underline;
 }
 
 @media(max-width: 1000px){
-    .container{
+    .containerAuth{
         width: 50%;
         margin-left: 20%;
     }
   } 
 
   @media(max-width: 500px){
-    .container{
+    .containerAuth{
         width: 70%;
         margin-left: 7%;
     }
   } 
 
   @media(max-width: 376px){
-    .container{
+    .containerAuth{
         margin-left: 6%;
     }
   } 

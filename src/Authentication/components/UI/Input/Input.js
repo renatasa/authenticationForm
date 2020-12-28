@@ -4,7 +4,7 @@ import './Input.css';
 const input = ( props ) => {
     let inputElement = null;
 
-    inputElement = <input class="form__input"
+    inputElement = <input class="form__inputAuth"
                 {...props.elementConfig}
                 value={props.value}
                 onChange={props.changed} />;

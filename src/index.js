@@ -7,12 +7,18 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import authReducer from './Authentication/store/reducers/auth';
+import todosReducer from './Todos/store/reducers/reducer';
+
+const rootReducer = combineReducers({
+    auth: authReducer,
+    todos: todosReducer
+});
 
 require('dotenv').config();
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(authReducer, composeEnhancers(
+const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)
 ));
 
