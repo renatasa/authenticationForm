@@ -1,0 +1,49 @@
+.logedin{
+left: 30%;
+width: 40%;
+margin-top: 2rem;
+background-color: #4480ae;
+color: #ffffff;
+text-align: center;
+border: 1px solid #4480ae;
+border-radius: 4px;
+padding: 10px 0px 30px 0px;
+position: relative;
+display: flexbox;
+flex-direction: column;
+justify-content: center;
+
+}
+
+.text{
+    margin: 10px 0px 30px 0px;
+    font-size: 1.5rem;
+}
+
+.logedin__button {
+    padding: 1rem 2rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #ffffff;
+    border: none;
+    border-radius: .4rem;
+    outline: none;
+    cursor: pointer;
+    background:  #50a27a;
+}
+
+.logedin__button:hover {
+    background: #3e7b5e;
+}
+
+.logedin__button:active {
+    transform: scale(0.98);
+}
+
+@media(max-width: 500px){
+    .logedin{
+        left: 20%;
+        width: 60%;
+    }
+
+  } 

@@ -165,7 +165,7 @@ const mapStateToProps = state =>{
         loading: state.loading, 
         error: state.error, 
         isAuthenticated: state.token !== null, 
-        authRedirectPath : state.authRedirectPath 
+        authRedirectPath : state.authRedirection 
     }
 }
 
