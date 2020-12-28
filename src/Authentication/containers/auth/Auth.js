@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import * as actions from '../../store/actions/index';
 import './Auth.css';
 
@@ -110,7 +111,7 @@ export class Auth extends Component {
             });
         }
 
-        let form = formElementsArray.map(formElement=>(
+        let inputs = formElementsArray.map(formElement=>(
             <Input
                 key={formElement.id}
                 elementType={formElement.config.elementType}
@@ -123,16 +124,20 @@ export class Auth extends Component {
                 />
         ))
 
+        let form=   <div class="container">
+                        <form class="form" onSubmit = {this.submitHandler} >
+                        <div class="form__title">{this.state.isSignup? 'Login': 'Sing up'}</div>
+                            {inputs}
+                        <button class="form__button" >SUBMIT</button>
+                        </form>
+                        <div 
+                            class="form__link"
+                            onClick = {this.switchAuthModeHandler}>SWITCH TO {this.state.isSignup ? ' SIGN UP': ' LOGIN'}
+                        </div>
+                    </div>
+
             if (this.props.loading){
                 form  = <Spinner/>
-            }
-
-            let errorMessage = null ;
-
-            if (this.props.error) {
-                errorMessage = (
-                <p> {this.props.error.message} </p>
-                )
             }
 
                 let authRedirect = null ;
@@ -147,18 +152,9 @@ export class Auth extends Component {
         return (
             <div class="formContainer" >
                 {authRedirect}
-                <div class="container">
-                <form class="form" onSubmit = {this.submitHandler} >
-                    <div class="form__title">{this.state.isSignup? 'Login': 'Sing up'}</div>
-                    {form}
-                    <button class="form__button" >SUBMIT</button>
+                {form}
+                <ErrorMessage/>
 
-                </form>
-                     <div 
-                        class="form__link"
-                        onClick = {this.switchAuthModeHandler}>SWITCH TO {this.state.isSignup ? ' SIGN UP': ' LOGIN'}
-                    </div>
-                </div>
             </div>
         )
     }

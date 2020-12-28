@@ -1,5 +1,6 @@
 export {
     auth, 
     logout, 
-    setAuthRedirectPath
+    setAuthRedirectPath,
+    resetError
 } from './auth';

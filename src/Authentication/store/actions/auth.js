@@ -50,10 +50,10 @@ export const auth=(email, password, isSignup) =>{
             returnSecureToken: true
         }
 
-        let url = process.env.REACT_APP_SIGN_UP
+        let url = process.env.REACT_APP_SIGN_IN
 
         if (!isSignup){
-            url = process.env.REACT_APP_SIGN_IN
+            url = process.env.REACT_APP_SIGN_UP
         }
 
         axios.post(url , authData) 
@@ -75,4 +75,10 @@ export const setAuthRedirectPath = (path) =>{
         type: actionTypes.SET_AUTH_REDIRECT_PATH, 
         path: path
     }
+}
+
+export const resetError=()=>{
+    return{
+        type: actionTypes.RESET_ERROR
+}
 }

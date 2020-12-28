@@ -10,12 +10,7 @@ import authReducer from './Authentication/store/reducers/auth';
 
 require('dotenv').config();
 
-console.log('index process env ', process.env)
-
-
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-//const rootReducer = combineReducers({ auth: authReducer  });
 
 const store = createStore(authReducer, composeEnhancers(
     applyMiddleware(thunk)

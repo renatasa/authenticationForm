@@ -5,7 +5,6 @@ import {Route, Switch} from 'react-router-dom';
 export class App extends Component {
 
   render() {
-    console.log('app render')
     return (
       <div>
 

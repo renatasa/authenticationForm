@@ -1,0 +1,83 @@
+.alert_item.alert_error{
+	background: #ecc8c5;
+	color: #b32f2d;
+}
+
+.alert_wrapper{
+	position: relative;
+}
+
+.alert_item{
+	z-index: 0;	
+	position: fixed;
+    top: 80%; 
+	left: 70%;
+	transform: translate(-50%,-50%);
+	display: flex;
+	align-items: center;
+	padding: 5px 15px;
+	border-radius: 3px;
+	transition: all .2s ease;
+}
+
+.inactive{
+	z-index: 0;	
+	position: fixed;
+    top: 80%; 
+	left: 120%;
+	transform: translate(-50%,-50%);
+	display: flex;
+	align-items: center;
+	padding: 25px 50px;
+	border-radius: 3px;
+	transition: all .2s ease;
+}
+
+.alert_wrapper .alert_item .data{
+	margin: 0 20px;
+}
+.alert_wrapper .alert_item .data .title{
+	font-size: 18px;
+	margin-bottom: 5px;
+	text-align: center;
+}
+.alert_wrapper .alert_item .data span{
+	font-weight: 700;
+}
+.alert_wrapper .alert_item .data .sub{
+	font-size: 14px;
+	font-weight: 100;
+}
+.alert_wrapper .alert_item .icon{
+	font-size: 32px;
+}
+.alert_wrapper .alert_item .close{
+	cursor: pointer;
+}
+
+.alert_item.alert_error .close:hover{
+	color: #c79995;
+}
+
+
+  @media(max-width: 625px){
+	.alert_item{
+		left: 50%;
+	}
+
+  } 
+
+  @media(max-width: 360px){
+	.data_icon{
+		display: none;
+	}
+
+	.alert_item{
+		padding:  0px 10px 0px 0px;
+	}
+
+	.alert_wrapper .alert_item .data{
+		margin: 0px 5px 0px 20px;
+	}
+
+  } 
