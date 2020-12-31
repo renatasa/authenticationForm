@@ -1,13 +1,13 @@
-.alert_item.alert_error{
+.alert_itemAuth.alert_errorAuth{
 	background: #ecc8c5;
 	color: #b32f2d;
 }
 
-.alert_wrapper{
+.alert_WrapperAuth{
 	position: relative;
 }
 
-.alert_item{
+.alert_itemAuth{
 	z-index: 0;	
 	position: fixed;
     top: 80%; 
@@ -20,7 +20,7 @@
 	transition: all .2s ease;
 }
 
-.inactive{
+.inactiveAuth{
 	z-index: 0;	
 	position: fixed;
     top: 80%; 
@@ -33,35 +33,35 @@
 	transition: all .2s ease;
 }
 
-.alert_wrapper .alert_item .data{
+.alert_WrapperAuth .alert_itemAuth .data{
 	margin: 0 20px;
 }
-.alert_wrapper .alert_item .data .title{
+.alert_WrapperAuth .alert_itemAuth .data .title{
 	font-size: 18px;
 	margin-bottom: 5px;
 	text-align: center;
 }
-.alert_wrapper .alert_item .data span{
+.alert_WrapperAuth .alert_itemAuth .data span{
 	font-weight: 700;
 }
-.alert_wrapper .alert_item .data .sub{
+.alert_WrapperAuth .alert_itemAuth .data .sub{
 	font-size: 14px;
 	font-weight: 100;
 }
-.alert_wrapper .alert_item .icon{
+.alert_WrapperAuth .alert_itemAuth .icon{
 	font-size: 32px;
 }
-.alert_wrapper .alert_item .close{
+.alert_WrapperAuth .alert_itemAuth .close{
 	cursor: pointer;
 }
 
-.alert_item.alert_error .close:hover{
+.alert_itemAuth.alert_errorAuth .close:hover{
 	color: #c79995;
 }
 
 
   @media(max-width: 625px){
-	.alert_item{
+	.alert_itemAuth{
 		left: 50%;
 	}
 
@@ -72,11 +72,11 @@
 		display: none;
 	}
 
-	.alert_item{
+	.alert_itemAuth{
 		padding:  0px 10px 0px 0px;
 	}
 
-	.alert_wrapper .alert_item .data{
+	.alert_WrapperAuth .alert_itemAuth .data{
 		margin: 0px 5px 0px 20px;
 	}
 

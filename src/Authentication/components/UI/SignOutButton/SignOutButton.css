@@ -1,0 +1,36 @@
+.signOutIcon{
+    font-size: 2rem;
+    color: #ffffff;
+    top: 6%;
+    border: 1px solid #ffffff;
+    border-radius: 4px ;
+    padding: 5px 2px 5px 2px;
+    width: 40px;
+    left: 90%;
+    position: absolute;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.signOutIcon:hover{
+    background-color:  #2d333f;
+}
+
+.signOutIcon:active{
+    transform: scale(0.98);
+}
+
+
+@media(max-width: 750px){
+  .signOutIcon{
+    position: relative;
+    margin-top: 3%;
+  }
+} 
+
+@media(max-width: 600px){
+    .signOutIcon{
+      left: 46%;
+    }
+  } 

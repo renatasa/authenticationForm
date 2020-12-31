@@ -1,0 +1,60 @@
+.alert_item_warning.alert_warning{
+	background: #f8f3d6;
+	color: #967132;
+}
+
+
+/* .alert_wrapper{
+definition of this css class is in ErrorMessage component css file
+} */
+
+.alert_item_warning{
+	z-index: 0;	
+	position: fixed;
+    top: 80%; 
+	left: 50%;
+	transform: translate(-50%,-50%);
+	display: flex;
+	align-items: center;
+	padding: 25px 50px;
+	border-radius: 3px;
+	transition: all .5s ease;
+}
+
+.inactive_warning{
+	visibility: hidden; 
+	position: fixed;
+    top: 120%; 
+	left: 50%;
+	transform: translate(-50%,-50%);
+	display: flex;
+	align-items: center;
+	padding: 25px 50px;
+	border-radius: 3px;
+	transition: all .5s ease;
+}
+
+.alert_wrapper .alert_item_warning .data{
+	margin: 0 50px;
+}
+.alert_wrapper .alert_item_warning .data .title{
+	font-size: 18px;
+	margin-bottom: 5px;
+}
+.alert_wrapper .alert_item_warning .data span{
+	font-weight: 700;
+}
+.alert_wrapper .alert_item_warning .data .sub{
+	font-size: 14px;
+	font-weight: 100;
+}
+.alert_wrapper .alert_item_warning .icon{
+	font-size: 32px;
+}
+.alert_wrapper .alert_item_warning .close{
+	cursor: pointer;
+}
+
+.alert_item_warning.alert_warning .close:hover{
+	color: #dcd4a2;;
+}

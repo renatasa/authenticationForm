@@ -124,14 +124,14 @@ export class Auth extends Component {
                 />
         ))
 
-        let form=   <div class="container">
-                        <form class="form" onSubmit = {this.submitHandler} >
-                        <div class="form__title">{this.state.isSignup? 'Login': 'Sing up'}</div>
+        let form=   <div class="containerAuth">
+                        <div >
+                        <div class="form__titleAuth">{this.state.isSignup? 'Login': 'Sing up'}</div>
                             {inputs}
-                        <button class="form__button" >SUBMIT</button>
-                        </form>
+                        <button class="form__buttonAuth" type="submit" onClick = {this.submitHandler} >SUBMIT</button>
+                        </div>
                         <div 
-                            class="form__link"
+                            class="form__linkAuth"
                             onClick = {this.switchAuthModeHandler}>SWITCH TO {this.state.isSignup ? ' SIGN UP': ' LOGIN'}
                         </div>
                     </div>
@@ -145,8 +145,6 @@ export class Auth extends Component {
             if(this.props.isAuthenticated){
                 authRedirect = <Redirect to={this.props.authRedirectPath}/>
                 console.log('suthredirect ', this.props.authRedirectPath)
-                console.log('suthredirect ', authRedirect)
-
             }
 
         return (
@@ -154,7 +152,6 @@ export class Auth extends Component {
                 {authRedirect}
                 {form}
                 <ErrorMessage/>
-
             </div>
         )
     }
@@ -162,10 +159,10 @@ export class Auth extends Component {
 
 const mapStateToProps = state =>{
     return {
-        loading: state.loading, 
-        error: state.error, 
-        isAuthenticated: state.token !== null, 
-        authRedirectPath : state.authRedirection 
+        loading: state.auth.loading, 
+        error: state.auth.error, 
+        isAuthenticated: state.auth.token !== null, 
+        authRedirectPath : state.auth.authRedirection 
     }
 }
 

@@ -1,0 +1,54 @@
+
+  form {
+    min-height: 20vh;
+    min-width: 10vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .5s;
+  }
+
+  form input,
+  form button {
+    padding: 0.5rem;
+    font-size: 2rem;
+    border: 1px solid #e4bd9d;
+    border-radius: .4rem;
+    background: white;
+  }
+
+  form button {
+    color: #e4bd9d;
+    background: #f7fffe;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  form button:hover {
+    background: #e4bd9d;
+    color: white;
+  }
+
+  .initialForm{
+    min-height: 100vh;
+  }
+  
+  @media(max-width: 480px){
+    form input{
+        font-size: 1.5rem;
+    }
+
+    form button {
+      padding: .3rem;
+    }
+} 
+
+@media(max-width: 360px){
+  form input {
+    font-size: 1rem;
+  }
+
+  form button {
+    padding: .0rem .2rem .0rem .2rem;
+  }
+} 

@@ -23,7 +23,7 @@ export const logedIn=(props)=> {
 
 const mapStateToProps=state=>{
     return{
-        authRedirection: state.authRedirection
+        authRedirection: state.auth.authRedirection
     }
 }
 

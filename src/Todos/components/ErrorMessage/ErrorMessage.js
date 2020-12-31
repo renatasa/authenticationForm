@@ -5,23 +5,29 @@ import './ErrorMessage.css';
 
 export const errorMessage=(props)=> {
     let error=null;
-    let errorMessage=null;
-    if(props.error){
-         error=props.error;
-         errorMessage=props.error.message;
-         setTimeout( () => props.onResetError(), 2000 )
-    }
+    let errorBool=false;
+
+            if (props.fetchTodoError){
+                error=props.fetchTodoError;
+                errorBool=true;
+            } 
+            
+            if(props.submitTodoError){
+                error=props.submitTodoError
+                errorBool=true;
+            }
 
         return (
             <div>
-                <div class={props.error ? "alert_WrapperAuth" : undefined} >
-					<div class={props.error ? "alert_itemAuth alert_errorAuth" :  "inactiveAuth"}> 
+                <div class={errorBool ? "alert_wrapper" : undefined} >
+				<div class="alert_backdrop" onClick={props.onResetError}></div>
+					<div class={errorBool ? "alert_item alert_error" :  "inactive"}> 
 						<div class="icon data_icon">
 							<i class="fas fa-bomb"></i>
 						</div>
 						<div class="data">
 							<p class="title"><span>Error</span></p>
-							<p class="sub">{errorMessage ? errorMessage : undefined}</p>
+							<p class="sub">{error}</p>
 						</div>
 						<div class="icon close" onClick={props.onResetError}>
 							<i class="fas fa-times"></i>
@@ -35,7 +41,8 @@ export const errorMessage=(props)=> {
 
 const mapStateToProps=state=>{
     return{
-        error: state.auth.error
+        fetchTodoError: state.todos.fetchTodoError,
+        submitTodoError: state.todos.submitTodoError
     }
 }
 
