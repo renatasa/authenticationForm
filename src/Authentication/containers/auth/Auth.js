@@ -102,7 +102,6 @@ export class Auth extends Component {
 
 
     render() {
-        console.log('authRedirectPath ', this.props.authRedirectPath);
 
         let formElementsArray = [];
         for (let key in this.state.controls) {

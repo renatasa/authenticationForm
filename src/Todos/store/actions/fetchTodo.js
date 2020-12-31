@@ -24,10 +24,10 @@ export const fetchTodoFail=(error)=>{
     }
 }
 
-export const fetchTodo=()=>{
+export const fetchTodo=(token)=>{
     return dispatch=>{
        dispatch(fetchTodoStart());
-        axios.get(process.env.REACT_APP_GET_TODO)
+        axios.get(process.env.REACT_APP_GET_TODO+token)
             .then(response=>{
                 dispatch(fetchTodoSuccess(response.data));
             })
@@ -62,9 +62,11 @@ export const submitTodoFail=(error)=>{
 }
 
 
-export const submitTodo=(endpoint, allTodos)=>{
+export const submitTodo=(endpoint, allTodos, token)=>{
     let newTodo= allTodos[allTodos.length-1] ;
-    let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${endpoint.toString()}/${(allTodos.length-1).toString()}.json/`;
+  let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${endpoint.toString()}/${(allTodos.length-1).toString()}.json/`;
+ // let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${(allTodos.length-1).toString()}.json/` +token;
+    console.log('url with token ', url);
 
     return dispatch=>{
         dispatch(submitTodoStart());

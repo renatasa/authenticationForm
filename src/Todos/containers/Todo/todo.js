@@ -15,7 +15,10 @@ export class Todo extends Component {
     }
 
     componentDidMount(){
-        this.props.onFetchTodo();
+        if(this.props.token){
+            this.props.onFetchTodo(this.props.token);
+        }
+        
     }
 
 
@@ -31,7 +34,7 @@ export class Todo extends Component {
         } else if(this.props.endpoint!== null && !this.props.loading ){
         let newTodo =  { todo: this.state.inputText, completed:false, delete:false}
         let updatedTodos=[...this.props.todos, newTodo]
-        this.props.onSubmitTodo(this.props.endpoint, updatedTodos);
+        this.props.onSubmitTodo(this.props.endpoint, updatedTodos, this.props.token);
         this.setState({inputText:''})
       } 
 
@@ -90,14 +93,15 @@ const mapStateToProps=state=>{
         endpoint: state.todos.endpoint,
         fetchTodoError: state.todos.fetchTodoError,
         submitTodoError: state.todos.submitTodoError,
-        submitTodoSuccess: state.todos.submitTodoSuccess
+        submitTodoSuccess: state.todos.submitTodoSuccess,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps=dispatch=>{
     return{
-        onFetchTodo: ()=>dispatch(actions.fetchTodo()), 
-        onSubmitTodo: (endpoint, newTodo)=>dispatch(actions.submitTodo(endpoint, newTodo)),
+        onFetchTodo: (token)=>dispatch(actions.fetchTodo(token)), 
+        onSubmitTodo: (endpoint, newTodo, token)=>dispatch(actions.submitTodo(endpoint, newTodo, token)),
         onMarkAsCompleted: (endpoint, index, todo)=>dispatch(actions.markAsCompleted(endpoint, index, todo)),
         onDeleteTodo: (endpoint, index, todos)=>dispatch(actions.deleteTodo(endpoint, index, todos))
     }
