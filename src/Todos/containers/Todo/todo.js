@@ -16,7 +16,7 @@ export class Todo extends Component {
 
     componentDidMount(){
         if(this.props.token){
-            this.props.onFetchTodo(this.props.token);
+            this.props.onFetchTodo(this.props.token, this.props.userId);
         }
         
     }
@@ -29,23 +29,50 @@ export class Todo extends Component {
 
     submitHandler = (event) =>{
         event.preventDefault();
+        console.log('submit handler');
         if(this.state.inputText==''){
             this.setState({showWarning: true})
-        } else if(this.props.endpoint!== null && !this.props.loading ){
+        } else if(this.props.token!== null && this.props.userId!==null && !this.props.loading ){
         let newTodo =  { todo: this.state.inputText, completed:false, delete:false}
-        let updatedTodos=[...this.props.todos, newTodo]
-        this.props.onSubmitTodo(this.props.endpoint, updatedTodos, this.props.token);
-        this.setState({inputText:''})
+        let updatedTodos=[];
+
+        if (this.props.todos){
+            updatedTodos=[...this.props.todos, newTodo]
+        } else {
+            updatedTodos.push(newTodo);
+        }
+        console.log(updatedTodos);
+
+        //if (this.props.token && this.props.userId){
+            this.props.onSubmitTodo(this.props.userId, updatedTodos, this.props.token);
+            this.setState({inputText:''})
+       // }
       } 
 
     }
 
     todoDelete=(index)=>{
-        this.props.onDeleteTodo(this.props.endpoint, index, this.props.todos)
+        console.log('delete todo function ');
+        console.log('delete todo index ', index)
+        console.log('delete todo endpoints array ', this.props.endpointsArr)
+        
+        console.log('delete todo token ', this.props.token)
+        console.log('delete todo userId ', this.props.userId)
+        let endpoint=this.props.endpointsArr[index];
+        console.log('delete todo endpoint ', endpoint)
+        if (endpoint && this.props.token && this.props.userId){
+            console.log('delete todo function if ', endpoint);
+            this.props.onDeleteTodo(endpoint, index, this.props.todos, this.props.token, this.props.userId)
+        }
+        
     }
 
     todoCompleted=(index)=>{
-       this.props.onMarkAsCompleted(this.props.endpoint, index, this.props.todos[index])
+       let endpoint=this.props.endpointsArr[index];
+       if (endpoint && this.props.token && this.props.userId){
+        this.props.onMarkAsCompleted(endpoint, index, this.props.todos[index], this.props.token, this.props.userId)
+       }
+       
     }
 
     closeWarning=()=>{
@@ -89,21 +116,22 @@ export class Todo extends Component {
 const mapStateToProps=state=>{
     return{
         todos: state.todos.todos, 
+        endpointsArr: state.todos.endpointsArr,
         loading: state.todos.loading, 
-        endpoint: state.todos.endpoint,
         fetchTodoError: state.todos.fetchTodoError,
         submitTodoError: state.todos.submitTodoError,
         submitTodoSuccess: state.todos.submitTodoSuccess,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
 const mapDispatchToProps=dispatch=>{
     return{
-        onFetchTodo: (token)=>dispatch(actions.fetchTodo(token)), 
-        onSubmitTodo: (endpoint, newTodo, token)=>dispatch(actions.submitTodo(endpoint, newTodo, token)),
-        onMarkAsCompleted: (endpoint, index, todo)=>dispatch(actions.markAsCompleted(endpoint, index, todo)),
-        onDeleteTodo: (endpoint, index, todos)=>dispatch(actions.deleteTodo(endpoint, index, todos))
+        onFetchTodo: (token, userId)=>dispatch(actions.fetchTodo(token, userId)), 
+        onSubmitTodo: (userId, newTodo, token)=>dispatch(actions.submitTodo(userId, newTodo, token)),
+        onMarkAsCompleted: (endpoint, index, todo, token, userId)=>dispatch(actions.markAsCompleted(endpoint, index, todo, token, userId)),
+        onDeleteTodo: (endpoint, index, todos, token, userId)=>dispatch(actions.deleteTodo(endpoint, index, todos, token, userId))
     }
 }
 

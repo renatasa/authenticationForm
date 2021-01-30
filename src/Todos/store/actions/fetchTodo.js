@@ -1,13 +1,22 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
-//fetching todos from backend
-export const fetchTodoStart=()=>{
+export const actionStart=(type)=>{
     return{
-        type: actionTypes.FETCH_TODO_START
+        type:type
     }
 }
 
+
+export const actionFail=(error, type)=>{
+    return{
+        type:type,
+        error: error
+
+    }
+}
+
+//fetching todos from backend
 export const fetchTodoSuccess=(todo)=>{
     return{
         type: actionTypes.FETCH_TODO_SUCCESS,
@@ -16,36 +25,23 @@ export const fetchTodoSuccess=(todo)=>{
     }
 }
 
-export const fetchTodoFail=(error)=>{
-    return{
-        type:actionTypes.FETCH_TODO_FAIL, 
-        error: error
 
-    }
-}
-
-export const fetchTodo=(token)=>{
+export const fetchTodo=(token, userId)=>{
     return dispatch=>{
-       dispatch(fetchTodoStart());
-        axios.get(process.env.REACT_APP_GET_TODO+token)
+     let url=`${process.env.REACT_APP_GET_TODO}/${userId.toString()}.json?auth=`+token;
+     dispatch(actionStart(actionTypes.FETCH_TODO_START));
+     axios.get(url)
             .then(response=>{
                 dispatch(fetchTodoSuccess(response.data));
             })
             .catch( (error)=> {
-                dispatch(fetchTodoFail(error.message))
+                dispatch(actionFail(error.message, actionTypes.FETCH_TODO_FAIL))
           })
     }
 }
 
 
 //adding new todo to backend and store
-export const submitTodoStart=()=>{
-    return{
-        type: actionTypes.SUBMIT_TODO_START
-}
-}
-
-
 export const submitTodoSuccess=(newTodo)=>{
     return{
         type: actionTypes.SUBMIT_TODO_SUCCESS,
@@ -54,41 +50,28 @@ export const submitTodoSuccess=(newTodo)=>{
 }
 
 
-export const submitTodoFail=(error)=>{
-    return{
-        type: actionTypes.SUBMIT_TODO_FAIL, 
-        error: error
-}
-}
-
-
-export const submitTodo=(endpoint, allTodos, token)=>{
+export const submitTodo=(userId, allTodos, token)=>{
     let newTodo= allTodos[allTodos.length-1] ;
-  let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${endpoint.toString()}/${(allTodos.length-1).toString()}.json/`;
- // let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${(allTodos.length-1).toString()}.json/` +token;
-    console.log('url with token ', url);
-
+    let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${userId.toString()}.json?auth=`+token;
     return dispatch=>{
-        dispatch(submitTodoStart());
-        axios.patch(url, newTodo)
+        dispatch(actionStart(actionTypes.SUBMIT_TODO_START));
+        axios.post(url, newTodo)
         .then(response=>{
-            dispatch(submitTodoSuccess(newTodo))
+            console.log('submit todo response ', response);
+            if (response.status==200){
+                dispatch(submitTodoSuccess(newTodo))
+            }
+            
         })
         .catch(error=>{
-           dispatch(submitTodoFail(error.message))
+            console.log(error);
+           dispatch(actionFail(error.message, actionTypes.SUBMIT_TODO_FAIL))
         })
     }
 }
 
 
 //mark todo as completed
-export const markAsCompletedStart=()=>{
-    return{
-        type: actionTypes.MARK_AS_COMPLETED_START
-}
-}
-
-
 export const markAsCompletedSuccess=(index)=>{
     return{
         type: actionTypes.MARK_AS_COMPLETED_SUCCESS,
@@ -97,40 +80,26 @@ export const markAsCompletedSuccess=(index)=>{
 }
 
 
-export const markAsCompletedFail=(error)=>{
-    return{
-        type: actionTypes.MARK_AS_COMPLETED_FAIL, 
-        error: error
-}
-}
-
-export const markAsCompleted=(endpoint, index, todo)=>{
+export const markAsCompleted=(endpoint, index, todo, token, userId)=>{
     let newTodo={...todo, completed: !todo.completed};
-     let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${endpoint.toString()}/${index.toString()}.json/`;
+    let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${userId.toString()}/${endpoint.toString()}.json?auth=`+token;
 
     return dispatch=>{
-        dispatch(markAsCompletedStart());
+        dispatch(actionStart(actionTypes.MARK_AS_COMPLETED_START));
         axios.put(url, newTodo)
         .then(response=>{
-            dispatch(markAsCompletedSuccess(index))
+            if (response.status==200){
+                dispatch(markAsCompletedSuccess(index))
+            }
         })
         .catch(error=>{
-           dispatch(markAsCompletedFail(error.message))
-        })
-
-        
+           dispatch(actionFail(error.message, actionTypes.MARK_AS_COMPLETED_FAIL))
+        })    
     }
 }
 
 
 //delete todo
-export const deleteTodoStart=()=>{
-    return{
-        type: actionTypes.DELETE_TODO_START
-}
-}
-
-
 export const deleteTodoSuccess=(oldTodos)=>{
     return{
         type: actionTypes.DELETE_TODO_SUCCESS,
@@ -139,14 +108,7 @@ export const deleteTodoSuccess=(oldTodos)=>{
 }
 
 
-export const deleteTodoFail=(error)=>{
-    return{
-        type: actionTypes.DELETE_TODO_FAIL, 
-        error: error
-}
-}
-
-export const deleteTodo=(endpoint, index, todos)=>{
+export const deleteTodo=(endpoint, index, todos, token, userId)=>{
     let oldTodos=[...todos];
     oldTodos.splice(index, 1);
     let todosObj={};
@@ -155,19 +117,22 @@ export const deleteTodo=(endpoint, index, todos)=>{
         let newObj={...todosObj, ...{[i]: oldTodos[i]}}
         todosObj={...todosObj, ...newObj};
       }
-         let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${endpoint.toString()}.json/`;
+
+    console.log('endpoint, userId ', endpoint, userId);
+    let url=`${process.env.REACT_APP_POST_TODO_DYNAMIC}/${userId.toString()}/${endpoint.toString()}.json?auth=`+token;
 
     return dispatch=>{
-        dispatch(deleteTodoStart());
-        axios.put(url, todosObj)
+        dispatch(actionStart(actionTypes.DELETE_TODO_START));
+        axios.delete(url)
         .then(response=>{
-            dispatch(deleteTodoSuccess(oldTodos))
+            console.log('delete response ', response );
+            if (response.status==200){
+                dispatch(deleteTodoSuccess(oldTodos))
+            }
         })
         .catch(error=>{
-           dispatch(deleteTodoFail(error.message))
-        })
-
-        
+           dispatch(actionFail(error.message, actionTypes.DELETE_TODO_FAIL))
+        }) 
     }
 }
 

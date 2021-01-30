@@ -7,15 +7,11 @@ export const errorMessage=(props)=> {
     let error=null;
     let errorBool=false;
 
-            if (props.fetchTodoError){
+            if (props.fetchTodoError || props.submitTodoError){
                 error=props.fetchTodoError;
                 errorBool=true;
             } 
             
-            if(props.submitTodoError){
-                error=props.submitTodoError
-                errorBool=true;
-            }
 
         return (
             <div>

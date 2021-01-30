@@ -1,9 +1,9 @@
 import * as actionTypes from '../actions/actionTypes';
 
 let initialState = {
-    todos: null,
+    todos: [],
+    endpointsArr: [],
     deletedTodos:null,
-    endpoint: null,
     loading: false,
     fetchTodoError: false,
     submitTodoError: false,
@@ -15,7 +15,7 @@ const fetchTodoStart=(state, action)=>{
 }
 
 const fetchTodoSuccess=(state, action)=>{
-    return {...state, endpoint: Object.keys(action.todos)[0], todos: [...action.todos[Object.keys(action.todos)[0]]], loading: false}
+    return {...state, todos: [...Object.values(action.todos)], endpointsArr:[...Object.keys(action.todos)], loading: false}
 }
 
 const fetchTodoFail=(state, action)=>{
