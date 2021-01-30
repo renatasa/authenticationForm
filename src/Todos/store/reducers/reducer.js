@@ -28,7 +28,9 @@ const submitTodoStart=(state, action)=>{
 
 
 const submitTodoSuccess=(state, action)=>{
-  return{...state, loading: false, todos: [...state.todos, {...action.newTodo}], submitTodoSuccess: true, submitTodoError: false}
+  let newEndpointsArr= [...state.endpointsArr];
+  newEndpointsArr.push(action.newEndpoint);
+  return{...state, loading: false, todos: [...state.todos, {...action.newTodo}], endpointsArr:newEndpointsArr, submitTodoSuccess: true, submitTodoError: false}
 }
 
 const submitTodoFail=(state, action)=>{
@@ -57,7 +59,9 @@ const deleteTodoStart=(state, action)=>{
 
 const deleteTodoSuccess=(state, action)=>{
       let updatedObj = JSON.parse(JSON.stringify(action.oldTodos));
-      return{...state, loading: false, todos: [...updatedObj], submitTodoSuccess: true, submitTodoError: false}
+      let newEndpointsArr=[...state.endpointsArr];
+      newEndpointsArr.splice(action.index, 1);
+      return{...state, loading: false, todos: [...updatedObj], endpointsArr:newEndpointsArr, submitTodoSuccess: true, submitTodoError: false}
 }
 
 const deleteTodoFail=(state, action)=>{
@@ -67,6 +71,7 @@ const deleteTodoFail=(state, action)=>{
 const resetError=(state, action)=>{
   return {...state, fetchTodoError: false, submitTodoError: false}
 }
+
 
 const reducer=(state=initialState, action)=>{
     switch(action.type){
@@ -87,6 +92,8 @@ const reducer=(state=initialState, action)=>{
         case actionTypes.DELETE_TODO_FAIL: return deleteTodoFail(state, action);
 
         case actionTypes.RESET_ERROR: return resetError(state, action);
+
+      //  case actionTypes.FETCH_TODO_ENDPOINT_AFTER_SUBMITION: return fetchTodoEndpointAfterSubmition(state, action);
 
         default: return state;
     }

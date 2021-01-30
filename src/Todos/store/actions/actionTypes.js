@@ -15,6 +15,3 @@ export const DELETE_TODO_SUCCESS= 'DELETE_TODO_SUCCESS';
 export const DELETE_TODO_FAIL= 'DELETE_TODO_FAIL';
 
 export const RESET_ERROR = 'RESET_ERROR';
-
-
-

@@ -42,10 +42,11 @@ export const fetchTodo=(token, userId)=>{
 
 
 //adding new todo to backend and store
-export const submitTodoSuccess=(newTodo)=>{
+export const submitTodoSuccess=(newTodo, newEndpoint)=>{
     return{
         type: actionTypes.SUBMIT_TODO_SUCCESS,
-        newTodo: newTodo
+        newTodo: newTodo,
+        newEndpoint: newEndpoint
 }
 }
 
@@ -58,8 +59,9 @@ export const submitTodo=(userId, allTodos, token)=>{
         axios.post(url, newTodo)
         .then(response=>{
             console.log('submit todo response ', response);
+            console.log('submit todo response ', response.data['name']);
             if (response.status==200){
-                dispatch(submitTodoSuccess(newTodo))
+                dispatch(submitTodoSuccess(newTodo, response.data['name']))
             }
             
         })
@@ -100,10 +102,11 @@ export const markAsCompleted=(endpoint, index, todo, token, userId)=>{
 
 
 //delete todo
-export const deleteTodoSuccess=(oldTodos)=>{
+export const deleteTodoSuccess=(oldTodos, index)=>{
     return{
         type: actionTypes.DELETE_TODO_SUCCESS,
-        oldTodos: oldTodos
+        oldTodos: oldTodos, 
+        index: index
 }
 }
 
@@ -127,7 +130,7 @@ export const deleteTodo=(endpoint, index, todos, token, userId)=>{
         .then(response=>{
             console.log('delete response ', response );
             if (response.status==200){
-                dispatch(deleteTodoSuccess(oldTodos))
+                dispatch(deleteTodoSuccess(oldTodos, index))
             }
         })
         .catch(error=>{
