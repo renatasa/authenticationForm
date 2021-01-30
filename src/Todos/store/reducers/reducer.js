@@ -15,7 +15,12 @@ const fetchTodoStart=(state, action)=>{
 }
 
 const fetchTodoSuccess=(state, action)=>{
+  if(action.todos){
     return {...state, todos: [...Object.values(action.todos)], endpointsArr:[...Object.keys(action.todos)], loading: false}
+  } else {
+    return {...state, loading: false}
+  }
+    
 }
 
 const fetchTodoFail=(state, action)=>{

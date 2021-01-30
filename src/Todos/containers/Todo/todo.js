@@ -82,7 +82,8 @@ export class Todo extends Component {
     render() {
         let todoList=null;
         
-        if (this.props.todos && !this.props.loading){
+        if (this.props.todos.length>0 && !this.props.loading){
+            console.log('test');
             todoList=                
                 <TodoList 
                     todos={this.props.todos}
@@ -90,7 +91,9 @@ export class Todo extends Component {
                     todoCompleted={this.todoCompleted}
                     inputChangedHandler={this.inputChangedHandler}
                 />
-        } else {
+        } 
+        
+        if(this.props.todos.length==0 && this.props.loading){
             todoList=<Spinner/>
         }
 

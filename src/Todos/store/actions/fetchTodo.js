@@ -32,6 +32,7 @@ export const fetchTodo=(token, userId)=>{
      dispatch(actionStart(actionTypes.FETCH_TODO_START));
      axios.get(url)
             .then(response=>{
+                console.log(response.data)
                 dispatch(fetchTodoSuccess(response.data));
             })
             .catch( (error)=> {
