@@ -1,12 +1,12 @@
 import * as actionTypes from '../actions/actionTypes';
 
 let initialState = {
-    todos: null,
+    todos: [],
+    endpointsArr: [],
     deletedTodos:null,
-    endpoint: null,
     loading: false,
     fetchTodoError: false,
-    submitTodoError: false,
+    submitCompleteDeleteTodoError: false,
     submitTodoSuccess:false
 }
 
@@ -15,7 +15,12 @@ const fetchTodoStart=(state, action)=>{
 }
 
 const fetchTodoSuccess=(state, action)=>{
-    return {...state, endpoint: Object.keys(action.todos)[0], todos: [...action.todos[Object.keys(action.todos)[0]]], loading: false}
+  if(action.todos){
+    return {...state, todos: [...Object.values(action.todos)], endpointsArr:[...Object.keys(action.todos)], loading: false}
+  } else {
+    return {...state, loading: false}
+  }
+    
 }
 
 const fetchTodoFail=(state, action)=>{
@@ -23,50 +28,55 @@ const fetchTodoFail=(state, action)=>{
 }
 
 const submitTodoStart=(state, action)=>{
-  return{...state, loading: true, submitTodoSuccess: false, submitTodoError: false}
+  return{...state, loading: true, submitTodoSuccess: false, submitCompleteDeleteTodoError: false}
 }
 
 
 const submitTodoSuccess=(state, action)=>{
-  return{...state, loading: false, todos: [...state.todos, {...action.newTodo}], submitTodoSuccess: true, submitTodoError: false}
+  let newEndpointsArr= [...state.endpointsArr];
+  newEndpointsArr.push(action.newEndpoint);
+  return{...state, loading: false, todos: [...state.todos, {...action.newTodo}], endpointsArr:newEndpointsArr, submitTodoSuccess: true, submitCompleteDeleteTodoError: false}
 }
 
 const submitTodoFail=(state, action)=>{
-  return{...state, loading: false, submitTodoSuccess: false, submitTodoError: action.error}
+  return{...state, loading: false, submitTodoSuccess: false, submitCompleteDeleteTodoError: action.error}
 }
 
 
 const markAsCompletedStart=(state, action)=>{
-  return{...state, loading: true, submitTodoSuccess: false, submitTodoError: false}
+  return{...state, loading: true, submitTodoSuccess: false, submitCompleteDeleteTodoError: false}
 }
 
 
 const markAsCompletedSuccess=(state, action)=>{
       let updatedObj = JSON.parse(JSON.stringify(state.todos));
       updatedObj[action.index].completed= !state.todos[action.index].completed;
-      return{...state, loading: false, todos: [...updatedObj], submitTodoSuccess: true, submitTodoError: false}
+      return{...state, loading: false, todos: [...updatedObj], submitTodoSuccess: true, submitCompleteDeleteTodoError: false}
 }
 
 const markAsCompletedFail=(state, action)=>{
-  return{...state, loading: false, submitTodoSuccess: false, submitTodoError: action.error}
+  return{...state, loading: false, submitTodoSuccess: false, submitCompleteDeleteTodoError: action.error}
 }
 
 const deleteTodoStart=(state, action)=>{
-  return{...state, loading: true, submitTodoSuccess: false, submitTodoError: false}
+  return{...state, loading: true, submitTodoSuccess: false, submitCompleteDeleteTodoError: false}
 }
 
 const deleteTodoSuccess=(state, action)=>{
       let updatedObj = JSON.parse(JSON.stringify(action.oldTodos));
-      return{...state, loading: false, todos: [...updatedObj], submitTodoSuccess: true, submitTodoError: false}
+      let newEndpointsArr=[...state.endpointsArr];
+      newEndpointsArr.splice(action.index, 1);
+      return{...state, loading: false, todos: [...updatedObj], endpointsArr:newEndpointsArr, submitTodoSuccess: true, submitCompleteDeleteTodoError: false}
 }
 
 const deleteTodoFail=(state, action)=>{
-  return{...state, loading: false, submitTodoSuccess: false, submitTodoError: action.error}
+  return{...state, loading: false, submitTodoSuccess: false, submitCompleteDeleteTodoError: action.error}
 }
 
 const resetError=(state, action)=>{
-  return {...state, fetchTodoError: false, submitTodoError: false}
+  return {...state, fetchTodoError: false, submitCompleteDeleteTodoError: false}
 }
+
 
 const reducer=(state=initialState, action)=>{
     switch(action.type){

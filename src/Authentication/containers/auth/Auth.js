@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import Input from '../../components/UI/Input/Input';
-import Spinner from '../../components/UI/Spinner/Spinner';
+import Spinner from '../../components/UI/SpinnerAuth/SpinnerAuth';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import * as actions from '../../store/actions/index';
 import './Auth.css';

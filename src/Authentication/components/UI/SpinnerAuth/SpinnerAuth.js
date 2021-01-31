@@ -1,8 +1,8 @@
 import React from 'react';
-import './Spinner.css';
+import './SpinnerAuth.css';
 
 const spinner = () => (
-    <div class="loader">Loading...</div>
+    <div class="loaderAuth">Loading...</div>
 );
 
 export default spinner;
