@@ -6,7 +6,7 @@ let initialState = {
     deletedTodos:null,
     loading: false,
     fetchTodoError: false,
-    submitTodoError: false,
+    submitCompleteDeleteTodoError: false,
     submitTodoSuccess:false
 }
 
@@ -28,53 +28,53 @@ const fetchTodoFail=(state, action)=>{
 }
 
 const submitTodoStart=(state, action)=>{
-  return{...state, loading: true, submitTodoSuccess: false, submitTodoError: false}
+  return{...state, loading: true, submitTodoSuccess: false, submitCompleteDeleteTodoError: false}
 }
 
 
 const submitTodoSuccess=(state, action)=>{
   let newEndpointsArr= [...state.endpointsArr];
   newEndpointsArr.push(action.newEndpoint);
-  return{...state, loading: false, todos: [...state.todos, {...action.newTodo}], endpointsArr:newEndpointsArr, submitTodoSuccess: true, submitTodoError: false}
+  return{...state, loading: false, todos: [...state.todos, {...action.newTodo}], endpointsArr:newEndpointsArr, submitTodoSuccess: true, submitCompleteDeleteTodoError: false}
 }
 
 const submitTodoFail=(state, action)=>{
-  return{...state, loading: false, submitTodoSuccess: false, submitTodoError: action.error}
+  return{...state, loading: false, submitTodoSuccess: false, submitCompleteDeleteTodoError: action.error}
 }
 
 
 const markAsCompletedStart=(state, action)=>{
-  return{...state, loading: true, submitTodoSuccess: false, submitTodoError: false}
+  return{...state, loading: true, submitTodoSuccess: false, submitCompleteDeleteTodoError: false}
 }
 
 
 const markAsCompletedSuccess=(state, action)=>{
       let updatedObj = JSON.parse(JSON.stringify(state.todos));
       updatedObj[action.index].completed= !state.todos[action.index].completed;
-      return{...state, loading: false, todos: [...updatedObj], submitTodoSuccess: true, submitTodoError: false}
+      return{...state, loading: false, todos: [...updatedObj], submitTodoSuccess: true, submitCompleteDeleteTodoError: false}
 }
 
 const markAsCompletedFail=(state, action)=>{
-  return{...state, loading: false, submitTodoSuccess: false, submitTodoError: action.error}
+  return{...state, loading: false, submitTodoSuccess: false, submitCompleteDeleteTodoError: action.error}
 }
 
 const deleteTodoStart=(state, action)=>{
-  return{...state, loading: true, submitTodoSuccess: false, submitTodoError: false}
+  return{...state, loading: true, submitTodoSuccess: false, submitCompleteDeleteTodoError: false}
 }
 
 const deleteTodoSuccess=(state, action)=>{
       let updatedObj = JSON.parse(JSON.stringify(action.oldTodos));
       let newEndpointsArr=[...state.endpointsArr];
       newEndpointsArr.splice(action.index, 1);
-      return{...state, loading: false, todos: [...updatedObj], endpointsArr:newEndpointsArr, submitTodoSuccess: true, submitTodoError: false}
+      return{...state, loading: false, todos: [...updatedObj], endpointsArr:newEndpointsArr, submitTodoSuccess: true, submitCompleteDeleteTodoError: false}
 }
 
 const deleteTodoFail=(state, action)=>{
-  return{...state, loading: false, submitTodoSuccess: false, submitTodoError: action.error}
+  return{...state, loading: false, submitTodoSuccess: false, submitCompleteDeleteTodoError: action.error}
 }
 
 const resetError=(state, action)=>{
-  return {...state, fetchTodoError: false, submitTodoError: false}
+  return {...state, fetchTodoError: false, submitCompleteDeleteTodoError: false}
 }
 
 
@@ -97,8 +97,6 @@ const reducer=(state=initialState, action)=>{
         case actionTypes.DELETE_TODO_FAIL: return deleteTodoFail(state, action);
 
         case actionTypes.RESET_ERROR: return resetError(state, action);
-
-      //  case actionTypes.FETCH_TODO_ENDPOINT_AFTER_SUBMITION: return fetchTodoEndpointAfterSubmition(state, action);
 
         default: return state;
     }

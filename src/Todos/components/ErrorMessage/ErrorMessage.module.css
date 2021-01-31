@@ -1,0 +1,100 @@
+.alertWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.alertBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #2d333f;
+  opacity: 0.9;
+  z-index: -1;
+}
+
+.alertItem {
+  background: #ecc8c5;
+  color: #b32f2d;
+  z-index: 0;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.sub {
+  font-size: 14px;
+  font-weight: 100;
+}
+
+.data {
+  margin: 0 2rem;
+  flex-grow: 3;
+  text-align: center;
+}
+
+.title {
+  font-weight: 700;
+}
+
+.icon {
+  font-size: 1.5rem;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.close {
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #c79995;
+}
+
+.errorSubmitingTodo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.todoNotAdded {
+  width: 15rem;
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.8rem;
+  background: #ecc8c5;
+  color: #b32f2d;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.otherError {
+  flex-grow: 4;
+}
+
+@media (max-width: 650px) {
+  .alertItem {
+    width: 70%;
+  }
+}
+
+@media (max-width: 440px) {
+  .alertItem {
+    padding: 12px 25px;
+  }
+
+  .data {
+    margin: 0 1rem;
+  }
+}
