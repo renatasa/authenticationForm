@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import TodoList from "../../components/TodoList/todoList";
 import Spinner from "../../components/Spinner/spinner";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import WarningMessage from "../../components/WarningMessage/WarningMessage";
 import SignOutButton from "../../../Authentication/components/UI/SignOutButton/SignOutButton";
 import * as actions from "../../store/actions/index";
 import { connect } from "react-redux";
@@ -61,16 +60,8 @@ export class Todo extends Component {
   };
 
   todoDelete = (index) => {
-    console.log("delete todo function ");
-    console.log("delete todo index ", index);
-    console.log("delete todo endpoints array ", this.props.endpointsArr);
-
-    console.log("delete todo token ", this.props.token);
-    console.log("delete todo userId ", this.props.userId);
     let endpoint = this.props.endpointsArr[index];
-    console.log("delete todo endpoint ", endpoint);
     if (endpoint && this.props.token && this.props.userId) {
-      console.log("delete todo function if ", endpoint);
       this.props.onDeleteTodo(
         endpoint,
         index,
@@ -100,6 +91,7 @@ export class Todo extends Component {
 
   render() {
     let todoList = null;
+    let showWarningProps= this.state.showWarning ? {errorText: "Input field is empty!", errorType: "warning"} : {errorText: "", errorType: "warning"} 
 
     if (this.props.todos.length > 0 && !this.props.loading) {
       console.log("test");
@@ -135,11 +127,13 @@ export class Todo extends Component {
             <i class="fas fa-plus-square"></i>
           </button>
         </form>
+        <ErrorMessage error={{errorText: this.props.fetchTodoError, errorType: "errorFetchingTodos"}} />
+        <ErrorMessage error={{errorText: this.props.submitTodoError, errorType:"errorChangingTodos"}} /> 
 
         {todoList}
-        <ErrorMessage />
-        <WarningMessage
-          showWarning={this.state.showWarning}
+         
+        <ErrorMessage
+          error={showWarningProps}
           closeWarning={this.closeWarning}
         />
       </div>
@@ -153,7 +147,7 @@ const mapStateToProps = (state) => {
     endpointsArr: state.todos.endpointsArr,
     loading: state.todos.loading,
     fetchTodoError: state.todos.fetchTodoError,
-    submitTodoError: state.todos.submitTodoError,
+    submitTodoError: state.todos.submitCompleteDeleteTodoError,
     submitTodoSuccess: state.todos.submitTodoSuccess,
     token: state.auth.token,
     userId: state.auth.userId,
