@@ -1,6 +1,11 @@
 .alertWrapper {
-  position: relative;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.alertWrapperWithBackdrop{
   height: 100%;
   z-index: 1;
 }
@@ -17,69 +22,96 @@
 }
 
 .alertItem {
-  background: #ecc8c5;
-  color: #b32f2d;
   z-index: 0;
   position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
-  justify-content: center;
   align-items: center;
   padding: 1.5rem 3rem;
   border-radius: 3px;
-  transition: all 0.2s ease;
+  transition: all 1s ease;
 }
 
-.sub {
+.alertItemInactive {
+  position: fixed;
+  top: 120%;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  border-radius: 3px;
+  transition: all 1s ease;
+}
+
+.alertItemErrorColors {
+  background: #ecc8c5;
+  color: #b32f2d;
+}
+
+.alertItemWarningColors {
+  background: #f8f3d6;
+  color: #967132;
+}
+
+.alertItemTop{
+    top: 20%;
+}
+
+.alertItemBottom {
+  top: 68%;
+}
+
+.alertItemSub {
   font-size: 14px;
   font-weight: 100;
 }
 
-.data {
+.alertItemData {
   margin: 0 2rem;
   flex-grow: 3;
   text-align: center;
 }
 
-.title {
+.alertItemTitle {
   font-weight: 700;
 }
 
-.icon {
+.alertItemIcon {
   font-size: 1.5rem;
-  flex-grow: 1;
   text-align: center;
 }
 
-.close {
+.alertIconClose {
   cursor: pointer;
+  margin: 0rem 0rem 0rem 1rem;
 }
 
-.close:hover {
+.alertIconClose:hover {
   color: #c79995;
 }
 
-.errorSubmitingTodo {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  position: relative;
-}
-
-.todoNotAdded {
-  width: 15rem;
+.alertItemTodoNotAdded {
+  opacity: 1;
+  position: fixed;
+  transform: translate(0%, -55%);
   display: flex;
   align-items: center;
   padding: 0.2rem 0.8rem;
-  background: #ecc8c5;
-  color: #b32f2d;
   border-radius: 0.5rem;
-  font-size: 0.8rem;
+  transition: all 0.5s ease;
 }
 
-.otherError {
+.alertItemTodoNotAddedInactive {
+  opacity: 0;
+  position: fixed;
+  transform: translate(50%, -55%);
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.8rem;
+  border-radius: 0.5rem;
+  border-radius: 3px;
+  transition: all 0.5s ease;
+}
+
+.alertItemtodoNotAddedWidth {
   flex-grow: 4;
 }
 
@@ -94,7 +126,7 @@
     padding: 12px 25px;
   }
 
-  .data {
+  .alertItemData {
     margin: 0 1rem;
   }
 }

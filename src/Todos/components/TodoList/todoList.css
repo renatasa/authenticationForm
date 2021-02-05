@@ -7,6 +7,7 @@
    .todo-list {
     min-width: 30%;
     list-style: none;
+    margin-top: 1rem;
   } 
   
   .todo {

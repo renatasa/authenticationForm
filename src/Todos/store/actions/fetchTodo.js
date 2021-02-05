@@ -86,7 +86,7 @@ export const markAsCompleted = (endpoint, index, todo, token, userId) => {
   let url =
     `${
       process.env.REACT_APP_POST_TODO_DYNAMIC
-    }/${userId.toString()}/${endpoint.toString()}.json?auth=` + token;
+    }/${userId.toString()}/${endpoint.toString()}.json?auth` + token;
 
   return (dispatch) => {
     dispatch(actionStart(actionTypes.MARK_AS_COMPLETED_START));
@@ -144,8 +144,9 @@ export const deleteTodo = (endpoint, index, todos, token, userId) => {
   };
 };
 
-export const resetError = () => {
+export const resetError = (errorType) => {
   return {
     type: actionTypes.RESET_ERROR,
+    errorType: errorType
   };
 };

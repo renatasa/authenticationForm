@@ -74,7 +74,7 @@ const deleteTodoFail=(state, action)=>{
 }
 
 const resetError=(state, action)=>{
-  return {...state, fetchTodoError: false, submitCompleteDeleteTodoError: false}
+  return {...state, [`${action.errorType}`]: false}
 }
 
 

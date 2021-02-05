@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/SpinnerAuth/SpinnerAuth';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import ErrorMessage from '../../../Todos/components/ErrorMessage/ErrorMessage';
 import * as actions from '../../store/actions/index';
 import './Auth.css';
 
@@ -103,6 +103,8 @@ export class Auth extends Component {
 
     render() {
 
+        let authorisationError= this.props.error ? {errorText: this.props.error.message, errorType: "errorAuthorisation"} : {errorText: "", errorType: "errorAuthorisation"}
+
         let formElementsArray = [];
         for (let key in this.state.controls) {
             formElementsArray.push({
@@ -151,7 +153,7 @@ export class Auth extends Component {
             <div class="formContainer" >
                 {authRedirect}
                 {form}
-                <ErrorMessage/>
+                <ErrorMessage error={authorisationError } resetAuthError={this.props.onResetAuthError} />
             </div>
         )
     }
@@ -168,7 +170,8 @@ const mapStateToProps = state =>{
 
 const mapDispatchToProps = dispatch=>{
     return{
-        onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup))
+        onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup)),
+        onResetAuthError: () => dispatch(actions.resetError())
     }
 }
 
