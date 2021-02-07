@@ -1,8 +1,6 @@
-import React from 'react';
-import './SpinnerAuth.css';
+import React from "react";
+import classes from "./SpinnerAuth.module.css";
 
-const spinner = () => (
-    <div class="loaderAuth">Loading...</div>
-);
+const spinner = () => <div className={classes.loaderAuth}>Loading...</div>;
 
 export default spinner;

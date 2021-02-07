@@ -5,7 +5,7 @@
   position: relative;
 }
 
-.alertWrapperWithBackdrop{
+.alertWrapperWithBackdrop {
   height: 100%;
   z-index: 1;
 }
@@ -51,8 +51,8 @@
   color: #967132;
 }
 
-.alertItemTop{
-    top: 20%;
+.alertItemTop {
+  top: 20%;
 }
 
 .alertItemBottom {

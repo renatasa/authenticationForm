@@ -1,6 +1,1 @@
-export {
-    auth, 
-    logout, 
-    setAuthRedirectPath,
-    resetError
-} from './auth';
+export { auth, logout, setAuthRedirectPath, resetError } from "./auth";

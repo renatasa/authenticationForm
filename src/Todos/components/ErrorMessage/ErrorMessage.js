@@ -3,14 +3,15 @@ import * as actions from "../../store/actions/index";
 import { connect } from "react-redux";
 import classes from "./ErrorMessage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBomb } from "@fortawesome/free-solid-svg-icons";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBomb,
+  faTimes,
+  faExclamationTriangle,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const errorMessage = (props) => {
   let error = props.error.errorText;
   let errorType = props.error.errorType;
-
 
   // error while submiting new todo, deleting todo or marking as completed dissapears in 2 seconds automatically
   if (props.error.errorText && props.error.errorType == "errorChangingTodos") {
@@ -19,7 +20,12 @@ export const errorMessage = (props) => {
 
   // warning while trying submit empty todo dissapears in 2seconds
   if (props.error.errorText && props.error.errorType == "warning") {
-    setTimeout(() => props.closeWarning(), 2000);
+    setTimeout(() => props.errorWarningResetFunction("warning"), 2000);
+  }
+
+  // warning while trying submit empty todo and error while trying to add more than 10 todos dissapears in 2seconds
+  if (props.error.errorText && props.error.errorType == "tooManyTodos") {
+    setTimeout(() => props.errorWarningResetFunction("tooManyTodos"), 2000);
   }
 
   // logging in / signing in error dissapears in 2 seconds
@@ -32,7 +38,13 @@ export const errorMessage = (props) => {
     // this error message does not dissapear
     case "errorFetchingTodos":
       return (
-        <div className={error ? `${classes.alertWrapper} ${classes.alertWrapperWithBackdrop}` : undefined}>
+        <div
+          className={
+            error
+              ? `${classes.alertWrapper} ${classes.alertWrapperWithBackdrop}`
+              : undefined
+          }
+        >
           <div className={classes.alertBackdrop}></div>
           <div
             className={
@@ -52,7 +64,7 @@ export const errorMessage = (props) => {
         </div>
       );
 
-      // shows error on unsuccessfull login or sign in
+    // shows error on unsuccessfull login or sign in
     case "errorAuthorisation":
       return (
         <div className={`${classes.alertWrapper}`}>
@@ -70,7 +82,9 @@ export const errorMessage = (props) => {
               <p className={classes.alertItemTitle}>Error</p>
               <p className={classes.alertItemSub}>{error}</p>
             </div>
-            <div className={`${classes.alertItemClose} ${classes.alertItemIcon}`}>
+            <div
+              className={`${classes.alertItemClose} ${classes.alertItemIcon}`}
+            >
               <FontAwesomeIcon icon={faTimes} onClick={props.resetAuthError} />
             </div>
           </div>
@@ -95,7 +109,9 @@ export const errorMessage = (props) => {
               <p className={classes.alertItemTitle}>Warning</p>
               <p className={classes.alertItemSub}>{error}</p>
             </div>
-            <div className={`${classes.alertItemClose} ${classes.alertItemIcon}`}>
+            <div
+              className={`${classes.alertItemClose} ${classes.alertItemIcon}`}
+            >
               <FontAwesomeIcon icon={faTimes} onClick={props.closeWarning} />
             </div>
           </div>
@@ -115,12 +131,38 @@ export const errorMessage = (props) => {
             }
           >
             <div className={classes.alertItemTodoNotAddedWidth}>{error}</div>
-            <div className={`${classes.alertItemIconClose} ${classes.alertItemIcon}`}>
+            <div
+              className={`${classes.alertItemIconClose} ${classes.alertItemIcon}`}
+            >
               <FontAwesomeIcon
                 icon={faTimes}
                 onClick={() =>
                   props.onResetError("submitCompleteDeleteTodoError")
                 }
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    // shows error message when user tries to add more than 10 todos
+    case "tooManyTodos":
+      return (
+        <div className={classes.alertWrapper}>
+          <div
+            className={
+              error
+                ? `${classes.alertItemTodoNotAdded} ${classes.alertItemErrorColors}`
+                : `${classes.alertItemTodoNotAddedInactive}`
+            }
+          >
+            <div className={classes.alertItemTodoNotAddedWidth}>{error}</div>
+            <div
+              className={`${classes.alertItemIconClose} ${classes.alertItemIcon}`}
+            >
+              <FontAwesomeIcon
+                icon={faTimes}
+                onClick={props.errorResetFunction}
               />
             </div>
           </div>
