@@ -1,22 +1,24 @@
-import React from 'react';
-import './Input.css';
+import React from "react";
+import classes from "./Input.module.css";
 
-const input = ( props ) => {
-    let inputElement = null;
+const input = (props) => {
+  let inputElement = null;
 
-    inputElement = <input class="form__inputAuth"
-                {...props.elementConfig}
-                value={props.value}
-                onChange={props.changed} />;
+  inputElement = (
+    <input
+      className={classes.formInputAuth}
+      {...props.elementConfig}
+      value={props.value}
+      onChange={props.changed}
+    />
+  );
 
-
-    return (
-        <div >
-            <label >{props.label}</label>
-            {inputElement}
-        </div>
-    );
-
+  return (
+    <div>
+      <label>{props.label}</label>
+      {inputElement}
+    </div>
+  );
 };
 
 export default input;

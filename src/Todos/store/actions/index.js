@@ -1,7 +1,8 @@
 export {
-    fetchTodo, 
-    submitTodo, 
-    markAsCompleted,
-    deleteTodo, resetError
-} from './fetchTodo';
-
+  fetchTodo,
+  submitTodo,
+  markAsCompleted,
+  deleteTodo,
+  resetError,
+  logoutUserData,
+} from "./fetchTodo";

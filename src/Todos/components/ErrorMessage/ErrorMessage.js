@@ -1,38 +1,39 @@
 import React from "react";
-import * as actions from "../../store/actions/index";
-import { connect } from "react-redux";
 import classes from "./ErrorMessage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBomb } from "@fortawesome/free-solid-svg-icons";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBomb,
+  faTimes,
+  faExclamationTriangle,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const errorMessage = (props) => {
   let error = props.error.errorText;
   let errorType = props.error.errorType;
-
-
-  // error while submiting new todo, deleting todo or marking as completed dissapears in 2 seconds automatically
-  if (props.error.errorText && props.error.errorType == "errorChangingTodos") {
-    setTimeout(() => props.onResetError("submitCompleteDeleteTodoError"), 2000);
+  let setTimeoutFn = true;
+  if (errorType === "fetchTodoError") {
+    setTimeoutFn = false;
   }
 
-  // warning while trying submit empty todo dissapears in 2seconds
-  if (props.error.errorText && props.error.errorType == "warning") {
-    setTimeout(() => props.closeWarning(), 2000);
-  }
-
-  // logging in / signing in error dissapears in 2 seconds
-  if (props.error.errorText && props.error.errorType == "errorAuthorisation") {
-    setTimeout(() => props.resetAuthError(), 2000);
+  // when todos cant be fetched from backend, app doesn't load , no other actions are possible , resetError function does not execute
+  // rest of the error messages reset themselves automatically after 2 seconds, or user resets them by clicking X icon
+  // in case of errorAuthorisation , resetError does not receive errorType, because there is only one type of error in Authorisation reducer store
+  if (error && errorType && setTimeoutFn) {
+    setTimeout(() => props.resetError(errorType), 6000);
   }
 
   switch (errorType) {
     // show error message when todos could not be fetched from backend
-    // this error message does not dissapear
-    case "errorFetchingTodos":
+    // this error message does not dissapear and does not reset
+    case "fetchTodoError":
       return (
-        <div className={error ? `${classes.alertWrapper} ${classes.alertWrapperWithBackdrop}` : undefined}>
+        <div
+          className={
+            error
+              ? `${classes.alertWrapper} ${classes.alertWrapperWithBackdrop}`
+              : undefined
+          }
+        >
           <div className={classes.alertBackdrop}></div>
           <div
             className={
@@ -52,7 +53,7 @@ export const errorMessage = (props) => {
         </div>
       );
 
-      // shows error on unsuccessfull login or sign in
+    // shows error on unsuccessfull login or sign in
     case "errorAuthorisation":
       return (
         <div className={`${classes.alertWrapper}`}>
@@ -70,8 +71,10 @@ export const errorMessage = (props) => {
               <p className={classes.alertItemTitle}>Error</p>
               <p className={classes.alertItemSub}>{error}</p>
             </div>
-            <div className={`${classes.alertItemClose} ${classes.alertItemIcon}`}>
-              <FontAwesomeIcon icon={faTimes} onClick={props.resetAuthError} />
+            <div
+              className={`${classes.alertItemClose} ${classes.alertItemIcon}`}
+            >
+              <FontAwesomeIcon icon={faTimes} onClick={props.resetError} />
             </div>
           </div>
         </div>
@@ -95,16 +98,20 @@ export const errorMessage = (props) => {
               <p className={classes.alertItemTitle}>Warning</p>
               <p className={classes.alertItemSub}>{error}</p>
             </div>
-            <div className={`${classes.alertItemClose} ${classes.alertItemIcon}`}>
-              <FontAwesomeIcon icon={faTimes} onClick={props.closeWarning} />
+            <div
+              className={`${classes.alertItemClose} ${classes.alertItemIcon}`}
+            >
+              <FontAwesomeIcon
+                icon={faTimes}
+                onClick={() => props.resetError(errorType)}
+              />
             </div>
           </div>
         </div>
       );
 
     // shows error message, when new todo was not added, or todo was not marked as completed or todo was not deleted (HTTP PUT / DELETE / POST request status !==200)
-    // this error message dissapears in 2 seconds
-    case "errorChangingTodos":
+    case "submitCompleteDeleteTodoError":
       return (
         <div className={classes.alertWrapper}>
           <div
@@ -115,12 +122,36 @@ export const errorMessage = (props) => {
             }
           >
             <div className={classes.alertItemTodoNotAddedWidth}>{error}</div>
-            <div className={`${classes.alertItemIconClose} ${classes.alertItemIcon}`}>
+            <div
+              className={`${classes.alertItemClose} ${classes.alertItemIcon}`}
+            >
               <FontAwesomeIcon
                 icon={faTimes}
-                onClick={() =>
-                  props.onResetError("submitCompleteDeleteTodoError")
-                }
+                onClick={() => props.resetError(errorType)}
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    // shows error message when user tries to add more todos than it is allowed
+    case "tooManyTodos":
+      return (
+        <div className={classes.alertWrapper}>
+          <div
+            className={
+              error
+                ? `${classes.alertItemTodoNotAdded} ${classes.alertItemErrorColors}`
+                : `${classes.alertItemTodoNotAddedInactive}`
+            }
+          >
+            <div className={classes.alertItemTodoNotAddedWidth}>{error}</div>
+            <div
+              className={`${classes.alertItemClose} ${classes.alertItemIcon}`}
+            >
+              <FontAwesomeIcon
+                icon={faTimes}
+                onClick={() => props.resetError(errorType)}
               />
             </div>
           </div>
@@ -132,10 +163,4 @@ export const errorMessage = (props) => {
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onResetError: (errorType) => dispatch(actions.resetError(errorType)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(errorMessage);
+export default errorMessage;

@@ -23,6 +23,7 @@ export const fetchTodoSuccess = (todo) => {
 };
 
 export const fetchTodo = (token, userId) => {
+  console.log(userId, token);
   return (dispatch) => {
     let url =
       `${process.env.REACT_APP_GET_TODO}/${userId.toString()}.json?auth=` +
@@ -31,7 +32,6 @@ export const fetchTodo = (token, userId) => {
     axios
       .get(url)
       .then((response) => {
-        console.log(response.data);
         dispatch(fetchTodoSuccess(response.data));
       })
       .catch((error) => {
@@ -60,14 +60,11 @@ export const submitTodo = (userId, allTodos, token) => {
     axios
       .post(url, newTodo)
       .then((response) => {
-        console.log("submit todo response ", response);
-        console.log("submit todo response ", response.data["name"]);
-        if (response.status == 200) {
+        if (response.status === 200) {
           dispatch(submitTodoSuccess(newTodo, response.data["name"]));
         }
       })
       .catch((error) => {
-        console.log(error);
         dispatch(actionFail(error.message, actionTypes.SUBMIT_TODO_FAIL));
       });
   };
@@ -93,7 +90,7 @@ export const markAsCompleted = (endpoint, index, todo, token, userId) => {
     axios
       .put(url, newTodo)
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           dispatch(markAsCompletedSuccess(index));
         }
       })
@@ -122,7 +119,6 @@ export const deleteTodo = (endpoint, index, todos, token, userId) => {
     todosObj = { ...todosObj, ...newObj };
   }
 
-  console.log("endpoint, userId ", endpoint, userId);
   let url =
     `${
       process.env.REACT_APP_POST_TODO_DYNAMIC
@@ -133,8 +129,7 @@ export const deleteTodo = (endpoint, index, todos, token, userId) => {
     axios
       .delete(url)
       .then((response) => {
-        console.log("delete response ", response);
-        if (response.status == 200) {
+        if (response.status === 200) {
           dispatch(deleteTodoSuccess(oldTodos, index));
         }
       })
@@ -147,6 +142,12 @@ export const deleteTodo = (endpoint, index, todos, token, userId) => {
 export const resetError = (errorType) => {
   return {
     type: actionTypes.RESET_ERROR,
-    errorType: errorType
+    errorType: errorType,
+  };
+};
+
+export const logoutUserData = () => {
+  return {
+    type: actionTypes.LOGOUT_USER_DATA,
   };
 };

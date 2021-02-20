@@ -4,7 +4,7 @@
   border-radius: 50%;
 }
 .loaderAuth {
-  color:#50a27a;
+  color: #50a27a;
   font-size: 11px;
   text-indent: -99999em;
   margin: 55px auto;
@@ -19,7 +19,7 @@
 .loaderAuth:before,
 .loaderAuth:after {
   position: absolute;
-  content: '';
+  content: "";
 }
 .loaderAuth:before {
   width: 5.2em;
@@ -64,4 +64,4 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
-} 
+}

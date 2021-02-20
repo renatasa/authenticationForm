@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import TodoList from "../../components/TodoList/todoList";
-import Spinner from "../../components/Spinner/spinner";
+import { Redirect } from "react-router-dom";
+import Spinner from "../../components/Spinner/spinnerTodo";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import SignOutButton from "../../../Authentication/components/UI/SignOutButton/SignOutButton";
 import * as actions from "../../store/actions/index";
 import { connect } from "react-redux";
-import "./todo.css";
+import classes from "./todo.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 
 export class Todo extends Component {
   state = {
     inputText: "",
-    showWarning: false,
+    warning: false,
+    tooManyTodos: false,
   };
 
   componentDidMount() {
@@ -21,41 +25,43 @@ export class Todo extends Component {
 
   inputChangedHandler = (event) => {
     event.preventDefault();
-    this.setState({ inputText: event.target.value });
+    if (event.target.value.length <= 60) {
+      this.setState({ inputText: event.target.value });
+    }
   };
 
   submitHandler = (event) => {
     event.preventDefault();
-    console.log("submit handler");
-    if (this.state.inputText == "") {
-      this.setState({ showWarning: true });
+    if (this.state.inputText === "") {
+      this.setState({ warning: true });
     } else if (
       this.props.token !== null &&
       this.props.userId !== null &&
       !this.props.loading
     ) {
-      let newTodo = {
-        todo: this.state.inputText,
-        completed: false,
-        delete: false,
-      };
-      let updatedTodos = [];
-
-      if (this.props.todos) {
-        updatedTodos = [...this.props.todos, newTodo];
+      if (this.props.todos.length >= 5) {
+        this.setState({ tooManyTodos: true });
       } else {
-        updatedTodos.push(newTodo);
-      }
-      console.log(updatedTodos);
+        let newTodo = {
+          todo: this.state.inputText,
+          completed: false,
+          delete: false,
+        };
+        let updatedTodos = [];
 
-      //if (this.props.token && this.props.userId){
-      this.props.onSubmitTodo(
-        this.props.userId,
-        updatedTodos,
-        this.props.token
-      );
-      this.setState({ inputText: "" });
-      // }
+        if (this.props.todos) {
+          updatedTodos = [...this.props.todos, newTodo];
+        } else {
+          updatedTodos.push(newTodo);
+        }
+
+        this.props.onSubmitTodo(
+          this.props.userId,
+          updatedTodos,
+          this.props.token
+        );
+        this.setState({ inputText: "" });
+      }
     }
   };
 
@@ -85,16 +91,24 @@ export class Todo extends Component {
     }
   };
 
-  closeWarning = () => {
-    this.setState({ showWarning: false });
+  errorWarningResetFunction = (stateProperty) => {
+    this.setState({ [stateProperty]: false });
   };
 
   render() {
     let todoList = null;
-    let showWarningProps= this.state.showWarning ? {errorText: "Input field is empty!", errorType: "warning"} : {errorText: "", errorType: "warning"} 
+    let warning = this.state.warning
+      ? { errorText: "Input field is empty!", errorType: "warning" }
+      : { errorText: "", errorType: "warning" };
+
+    let maxTodosLimitExceeded = this.state.tooManyTodos
+      ? {
+          errorText: "No more than 5 todos are available",
+          errorType: "tooManyTodos",
+        }
+      : { errorText: "", errorType: "tooManyTodos" };
 
     if (this.props.todos.length > 0 && !this.props.loading) {
-      console.log("test");
       todoList = (
         <TodoList
           todos={this.props.todos}
@@ -105,36 +119,59 @@ export class Todo extends Component {
       );
     }
 
-    if (this.props.todos.length == 0 && this.props.loading) {
+    if (this.props.todos.length === 0 && this.props.loading) {
       todoList = <Spinner />;
     }
 
+    if (!this.props.token && !this.props.userId && !this.props.loading) {
+      this.props.onLogoutUserData();
+    }
+
     return (
-      <div class="todoComponent">
+      <div className={classes.todoComponent}>
         <SignOutButton />
-        <form class={!this.props.todos ? "initialForm" : undefined}>
+        <form
+          onSubmit={this.submitHandler}
+          className={classes.todoComponentForm}
+        >
           <input
             type="text"
             value={this.state.inputText}
-            class="todo-input"
+            className={classes.todoComponentInput}
             onChange={this.inputChangedHandler}
           />
           <button
-            class="todo-button"
+            className={classes.todoComponentButton}
             type="submit"
             onClick={this.submitHandler}
           >
-            <i class="fas fa-plus-square"></i>
+            <FontAwesomeIcon icon={faPlusSquare} />
           </button>
         </form>
-        <ErrorMessage error={{errorText: this.props.fetchTodoError, errorType: "errorFetchingTodos"}} />
-        <ErrorMessage error={{errorText: this.props.submitTodoError, errorType:"errorChangingTodos"}} /> 
+        <ErrorMessage
+          error={{
+            errorText: this.props.fetchTodoError,
+            errorType: "fetchTodoError",
+          }}
+
+        />
+        <ErrorMessage
+          error={{
+            errorText: this.props.submitTodoError,
+            errorType: "submitCompleteDeleteTodoError",
+          }}
+          resetError={this.props.onResetError}
+        /> 
+        <ErrorMessage
+          error={maxTodosLimitExceeded}
+          resetError={this.errorWarningResetFunction}
+        /> 
 
         {todoList}
-         
+
         <ErrorMessage
-          error={showWarningProps}
-          closeWarning={this.closeWarning}
+          error={warning}
+          resetError={this.errorWarningResetFunction}
         />
       </div>
     );
@@ -163,6 +200,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.markAsCompleted(endpoint, index, todo, token, userId)),
     onDeleteTodo: (endpoint, index, todos, token, userId) =>
       dispatch(actions.deleteTodo(endpoint, index, todos, token, userId)),
+      onResetError:  (errorType) => dispatch(actions.resetError(errorType)),
+      onLogoutUserData: () => dispatch(actions.logoutUserData()),
   };
 };
 
