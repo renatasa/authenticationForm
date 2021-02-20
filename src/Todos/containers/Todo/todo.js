@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TodoList from "../../components/TodoList/todoList";
+import { Redirect } from "react-router-dom";
 import Spinner from "../../components/Spinner/spinnerTodo";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import SignOutButton from "../../../Authentication/components/UI/SignOutButton/SignOutButton";
@@ -13,7 +14,7 @@ export class Todo extends Component {
   state = {
     inputText: "",
     warning: false,
-    toManyTodos: false,
+    tooManyTodos: false,
   };
 
   componentDidMount() {
@@ -31,7 +32,7 @@ export class Todo extends Component {
 
   submitHandler = (event) => {
     event.preventDefault();
-    if (this.state.inputText == "") {
+    if (this.state.inputText === "") {
       this.setState({ warning: true });
     } else if (
       this.props.token !== null &&
@@ -102,7 +103,7 @@ export class Todo extends Component {
 
     let maxTodosLimitExceeded = this.state.tooManyTodos
       ? {
-          errorText: "No more than 5 todos is available",
+          errorText: "No more than 5 todos are available",
           errorType: "tooManyTodos",
         }
       : { errorText: "", errorType: "tooManyTodos" };
@@ -118,8 +119,12 @@ export class Todo extends Component {
       );
     }
 
-    if (this.props.todos.length == 0 && this.props.loading) {
+    if (this.props.todos.length === 0 && this.props.loading) {
       todoList = <Spinner />;
+    }
+
+    if (!this.props.token && !this.props.userId && !this.props.loading) {
+      this.props.onLogoutUserData();
     }
 
     return (
@@ -146,25 +151,27 @@ export class Todo extends Component {
         <ErrorMessage
           error={{
             errorText: this.props.fetchTodoError,
-            errorType: "errorFetchingTodos",
+            errorType: "fetchTodoError",
           }}
+
         />
         <ErrorMessage
           error={{
             errorText: this.props.submitTodoError,
-            errorType: "errorChangingTodos",
+            errorType: "submitCompleteDeleteTodoError",
           }}
-        />
+          resetError={this.props.onResetError}
+        /> 
         <ErrorMessage
           error={maxTodosLimitExceeded}
-          errorWarningResetFunction={this.errorWarningResetFunction}
-        />
+          resetError={this.errorWarningResetFunction}
+        /> 
 
         {todoList}
 
         <ErrorMessage
           error={warning}
-          errorWarningResetFunction={this.errorWarningResetFunction}
+          resetError={this.errorWarningResetFunction}
         />
       </div>
     );
@@ -193,6 +200,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.markAsCompleted(endpoint, index, todo, token, userId)),
     onDeleteTodo: (endpoint, index, todos, token, userId) =>
       dispatch(actions.deleteTodo(endpoint, index, todos, token, userId)),
+      onResetError:  (errorType) => dispatch(actions.resetError(errorType)),
+      onLogoutUserData: () => dispatch(actions.logoutUserData()),
   };
 };
 

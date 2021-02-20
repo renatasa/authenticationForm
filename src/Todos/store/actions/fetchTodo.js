@@ -23,6 +23,7 @@ export const fetchTodoSuccess = (todo) => {
 };
 
 export const fetchTodo = (token, userId) => {
+  console.log(userId, token);
   return (dispatch) => {
     let url =
       `${process.env.REACT_APP_GET_TODO}/${userId.toString()}.json?auth=` +
@@ -59,7 +60,7 @@ export const submitTodo = (userId, allTodos, token) => {
     axios
       .post(url, newTodo)
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           dispatch(submitTodoSuccess(newTodo, response.data["name"]));
         }
       })
@@ -89,7 +90,7 @@ export const markAsCompleted = (endpoint, index, todo, token, userId) => {
     axios
       .put(url, newTodo)
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           dispatch(markAsCompletedSuccess(index));
         }
       })
@@ -128,7 +129,7 @@ export const deleteTodo = (endpoint, index, todos, token, userId) => {
     axios
       .delete(url)
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           dispatch(deleteTodoSuccess(oldTodos, index));
         }
       })
@@ -142,5 +143,11 @@ export const resetError = (errorType) => {
   return {
     type: actionTypes.RESET_ERROR,
     errorType: errorType,
+  };
+};
+
+export const logoutUserData = () => {
+  return {
+    type: actionTypes.LOGOUT_USER_DATA,
   };
 };

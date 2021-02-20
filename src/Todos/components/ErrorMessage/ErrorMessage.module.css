@@ -79,12 +79,12 @@
   text-align: center;
 }
 
-.alertIconClose {
+.alertItemClose {
   cursor: pointer;
   margin: 0rem 0rem 0rem 1rem;
 }
 
-.alertIconClose:hover {
+.alertItemClose:hover {
   color: #c79995;
 }
 

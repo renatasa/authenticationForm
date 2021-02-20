@@ -170,7 +170,7 @@ export class Auth extends Component {
         {form}
         <ErrorMessage
           error={authorisationError}
-          resetAuthError={this.props.onResetAuthError}
+          resetError={this.props.onResetAuthError}
         />
       </div>
     );

@@ -4,4 +4,5 @@ export {
   markAsCompleted,
   deleteTodo,
   resetError,
+  logoutUserData,
 } from "./fetchTodo";

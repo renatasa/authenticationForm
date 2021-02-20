@@ -1,6 +1,8 @@
 .todoComponent {
   background: #2d333f;
   width: 100%;
+  min-height: 100%;
+  position: absolute;
 }
 
 .todoComponentForm {

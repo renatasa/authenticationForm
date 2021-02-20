@@ -128,6 +128,10 @@ const resetError = (state, action) => {
   return { ...state, [`${action.errorType}`]: false };
 };
 
+const logoutUserData=(state, action)=>{
+  return {...state, todos: [], endpointsArr:[], deletedTodos: null}
+}
+
 
 const reducer=(state=initialState, action)=>{
   switch(action.type){
@@ -148,6 +152,7 @@ const reducer=(state=initialState, action)=>{
       case actionTypes.DELETE_TODO_FAIL: return deleteTodoFail(state, action);
 
       case actionTypes.RESET_ERROR: return resetError(state, action);
+      case actionTypes.LOGOUT_USER_DATA: return logoutUserData(state, action);
 
       default: return state;
   }
