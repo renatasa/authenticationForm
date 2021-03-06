@@ -22,7 +22,7 @@ export class Todo extends Component {
       this.props.onFetchTodo(this.props.token, this.props.userId);
     }
   }
-
+  
   inputChangedHandler = (event) => {
     event.preventDefault();
     if (event.target.value.length <= 60) {
