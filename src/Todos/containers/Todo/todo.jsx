@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import TodoList from "../../components/TodoList/todoList";
-import { Redirect } from "react-router-dom";
-import Spinner from "../../components/Spinner/spinnerTodo";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import SignOutButton from "../../../Authentication/components/UI/SignOutButton/SignOutButton";
+import TodoList from "../../components/TodoList/todoList.jsx";
+import Spinner from "../../components/Spinner/spinnerTodo.jsx";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage.jsx";
+import SignOutButton from "../../../Authorization/components/UI/SignOutButton/SignOutButton.jsx";
 import * as actions from "../../store/actions/index";
 import { connect } from "react-redux";
 import classes from "./todo.module.css";

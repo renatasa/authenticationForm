@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import Input from "../../components/UI/Input/Input";
-import Spinner from "../../components/UI/SpinnerAuth/SpinnerAuth";
-import ErrorMessage from "../../../Todos/components/ErrorMessage/ErrorMessage";
+import Input from "../../components/UI/Input/Input.jsx";
+import Spinner from "../../components/UI/SpinnerAuth/SpinnerAuth.jsx";
+import ErrorMessage from "../../../Todos/components/ErrorMessage/ErrorMessage.jsx";
 import * as actions from "../../store/actions/index";
 import * as service from "./service";
 import classes from "./Auth.module.css";
@@ -99,12 +99,8 @@ export class Auth extends Component {
     let inputs = formElementsArray.map((formElement) => (
       <Input
         key={formElement.id}
-        elementType={formElement.config.elementType}
         elementConfig={formElement.config.elementConfig}
         value={formElement.config.value}
-        invalid={!formElement.config.valid}
-        shouldValidate={formElement.config.validation}
-        touched={formElement.config.touched}
         changed={(event) => this.inputChangedHandler(event, formElement.id)}
       />
     ));

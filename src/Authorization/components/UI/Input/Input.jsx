@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./Input.module.css";
+import PropTypes from 'prop-types';
 
 const input = (props) => {
   let inputElement = null;
@@ -14,11 +15,19 @@ const input = (props) => {
   );
 
   return (
-    <div>
-      <label>{props.label}</label>
+    <div data-test="component-formInput">
       {inputElement}
     </div>
   );
 };
+
+input.propTypes = {
+  changed: PropTypes.func.isRequired,
+  elementConfig: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired
+  }).isRequired,
+  value: PropTypes.string.isRequired
+}
 
 export default input;
