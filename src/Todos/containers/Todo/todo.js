@@ -22,7 +22,7 @@ export class Todo extends Component {
       this.props.onFetchTodo(this.props.token, this.props.userId);
     }
   }
-  
+
   inputChangedHandler = (event) => {
     event.preventDefault();
     if (event.target.value.length <= 60) {
@@ -95,19 +95,27 @@ export class Todo extends Component {
     this.setState({ [stateProperty]: false });
   };
 
-  render() {
-    let todoList = null;
+  createWarning=()=>{
     let warning = this.state.warning
-      ? { errorText: "Input field is empty!", errorType: "warning" }
-      : { errorText: "", errorType: "warning" };
+    ? { errorText: "Input field is empty!", errorType: "warning" }
+    : { errorText: "", errorType: "warning" };
 
+    return warning;
+  }
+
+  createMaxTodosLimitExceeded=()=>{
     let maxTodosLimitExceeded = this.state.tooManyTodos
-      ? {
-          errorText: "No more than 5 todos are available",
-          errorType: "tooManyTodos",
-        }
-      : { errorText: "", errorType: "tooManyTodos" };
+    ? {
+        errorText: "No more than 5 todos are available",
+        errorType: "tooManyTodos",
+      }
+    : { errorText: "", errorType: "tooManyTodos" };
 
+    return maxTodosLimitExceeded;
+  }
+
+  createTodoList=()=>{
+    let todoList = null;
     if (this.props.todos.length > 0 && !this.props.loading) {
       todoList = (
         <TodoList
@@ -123,6 +131,13 @@ export class Todo extends Component {
       todoList = <Spinner />;
     }
 
+    return todoList;
+  }
+
+  render() {
+    let warning=this.createWarning();
+    let maxTodosLimitExceeded=this.createMaxTodosLimitExceeded();
+    let todoList = this.createTodoList();
     if (!this.props.token && !this.props.userId && !this.props.loading) {
       this.props.onLogoutUserData();
     }

@@ -162,7 +162,7 @@ export class Auth extends Component {
     let authRedirect = this.createAuthRedirect();
 
     return (
-      <div className={classes.formContainer}>
+      <div className={classes.formContainer} data-test="component-auth">
         {authRedirect}
         {form}
         <ErrorMessage

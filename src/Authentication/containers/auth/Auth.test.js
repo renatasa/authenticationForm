@@ -1,6 +1,3 @@
-import React from "react";
-import Auth from "./Auth";
-
 import {
   rulesRequired,
   minLengthRule,
@@ -152,3 +149,4 @@ test("checkValidity function result should be falsy", () => {
     })
   ).toBeFalsy();
 });
+
