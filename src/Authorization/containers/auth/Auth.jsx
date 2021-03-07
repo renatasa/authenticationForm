@@ -150,19 +150,19 @@ export class Auth extends Component {
     return authRedirect;
   };
 
-  render() {
-    let authorizationError = this.checkIfThereIsAuthorizationError();
-    let formElementsArray = this.createFormElementsArray();
-    let inputs = this.createInputs(formElementsArray);
-    let form = this.createForm(inputs);
-    let authRedirect = this.createAuthRedirect();
+  renderForm() {
+    const formElementsArray = this.createFormElementsArray();
+    const inputs = this.createInputs(formElementsArray);
+    return this.createForm(inputs);
+  }
 
+  render() {
     return (
       <div className={classes.formContainer} data-test="component-auth">
-        {authRedirect}
-        {form}
+        {this.createAuthRedirect()}
+        {this.renderForm()}
         <ErrorMessage
-          error={authorizationError}
+          error={this.checkIfThereIsAuthorizationError()}
           resetError={this.props.onResetAuthError}
         />
       </div>
