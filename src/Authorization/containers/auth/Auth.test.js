@@ -5,30 +5,31 @@ import {
   checkValidity,
 } from "./service.js";
 
-let testWord = "randomWord";
 
 // testing rulues required validation function
 test("rulesRequired validation function result should be truthy", () => {
+  
+const rulesSet = {
+  required: true
+};
+const testValue = "randomWord";
+const isPrevValidationRulePassed = true;
+  
   expect(
-    rulesRequired(
-      testWord,
-      {
-        required: true,
-      },
-      true
-    )
+    rulesRequired(testValue, rulesSet, isPrevValidationRulePassed)
   ).toBeTruthy();
 });
 
 test("rulesRequired validation function result should be falsy", () => {
+  
+const rulesSet = {
+  required: true
+};
+const testValue = "randomWord";
+const isPrevValidationRulePassed = false;
+  
   expect(
-    rulesRequired(
-      testWord,
-      {
-        required: true,
-      },
-      false
-    )
+        rulesRequired(testValue, rulesSet, isPrevValidationRulePassed)
   ).toBeFalsy();
 });
 
@@ -71,14 +72,17 @@ test("minLength validation function result should be truthy", () => {
 });
 
 test("minLength validation function result should be falsy", () => {
+  const testValue = "a";
+  const isPrevValidationRulePassed = true;
+  
   expect(
     minLengthRule(
-      "a",
+      testValue,
       {
         required: true,
         minLength: 6,
       },
-      testWord.length
+      isPrevValidationRulePassed
     )
   ).toBeFalsy();
 });
@@ -97,6 +101,7 @@ test("emailRule validation function result should be undefined", () => {
 });
 
 test("emailRule validation function result should be truthy", () => {
+//  const
   expect(
     emailRule(
       "a@a.lt",
