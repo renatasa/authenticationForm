@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './App.jsx';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
-import authReducer from './Authentication/store/reducers/auth';
+import authReducer from './Authorization/store/reducers/auth';
 import todosReducer from './Todos/store/reducers/reducer';
 
 const rootReducer = combineReducers({

@@ -9,7 +9,7 @@ import { faOutdent } from "@fortawesome/free-solid-svg-icons";
 export const signOutButton = (props) => {
   let authRedirect = null;
 
-  if (props.authRedirection == "/") {
+  if (props.authRedirection === "/") {
     authRedirect = <Redirect to="/" />;
   }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Auth from './Authentication/containers/auth/Auth';
-import Todos from './Todos/containers/Todo/todo';
+import Auth from './Authorization/containers/auth/Auth.jsx';
+import Todos from './Todos/containers/Todo/todo.jsx';
 import {Route, Switch} from 'react-router-dom';
 export class App extends Component {
 

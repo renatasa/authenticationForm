@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import TodoList from "../../components/TodoList/todoList";
-import { Redirect } from "react-router-dom";
-import Spinner from "../../components/Spinner/spinnerTodo";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import SignOutButton from "../../../Authentication/components/UI/SignOutButton/SignOutButton";
+import TodoList from "../../components/TodoList/todoList.jsx";
+import Spinner from "../../components/Spinner/spinnerTodo.jsx";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage.jsx";
+import SignOutButton from "../../../Authorization/components/UI/SignOutButton/SignOutButton.jsx";
 import * as actions from "../../store/actions/index";
 import { connect } from "react-redux";
 import classes from "./todo.module.css";
@@ -95,19 +94,27 @@ export class Todo extends Component {
     this.setState({ [stateProperty]: false });
   };
 
-  render() {
-    let todoList = null;
+  createWarning=()=>{
     let warning = this.state.warning
-      ? { errorText: "Input field is empty!", errorType: "warning" }
-      : { errorText: "", errorType: "warning" };
+    ? { errorText: "Input field is empty!", errorType: "warning" }
+    : { errorText: "", errorType: "warning" };
 
+    return warning;
+  }
+
+  createMaxTodosLimitExceeded=()=>{
     let maxTodosLimitExceeded = this.state.tooManyTodos
-      ? {
-          errorText: "No more than 5 todos are available",
-          errorType: "tooManyTodos",
-        }
-      : { errorText: "", errorType: "tooManyTodos" };
+    ? {
+        errorText: "No more than 5 todos are available",
+        errorType: "tooManyTodos",
+      }
+    : { errorText: "", errorType: "tooManyTodos" };
 
+    return maxTodosLimitExceeded;
+  }
+
+  createTodoList=()=>{
+    let todoList = null;
     if (this.props.todos.length > 0 && !this.props.loading) {
       todoList = (
         <TodoList
@@ -123,6 +130,13 @@ export class Todo extends Component {
       todoList = <Spinner />;
     }
 
+    return todoList;
+  }
+
+  render() {
+    let warning=this.createWarning();
+    let maxTodosLimitExceeded=this.createMaxTodosLimitExceeded();
+    let todoList = this.createTodoList();
     if (!this.props.token && !this.props.userId && !this.props.loading) {
       this.props.onLogoutUserData();
     }
