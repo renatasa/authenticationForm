@@ -1,36 +1,37 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
-// import {findByTestAttr, checkProps} from '../test/testUtils';
-import Enzyme, {shallow} from 'enzyme';
-import checkPropTypes from 'check-prop-types'
-import EnzymeAdaptor from 'enzyme-adapter-react-16';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import {findByTestAttr, checkProps} from '../../../../test/testUtils';
-import Input from './Input.jsx';
+import React from "react";
+import Enzyme, { shallow } from "enzyme";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import { findByTestAttr, checkProps } from "../../../../test/testUtils";
+import Input from "./Input.jsx";
 
-Enzyme.configure({adapter: new Adapter()});
+Enzyme.configure({ adapter: new Adapter() });
 
+//arrange
+const defaultProps = {
+  changed: (event) => this.inputChangedHandler(event, formElement.id),
+  elementConfig: { type: "email", placeholder: "Mail Address" },
+  value: "",
+};
 
+const setup = (props = { defaultProps }) => {
+  const setupProps = { ...defaultProps, ...props };
+  return shallow(<Input {...setupProps} />);
+};
 
-    const defaultProps = {
-        changed: event => this.inputChangedHandler(event, formElement.id),
-        elementConfig: {type: "email", placeholder: "Mail Address"},
-        value: ""
-    }
-    
-    
-    const setup =(props={defaultProps})=>{
-        const setupProps={...defaultProps, ...props};
-        return shallow(<Input {...setupProps}/>)
-    }
-    
-    test('input component renders without error', ()=>{
-        const wrapper=setup({}); 
-        const component = findByTestAttr(wrapper, 'component-formInput')
-        expect(component.length).toBe(1);
-    })
+test("input component renders without error", () => {
+  //act
+  const wrapper = setup({});
 
-    test('does not throw warning with expected props', ()=>{
-        const wrapper=setup({}); 
-        checkProps(Input, defaultProps);
-    })
+  //assert
+  const inputComponent = findByTestAttr(wrapper, "component-formInput");
+  expect(inputComponent.length).toBe(1);
+});
+
+test("does not throw warning with expected props", () => {
+  //act
+  const wrapper = setup({});
+
+  //assert
+  const inputComponent = findByTestAttr(wrapper, "component-formInput");
+  checkProps(inputComponent, defaultProps);
+});
