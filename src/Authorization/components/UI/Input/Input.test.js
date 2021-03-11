@@ -28,10 +28,5 @@ test("input component renders without error", () => {
 });
 
 test("does not throw warning with expected props", () => {
-  //act
-  const wrapper = setup({});
-
-  //assert
-  const inputComponent = findByTestAttr(wrapper, "component-formInput");
-  checkProps(inputComponent, defaultProps);
+  checkProps(Input, defaultProps);
 });

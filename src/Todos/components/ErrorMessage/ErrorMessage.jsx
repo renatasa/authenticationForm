@@ -19,7 +19,7 @@ export const errorMessage = (props) => {
   // rest of the error messages reset themselves automatically after 2 seconds, or user resets them by clicking X icon
   // in case of errorAuthorisation , resetError does not receive errorType, because there is only one type of error in Authorisation reducer store
   if (error && errorType && setTimeoutFn) {
-    setTimeout(() => props.resetError(errorType), 6000);
+    setTimeout(() => props.resetError(errorType), 2000);
   }
 
   switch (errorType) {
