@@ -5,13 +5,13 @@ let initialState = {
   endpointsArr: [],
   deletedTodos: null,
   loading: false,
-  fetchTodoError: false,
-  submitCompleteDeleteTodoError: false,
+  fetchTodoError: "",
+  submitCompleteDeleteTodoError: "",
   submitTodoSuccess: false,
 };
 
 const fetchTodoStart = (state, action) => {
-  return { ...state, loading: true, fetchTodoError: false };
+  return { ...state, loading: true, fetchTodoError: "" };
 };
 
 const fetchTodoSuccess = (state, action) => {
@@ -36,7 +36,7 @@ const submitTodoStart = (state, action) => {
     ...state,
     loading: true,
     submitTodoSuccess: false,
-    submitCompleteDeleteTodoError: false,
+    submitCompleteDeleteTodoError: "",
   };
 };
 
@@ -49,7 +49,7 @@ const submitTodoSuccess = (state, action) => {
     todos: [...state.todos, { ...action.newTodo }],
     endpointsArr: newEndpointsArr,
     submitTodoSuccess: true,
-    submitCompleteDeleteTodoError: false,
+    submitCompleteDeleteTodoError: "",
   };
 };
 
@@ -67,7 +67,7 @@ const markAsCompletedStart = (state, action) => {
     ...state,
     loading: true,
     submitTodoSuccess: false,
-    submitCompleteDeleteTodoError: false,
+    submitCompleteDeleteTodoError: "",
   };
 };
 
@@ -79,7 +79,7 @@ const markAsCompletedSuccess = (state, action) => {
     loading: false,
     todos: [...updatedObj],
     submitTodoSuccess: true,
-    submitCompleteDeleteTodoError: false,
+    submitCompleteDeleteTodoError: "",
   };
 };
 
@@ -97,7 +97,7 @@ const deleteTodoStart = (state, action) => {
     ...state,
     loading: true,
     submitTodoSuccess: false,
-    submitCompleteDeleteTodoError: false,
+    submitCompleteDeleteTodoError: "",
   };
 };
 
@@ -111,7 +111,7 @@ const deleteTodoSuccess = (state, action) => {
     todos: [...updatedObj],
     endpointsArr: newEndpointsArr,
     submitTodoSuccess: true,
-    submitCompleteDeleteTodoError: false,
+    submitCompleteDeleteTodoError: "",
   };
 };
 

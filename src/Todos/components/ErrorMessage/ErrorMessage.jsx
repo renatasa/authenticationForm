@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./ErrorMessage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from "prop-types";
 import {
   faBomb,
   faTimes,
@@ -8,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const errorMessage = (props) => {
+  console.log(props)
   let error = props.error.errorText;
   let errorType = props.error.errorType;
   let setTimeoutFn = true;
@@ -161,6 +163,17 @@ export const errorMessage = (props) => {
     default:
       return "";
   }
+};
+
+// resetError is a function prop that is being passed from parent components (Todo.jsx and Auth.jsx) to ErrorMessage component. 
+// Error while fetching todos is not being reset, therefore ErrorMessage does not get resetError prop from parent compoenent like in cases of ther errors. 
+// Therefore resetError function prop is not required. 
+errorMessage.propTypes = {
+  resetError: PropTypes.func,
+  error: PropTypes.shape({
+      errorText: PropTypes.string.isRequired,
+      errorType: PropTypes.bool.isRequired,
+    }).isRequired
 };
 
 export default errorMessage;
