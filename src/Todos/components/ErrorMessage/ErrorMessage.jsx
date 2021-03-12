@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./ErrorMessage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from "prop-types";
 import {
   faBomb,
   faTimes,
@@ -8,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const errorMessage = (props) => {
+  console.log(props);
   let error = props.error.errorText;
   let errorType = props.error.errorType;
   let setTimeoutFn = true;
@@ -19,7 +21,7 @@ export const errorMessage = (props) => {
   // rest of the error messages reset themselves automatically after 2 seconds, or user resets them by clicking X icon
   // in case of errorAuthorisation , resetError does not receive errorType, because there is only one type of error in Authorisation reducer store
   if (error && errorType && setTimeoutFn) {
-    setTimeout(() => props.resetError(errorType), 6000);
+    setTimeout(() => props.resetError(errorType), 2000);
   }
 
   switch (errorType) {
@@ -28,6 +30,7 @@ export const errorMessage = (props) => {
     case "fetchTodoError":
       return (
         <div
+          data-test="component-fetchTodoError"
           className={
             error
               ? `${classes.alertWrapper} ${classes.alertWrapperWithBackdrop}`
@@ -54,9 +57,12 @@ export const errorMessage = (props) => {
       );
 
     // shows error on unsuccessfull login or sign in
-    case "errorAuthorisation":
+    case "errorAuthorization":
       return (
-        <div className={`${classes.alertWrapper}`}>
+        <div
+          data-test="component-authorizationError"
+          className={`${classes.alertWrapper}`}
+        >
           <div
             className={
               error
@@ -83,7 +89,10 @@ export const errorMessage = (props) => {
     // shows warning when user tries to add empty todo
     case "warning":
       return (
-        <div className={`${classes.alertWrapper}`}>
+        <div
+          data-test="component-warning"
+          className={`${classes.alertWrapper}`}
+        >
           <div
             className={
               error
@@ -113,7 +122,10 @@ export const errorMessage = (props) => {
     // shows error message, when new todo was not added, or todo was not marked as completed or todo was not deleted (HTTP PUT / DELETE / POST request status !==200)
     case "submitCompleteDeleteTodoError":
       return (
-        <div className={classes.alertWrapper}>
+        <div
+          data-test="component-submitCompleteDeleteTodoError"
+          className={classes.alertWrapper}
+        >
           <div
             className={
               error
@@ -139,6 +151,7 @@ export const errorMessage = (props) => {
       return (
         <div className={classes.alertWrapper}>
           <div
+            data-test="component-tooManyTodos"
             className={
               error
                 ? `${classes.alertItemTodoNotAdded} ${classes.alertItemErrorColors}`
@@ -161,6 +174,17 @@ export const errorMessage = (props) => {
     default:
       return "";
   }
+};
+
+// resetError is a function prop that is being passed from parent components (Todo.jsx and Auth.jsx) to ErrorMessage component.
+// Error while fetching todos is not being reset, therefore ErrorMessage does not get resetError prop from parent compoenent like in cases of ther errors.
+// Therefore resetError function prop is not required.
+errorMessage.propTypes = {
+  resetError: PropTypes.func,
+  error: PropTypes.shape({
+    errorText: PropTypes.string.isRequired,
+    errorType: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default errorMessage;
