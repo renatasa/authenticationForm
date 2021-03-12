@@ -6,15 +6,6 @@ import ErrorMessage from "./ErrorMessage.jsx";
 
 Enzyme.configure({ adapter: new Adapter() });
 
-// const setup = (props = {}) => {
-//     const setupProps = {...props };
-//     return shallow(<ErrorMessage {...setupProps} />);
-//   };
-
-// test("ErrorMessage component renders without error", () => {
-//   expect(ErrorMessage.length).toBe(1);
-// });
-
 test("ErrorMessage does not throw warning with expected props", () => {
   let defaultProps = {
     error: { errorText: "", errorType: "tooManyTodos" },

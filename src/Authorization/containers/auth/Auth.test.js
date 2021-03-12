@@ -96,7 +96,7 @@ test("emailRule validation function result should be truthy", () => {
   ).toBeTruthy();
 });
 
-test("minLength validation function result should be falsy", () => {
+test("emailRule validation function result should be falsy", () => {
   const rulesSet = {
     required: true,
     isEmail: true,
