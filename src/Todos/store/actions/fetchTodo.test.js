@@ -1,8 +1,4 @@
-import React from "react";
-import Enzyme, { shallow } from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import * as actionTypes from "./actionTypes";
-import { findByTestAttr, checkProps } from "../../../test/testUtils";
 import {
   actionStart,
   actionFail,
@@ -14,7 +10,7 @@ import {
   logoutUserData,
 } from "./fetchTodo.js";
 
-Enzyme.configure({ adapter: new Adapter() });
+
 
 test("actionStart runs without error", () => {
   const actionType = actionTypes.FETCH_TODO_START;
