@@ -80,3 +80,44 @@ test("markAsCompletedSuccess runs without error", () => {
     index: randomIndex,
   });
 });
+
+test("deleteTodoSuccess runs without error", () => {
+  const randomIndex = 3;
+  const actionType = actionTypes.DELETE_TODO_SUCCESS;
+  const oldTodosInput = [
+    {
+      "-MVSiQiKk_syfF9JsBkx": { completed: false, delete: false, todo: "1" },
+    },
+    {
+      "-MVSiR0oDck8IDv3HtqJ": { completed: false, delete: false, todo: "2" },
+    },
+    { "-MVSiRNuIGz7PHDbPhQo": { completed: true, delete: false, todo: "3" } },
+    {
+      "-MVacg3vLa0YlgUnvBxW": { completed: false, delete: false, todo: "5" },
+    },
+  ];
+
+  expect(deleteTodoSuccess(oldTodosInput, randomIndex)).toEqual({
+    type: actionType,
+    index: randomIndex,
+    oldTodos: oldTodosInput,
+  });
+});
+
+test("resetError runs without error", () => {
+  const actionType = actionTypes.RESET_ERROR;
+  const errorTypeInput = "tooManyTodos";
+
+  expect(resetError(errorTypeInput)).toEqual({
+    type: actionType,
+    errorType: errorTypeInput,
+  });
+});
+
+test("logoutUserData runs without error", () => {
+  const actionType = actionTypes.LOGOUT_USER_DATA;
+
+  expect(logoutUserData()).toEqual({
+    type: actionType,
+  });
+});
