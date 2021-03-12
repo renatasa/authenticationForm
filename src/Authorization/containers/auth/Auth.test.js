@@ -5,7 +5,6 @@ import {
   checkValidity,
 } from "./service.js";
 
-
 // testing rulues required validation function
 test("rulesRequired validation function result should be truthy", () => {
   const rulesSet = {
@@ -14,14 +13,12 @@ test("rulesRequired validation function result should be truthy", () => {
   const testValue = "randomWord";
   const isPrevValidationRulePassed = true;
 
-
   expect(
     rulesRequired(testValue, rulesSet, isPrevValidationRulePassed)
   ).toBeTruthy();
 });
 
 test("rulesRequired validation function result should be falsy", () => {
-
   const rulesSet = {
     required: true,
   };
@@ -61,7 +58,6 @@ test("minLength validation function result should be truthy", () => {
 });
 
 test("minLength validation function result should be falsy", () => {
-
   const rulesSet = {
     required: true,
     minLength: 6,
@@ -127,7 +123,7 @@ test("checkValidity function result should be truthy", () => {
     required: true,
   };
   const testValue = "randomWord";
-  expect(checkValidity(testWord, rulesSet)).toBeTruthy();
+  expect(checkValidity(testValue, rulesSet)).toBeTruthy();
 });
 
 // testing checkValidity function result should be falsy

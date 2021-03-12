@@ -23,7 +23,6 @@ export const fetchTodoSuccess = (todo) => {
 };
 
 export const fetchTodo = (token, userId) => {
-  console.log(userId, token);
   return (dispatch) => {
     let url =
       `${process.env.REACT_APP_GET_TODO}/${userId.toString()}.json?auth=` +
