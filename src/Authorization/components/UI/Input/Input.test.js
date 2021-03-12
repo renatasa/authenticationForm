@@ -30,3 +30,4 @@ test("input component renders without error", () => {
 test("does not throw warning with expected props", () => {
   checkProps(Input, defaultProps);
 });
+
