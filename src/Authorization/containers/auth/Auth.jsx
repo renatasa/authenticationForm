@@ -78,7 +78,7 @@ export class Auth extends Component {
   checkIfThereIsAuthorizationError = () => {
     let authorizationError = this.props.error
       ? { errorText: this.props.error.message, errorType: "errorAuthorization" }
-      : { errorText: "", errorType: "errorAuthorisation" };
+      : { errorText: "", errorType: "errorAuthorization" };
 
     return authorizationError;
   };
