@@ -5,8 +5,6 @@ import {
   checkValidity,
 } from "./service.js";
 
-let testWord = "randomWord";
-
 // testing rulues required validation function
 test("rulesRequired validation function result should be truthy", () => {
   const rulesSet = {
@@ -92,6 +90,7 @@ test("emailRule validation function result should be truthy", () => {
   };
   const testValue = "mail@mail.com";
   const isPrevValidationRulePassed = true;
+
   expect(
     emailRule(testValue, rulesSet, isPrevValidationRulePassed)
   ).toBeTruthy();
@@ -124,7 +123,7 @@ test("checkValidity function result should be truthy", () => {
     required: true,
   };
   const testValue = "randomWord";
-  expect(checkValidity(testWord, rulesSet)).toBeTruthy();
+  expect(checkValidity(testValue, rulesSet)).toBeTruthy();
 });
 
 // testing checkValidity function result should be falsy

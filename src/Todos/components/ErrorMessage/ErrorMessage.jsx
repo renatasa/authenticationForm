@@ -9,7 +9,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const errorMessage = (props) => {
-  console.log(props);
   let error = props.error.errorText;
   let errorType = props.error.errorType;
   let setTimeoutFn = true;
