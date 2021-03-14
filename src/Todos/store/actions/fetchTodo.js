@@ -14,7 +14,7 @@ export const actionFail = (error, type) => {
   };
 };
 
-//fetching todos from backend
+// fetching todos from backend
 export const fetchTodoSuccess = (todo) => {
   return {
     type: actionTypes.FETCH_TODO_SUCCESS,
