@@ -8,26 +8,12 @@ import {
   faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 
-export const errorMessage = (props) => {
-  let error = props.error.errorText;
-  let errorType = props.error.errorType;
-  let setTimeoutFn = true;
-  if (errorType === "fetchTodoError") {
-    setTimeoutFn = false;
-  }
+const errorType = {
+  FETCH_TODO_ERROR: "fetchTodoError"
+}
 
-  // when todos cant be fetched from backend, app doesn't load , no other actions are possible , resetError function does not execute
-  // rest of the error messages reset themselves automatically after 2 seconds, or user resets them by clicking X icon
-  // in case of errorAuthorisation , resetError does not receive errorType, because there is only one type of error in Authorisation reducer store
-  if (error && errorType && setTimeoutFn) {
-    setTimeout(() => props.resetError(errorType), 2000);
-  }
-
-  switch (errorType) {
-    // show error message when todos could not be fetched from backend
-    // this error message does not dissapear and does not reset
-    case "fetchTodoError":
-      return (
+function renderfetchTodoError(error) {
+    return (
         <div
           data-test="component-fetchTodoError"
           className={
@@ -53,7 +39,30 @@ export const errorMessage = (props) => {
             </div>
           </div>
         </div>
-      );
+  );
+}
+
+export const errorMessage = (props) => {
+  let error = props.error.errorText;
+  let errorType = props.error.errorType;
+  let setTimeoutFn = true;
+  if (errorType === "fetchTodoError") {
+    setTimeoutFn = false;
+  }
+
+  // when todos cant be fetched from backend, app doesn't load , no other actions are possible , resetError function does not execute
+  // rest of the error messages reset themselves automatically after 2 seconds, or user resets them by clicking X icon
+  // in case of errorAuthorisation , resetError does not receive errorType, because there is only one type of error in Authorisation reducer store
+  if (error && errorType && setTimeoutFn) {
+    setTimeout(() => props.resetError(errorType), 2000);
+  }
+
+  switch (errorType) {
+    // show error message when todos could not be fetched from backend
+    // this error message does not dissapear and does not reset
+    case errorType.FETCH_TODO_ERROR:
+      renderFetchTodoError(error);
+      break;
 
     // shows error on unsuccessfull login or sign in
     case "errorAuthorization":
