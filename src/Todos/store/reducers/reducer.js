@@ -15,6 +15,11 @@ const fetchTodoStart = (state, action) => {
 };
 
 const fetchTodoSuccess = (state, action) => {
+  let todos= [...Object.values(action.todos)] ;
+  let endpointsArr= [...Object.keys(action.todos)] ;
+  console.log(todos)
+  console.log(endpointsArr)
+
   if (action.todos) {
     return {
       ...state,
