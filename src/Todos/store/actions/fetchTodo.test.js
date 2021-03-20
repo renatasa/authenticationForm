@@ -12,7 +12,7 @@ import {
 
 
 
-test("actionStart runs without error", () => {
+test("When authStart receives type: actionTypes.FETCH_TODO_START, then it returns type: actionTypes.FETCH_TODO_START", () => {
   const actionType = actionTypes.FETCH_TODO_START;
 
   expect(actionStart(actionType)).toEqual({
@@ -20,7 +20,7 @@ test("actionStart runs without error", () => {
   });
 });
 
-test("actionFail runs without error", () => {
+test("When authFail receives type:actionTypes.FETCH_TODO_FAIL and error, then it returns type:actionTypes.FETCH_TODO_FAIL and error", () => {
   const actionType = actionTypes.FETCH_TODO_FAIL;
   const inputError = "Request failed with status code 401";
 
@@ -30,7 +30,7 @@ test("actionFail runs without error", () => {
   });
 });
 
-test("fetchTodoSuccess runs without error", () => {
+test("When fetchTodoSuccess receives todos array of objects, then it returns type: actionTypes.FETCH_TODO_SUCCESS and todos array ob objects", () => {
   const todo = [
     {
       "-MVSiQiKk_syfF9JsBkx": { completed: false, delete: false, todo: "1" },
@@ -55,7 +55,7 @@ test("fetchTodoSuccess runs without error", () => {
   });
 });
 
-test("submitTodoSuccess runs without error", () => {
+test("When submitTodoSuccess receives type:actionTypes.SUBMIT_TODO_SUCCESS, newTodo and newEndpoint, then it returns type:actionTypes.SUBMIT_TODO_SUCCESS, newTodo and newEndpoint", () => {
   const newTodo = { completed: false, delete: false, todo: "6" };
   const newEndpoint = "-MVacg3vLa0YlgUnvBxW";
   const actionType = actionTypes.SUBMIT_TODO_SUCCESS;
@@ -67,7 +67,7 @@ test("submitTodoSuccess runs without error", () => {
   });
 });
 
-test("markAsCompletedSuccess runs without error", () => {
+test("When markAsCompletedSuccess receives type:actionTypes.MARK_AS_COMPLETED_SUCCESS and index, then it returns actionTypes.MARK_AS_COMPLETED_SUCCESS and index", () => {
   const randomIndex = 1;
   const actionType = actionTypes.MARK_AS_COMPLETED_SUCCESS;
 
@@ -77,7 +77,7 @@ test("markAsCompletedSuccess runs without error", () => {
   });
 });
 
-test("deleteTodoSuccess runs without error", () => {
+test("When deleteTodoSuccess receives type:actionTypes.DELETE_TODO_SUCCESS, index and oldTodos, then it returns actionTypes.DELETE_TODO_SUCCESS, index and oldTodos", () => {
   const randomIndex = 3;
   const actionType = actionTypes.DELETE_TODO_SUCCESS;
   const oldTodosInput = [
@@ -100,7 +100,7 @@ test("deleteTodoSuccess runs without error", () => {
   });
 });
 
-test("resetError runs without error", () => {
+test("When resetError type:actionTypes.RESET_ERROR and errorType, then it returns type:actionTypes.RESET_ERROR and errorType", () => {
   const actionType = actionTypes.RESET_ERROR;
   const errorTypeInput = "tooManyTodos";
 
@@ -110,7 +110,7 @@ test("resetError runs without error", () => {
   });
 });
 
-test("logoutUserData runs without error", () => {
+test("When logoutUserData receives type:actionTypes.LOGOUT_USER_DATA, then it returns actionTypes.LOGOUT_USER_DATA", () => {
   const actionType = actionTypes.LOGOUT_USER_DATA;
 
   expect(logoutUserData()).toEqual({
