@@ -32,20 +32,19 @@ test("When authSuccess receives userId and token, then it returns type: actionTy
 
   // assert
   expect(actionResult).toEqual({
-      type: actionType,
-    userId :randomUserId,
-    idToken: randomToken
+    type: actionType,
+    userId: randomUserId,
+    idToken: randomToken,
   });
 });
 
 test("When authFail receives type:actionTypes.AUTH_FAIL and error, then it returns type:actionTypes.AUTH_FAIL and error", () => {
-
   // arrange
   const actionType = actionTypes.AUTH_FAIL;
   const inputError = "Request failed with status code 401";
 
-// act
-const actionResult= authFail(inputError);
+  // act
+  const actionResult = authFail(inputError);
 
   expect(actionResult).toEqual({
     type: actionType,
@@ -53,58 +52,56 @@ const actionResult= authFail(inputError);
   });
 });
 
+test("When logout executes, then it returns type: actionTypes.AUTH_LOGOUT", () => {
+  // arrange
+  const actionType = actionTypes.AUTH_LOGOUT;
+
+  // act
+  const actionResult = logout();
+
+  // assert
+  expect(actionResult).toEqual({
+    type: actionType,
+  });
+});
 
 test("When logout executes, then it returns type: actionTypes.AUTH_LOGOUT", () => {
-    // arrange
-    const actionType = actionTypes.AUTH_LOGOUT;
-  
-    // act
-    const actionResult = logout();
-  
-    // assert
-    expect(actionResult).toEqual({
-      type: actionType,
-    });
-  });
+  // arrange
+  const actionType = actionTypes.AUTH_LOGOUT;
 
-  test("When logout executes, then it returns type: actionTypes.AUTH_LOGOUT", () => {
-    // arrange
-    const actionType = actionTypes.AUTH_LOGOUT;
-  
-    // act
-    const actionResult = logout();
-  
-    // assert
-    expect(actionResult).toEqual({
-      type: actionType,
-    });
-  });
+  // act
+  const actionResult = logout();
 
-  test("When setAuthRedirectPath executes, then it returns type: actionTypes.SET_AUTH_REDIRECT_PATH", () => {
-    // arrange
-    const actionType = actionTypes.SET_AUTH_REDIRECT_PATH;
-    const randomPath="/todos";
-  
-    // act
-    const actionResult = setAuthRedirectPath(randomPath);
-  
-    // assert
-    expect(actionResult).toEqual({
-      type: actionType,
-      path: randomPath
-    });
+  // assert
+  expect(actionResult).toEqual({
+    type: actionType,
   });
-  
+});
 
-  test("When resetError executes, then it returns type: actionTypes.RESET_ERROR", () => {
-    // arrange
-    const actionType = actionTypes.RESET_ERROR;
-  
-    // act
-    const actionResult = resetError();
-  
-    // assert
-    expect(actionResult).toEqual({
-      type: actionType
-    });
+test("When setAuthRedirectPath executes, then it returns type: actionTypes.SET_AUTH_REDIRECT_PATH", () => {
+  // arrange
+  const actionType = actionTypes.SET_AUTH_REDIRECT_PATH;
+  const randomPath = "/todos";
+
+  // act
+  const actionResult = setAuthRedirectPath(randomPath);
+
+  // assert
+  expect(actionResult).toEqual({
+    type: actionType,
+    path: randomPath,
   });
+});
+
+test("When resetError executes, then it returns type: actionTypes.RESET_ERROR", () => {
+  // arrange
+  const actionType = actionTypes.RESET_ERROR;
+
+  // act
+  const actionResult = resetError();
+
+  // assert
+  expect(actionResult).toEqual({
+    type: actionType,
+  });
+});

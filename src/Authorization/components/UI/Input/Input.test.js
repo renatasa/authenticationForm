@@ -21,9 +21,9 @@ const setup = (props = { defaultProps }) => {
 test("input component renders without error", () => {
   //act
   const wrapper = setup({});
+  const inputComponent = findByTestAttr(wrapper, "component-formInput");
 
   //assert
-  const inputComponent = findByTestAttr(wrapper, "component-formInput");
   expect(inputComponent.length).toBe(1);
 });
 

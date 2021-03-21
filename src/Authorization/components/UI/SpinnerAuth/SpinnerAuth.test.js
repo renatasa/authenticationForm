@@ -14,7 +14,9 @@ test("SpinnerAuth component renders without error", () => {
   //act
   const wrapper = setup({});
 
-  //assert
+  //arrange
   const inputComponent = findByTestAttr(wrapper, "component-spinnerAuth");
+
+  //assert
   expect(inputComponent.length).toBe(1);
 });

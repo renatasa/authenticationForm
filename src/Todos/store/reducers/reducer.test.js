@@ -95,7 +95,6 @@ describe("When fetchTodoSuccess reducer receives type: FETCH_TODO_SUCCESS", () =
     // assert
     expect(newState.todos).toEqual(mockTodosArrayWithoutEndpoints);
     expect(newState.endpointsArr).toEqual(mockEndpointsArrayWithoutTodos);
-
     expect(newState.loading).toBe(false);
   });
 
