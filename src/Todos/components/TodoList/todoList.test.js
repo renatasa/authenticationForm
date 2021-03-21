@@ -17,6 +17,6 @@ test("TodoList component renders without error", () => {
   expect(TodoList.length).toBe(1);
 });
 
-test("TodoList does not throw warning with expected props", () => {
+test("When TodoList receives expected props, then is does not throw error", () => {
   checkProps(TodoList, defaultProps);
 });
