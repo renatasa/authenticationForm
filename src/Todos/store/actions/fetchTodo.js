@@ -48,12 +48,15 @@ export const submitTodoSuccess = (newTodo, newEndpoint) => {
   };
 };
 
+export const createUrlWithUserId = (initialUrl, userId, token) => {
+  return initialUrl + `/${userId.toString()}.json?auth=` + token;
+};
+
 export const submitTodo = (userId, allTodos, token) => {
-  let newTodo = allTodos[allTodos.length - 1];
-  let url =
-    `${
-      process.env.REACT_APP_POST_TODO_DYNAMIC
-    }/${userId.toString()}.json?auth=` + token;
+  const newTodo = allTodos[allTodos.length - 1];
+  const initialUrl = `${process.env.REACT_APP_POST_TODO_DYNAMIC}`;
+  const url = createUrlWithUserId(initialUrl, userId, token);
+
   return (dispatch) => {
     dispatch(actionStart(actionTypes.SUBMIT_TODO_START));
     axios
@@ -118,7 +121,7 @@ export const deleteTodo = (endpoint, index, todos, token, userId) => {
     todosObj = { ...todosObj, ...newObj };
   }
 
-  let url =
+  const url =
     `${
       process.env.REACT_APP_POST_TODO_DYNAMIC
     }/${userId.toString()}/${endpoint.toString()}.json?auth=` + token;
