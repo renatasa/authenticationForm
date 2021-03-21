@@ -171,7 +171,7 @@ export const errorMessage = (props) => {
       );
 
     default:
-      return "";
+      return <div/>;
   }
 };
 

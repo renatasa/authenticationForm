@@ -43,7 +43,6 @@ export class Auth extends Component {
     isSignup: true,
   };
 
-
   inputChangedHandler = (event, controlName) => {
     const updatedControls = {
       ...this.state.controls,
@@ -108,7 +107,6 @@ export class Auth extends Component {
   };
 
   createForm = (inputs) => {
-    // if (this.props.loading) form = <Spinner />;
     if (this.props.loading) {
       return <Spinner />;
     }

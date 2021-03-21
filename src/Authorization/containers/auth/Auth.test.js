@@ -1,137 +1,23 @@
-import {
-  rulesRequired,
-  minLengthRule,
-  emailRule,
-  checkValidity,
-} from "./service.js";
+import Resct from 'react';
+import {findByTestAttr} from '../../../test/testUtils';
+import Auth from './Auth';
+import rootReducer from'../../store/reducers/auth';
+import Enzyme, { shallow } from "enzyme";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 
-// testing rulues required validation function
-test("rulesRequired validation function result should be truthy", () => {
-  const rulesSet = {
-    required: true,
-  };
-  const testValue = "randomWord";
-  const isPrevValidationRulePassed = true;
+Enzyme.configure({ adapter: new Adapter() });
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
-  expect(
-    rulesRequired(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeTruthy();
-});
+const storeFactory =(initialState)=>{return createStore(rootReducer, initialState)};
 
-test("rulesRequired validation function result should be falsy", () => {
-  const rulesSet = {
-    required: true,
-  };
-  const testValue = "randomWord";
-  const isPrevValidationRulePassed = false;
+const setup = (initialState={})=>{
+    const store=storeFactory(initialState);
+    const wrapper=shallow(<Auth store={store}/>);
+    console.log(wrapper.debug);
+}
 
-  expect(
-    rulesRequired(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeFalsy();
-});
+setup();
 
-// testing minLength validation function
-test("minLength validation function result should be undefined", () => {
-  const rulesSet = {
-    required: false,
-    minLength: 6,
-  };
-  const testValue = "randomWord";
-  const isPrevValidationRulePassed = false;
+test('When Auth component renders without error', ()=>{
 
-  expect(
-    minLengthRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeUndefined();
-});
-
-test("minLength validation function result should be truthy", () => {
-  const rulesSet = {
-    required: true,
-    minLength: 6,
-  };
-  const testValue = "randomWord";
-  const isPrevValidationRulePassed = true;
-
-  expect(
-    minLengthRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeTruthy();
-});
-
-test("minLength validation function result should be falsy", () => {
-  const rulesSet = {
-    required: true,
-    minLength: 6,
-  };
-  const testValue = "Word";
-  const isPrevValidationRulePassed = true;
-
-  expect(
-    minLengthRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeFalsy();
-});
-
-// testing emailRule validation function
-test("emailRule validation function result should be undefined", () => {
-  const rulesSet = {
-    required: false,
-    isEmail: true,
-  };
-  const testValue = "mail@mail.com";
-  const isPrevValidationRulePassed = true;
-  expect(
-    emailRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeUndefined();
-});
-
-test("emailRule validation function result should be truthy", () => {
-  const rulesSet = {
-    required: true,
-    isEmail: true,
-  };
-  const testValue = "mail@mail.com";
-  const isPrevValidationRulePassed = true;
-
-  expect(
-    emailRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeTruthy();
-});
-
-test("emailRule validation function result should be falsy", () => {
-  const rulesSet = {
-    required: true,
-    isEmail: true,
-  };
-  const testValue = "mail";
-  const isPrevValidationRulePassed = true;
-  expect(
-    emailRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeFalsy();
-});
-
-// testing checkValidity function result should be undefined
-test("checkValidity function result should be undefined", () => {
-  const rulesSet = {
-    required: true,
-  };
-  const testValue = null;
-  expect(checkValidity(testValue, rulesSet)).toBeUndefined();
-});
-
-// testing checkValidity function result should be truthy
-test("checkValidity function result should be truthy", () => {
-  const rulesSet = {
-    required: true,
-  };
-  const testValue = "randomWord";
-  expect(checkValidity(testValue, rulesSet)).toBeTruthy();
-});
-
-// testing checkValidity function result should be falsy
-test("checkValidity function result should be falsy", () => {
-  const rulesSet = {
-    required: true,
-    minLength: 6,
-  };
-  const testValue = "Word";
-  expect(checkValidity(testValue, rulesSet)).toBeFalsy();
-});
+})
