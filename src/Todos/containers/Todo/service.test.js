@@ -1,35 +1,39 @@
 import { createWarning, createMaxTodosLimitExceeded } from "./service.js";
 
-// props being passed to ErrorMessage component generates warning
-test("checkValidity function result should be truthy", () => {
-  let stateWarning = true;
+test('When createWarning receives true, then {errorText: "Input field is empty!", errorType: "warning"} object is returned', () => {
+  // arrange
+  const stateWarning = true;
+  // assert
   expect(createWarning(stateWarning)).toEqual({
     errorText: "Input field is empty!",
     errorType: "warning",
   });
 });
 
-// props being passed to ErrorMessage component does not generate warning
-test("checkValidity function result should be truthy", () => {
-  let stateWarning = false;
+test('When createWarning receives false, then {errorText: "", errorType: "warning"} object is returned', () => {
+  // arrange
+  const stateWarning = false;
+  // assert
   expect(createWarning(stateWarning)).toEqual({
     errorText: "",
     errorType: "warning",
   });
 });
 
-// props being passed to ErrorMessage component generate tooManyTodos Error Message
-test("checkValidity function result should be truthy", () => {
-  let tooManyTodos = true;
+test('When createMaxTodosLimitExceeded receives true, then {errorText: "No more than 5 todos are available", errorType: "tooManyTodos"} is returned', () => {
+  // arrange
+  const tooManyTodos = true;
+  // assert
   expect(createMaxTodosLimitExceeded(tooManyTodos)).toEqual({
     errorText: "No more than 5 todos are available",
     errorType: "tooManyTodos",
   });
 });
 
-// props being passed to ErrorMessage component does not generate tooManyTodos Error Message
-test("checkValidity function result should be truthy", () => {
-  let tooManyTodos = false;
+test('When createMaxTodosLimitExceeded receives false, then {errorText: "",  errorType: "tooManyTodos"}', () => {
+  // arrange
+  const tooManyTodos = false;
+  // assert
   expect(createMaxTodosLimitExceeded(tooManyTodos)).toEqual({
     errorText: "",
     errorType: "tooManyTodos",

@@ -125,7 +125,7 @@ const deleteTodoFail = (state, action) => {
 };
 
 const resetError = (state, action) => {
-  return { ...state, [`${action.errorType}`]: false };
+  return { ...state, [`${action.errorType}`]: "" };
 };
 
 const logoutUserData=(state, action)=>{

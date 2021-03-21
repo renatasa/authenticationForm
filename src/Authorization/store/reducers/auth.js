@@ -42,7 +42,7 @@ const setAuthRedirectPath = (state, action) => {
 };
 
 const resetError = (state, action) => {
-  return { ...state, error: false };
+  return { ...state, error: null };
 };
 
 const reducer =(state = initialState, action) => {

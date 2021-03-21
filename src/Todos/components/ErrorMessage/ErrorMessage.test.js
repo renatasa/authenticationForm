@@ -6,38 +6,39 @@ import ErrorMessage from "./ErrorMessage.jsx";
 
 Enzyme.configure({ adapter: new Adapter() });
 
-test("ErrorMessage does not throw warning with expected props", () => {
-  let defaultProps = {
+test("When ErrorMessage component receives expected props, then it does not throw warning", () => {
+  // arrange
+  const defaultProps = {
     error: { errorText: "", errorType: "tooManyTodos" },
     resetError: (stateProperty) => onResetError(stateProperty),
   };
+  // assert
   checkProps(ErrorMessage, defaultProps);
 });
 
-// checking if ErrorMessage switch works properly - if different ErrorMessages are being rendered with different props
-test("ErrorMessage component renders fetchTodoError case without error", () => {
+test('When ErrorMessage receives errorType: "fetchTodoError", then fetchTodoError case is being rendered', () => {
   // arrange
-  let fetchTodoErrorProps = {
+  const fetchTodoErrorProps = {
     error: { errorText: "", errorType: "fetchTodoError" },
   };
 
   // act
-  let wrapper = shallow(<ErrorMessage {...fetchTodoErrorProps} />);
+  const wrapper = shallow(<ErrorMessage {...fetchTodoErrorProps} />);
 
   //assert
   const inputComponent = findByTestAttr(wrapper, "component-fetchTodoError");
   expect(inputComponent.length).toBe(1);
 });
 
-test("ErrorMessage component renders errorAuthorization case without error", () => {
+test('When ErrorMessage receives errorType:"errorAuthorisation", then errorAuthorization case is being rendered', () => {
   // arrange
-  let authorizationErrorProps = {
+  const authorizationErrorProps = {
     error: { errorText: "", errorType: "errorAuthorization" },
     resetError: () => resetError(),
   };
 
   // act
-  let wrapper = shallow(<ErrorMessage {...authorizationErrorProps} />);
+  const wrapper = shallow(<ErrorMessage {...authorizationErrorProps} />);
 
   //assert
   const inputComponent = findByTestAttr(
@@ -47,30 +48,30 @@ test("ErrorMessage component renders errorAuthorization case without error", () 
   expect(inputComponent.length).toBe(1);
 });
 
-test("ErrorMessage component renders warning case without error", () => {
+test('When ErrorMessage component receives errorType:"warning" renders warning case without error', () => {
   // arrange
-  let warningProps = {
+  const warningProps = {
     error: { errorText: "", errorType: "warning" },
     resetError: () => resetError("warning"),
   };
 
   // act
-  let wrapper = shallow(<ErrorMessage {...warningProps} />);
+  const wrapper = shallow(<ErrorMessage {...warningProps} />);
 
   //assert
   const inputComponent = findByTestAttr(wrapper, "component-warning");
   expect(inputComponent.length).toBe(1);
 });
 
-test("ErrorMessage component renders submitCompleteDeleteTodoError case without error", () => {
+test('When ErrorMessage receives errorType:"submitCompleteDeleteTodoError", then submitCompleteDeleteTodoError case is being rendered', () => {
   // arrange
-  let submitCompleteDeleteTodoErrorProps = {
+  const submitCompleteDeleteTodoErrorProps = {
     error: { errorText: "", errorType: "submitCompleteDeleteTodoError" },
     resetError: () => resetError("submitCompleteDeleteTodoError"),
   };
 
   // act
-  let wrapper = shallow(
+  const wrapper = shallow(
     <ErrorMessage {...submitCompleteDeleteTodoErrorProps} />
   );
 
@@ -82,15 +83,15 @@ test("ErrorMessage component renders submitCompleteDeleteTodoError case without 
   expect(inputComponent.length).toBe(1);
 });
 
-test("ErrorMessage component renders tooManyTodos error case without error", () => {
+test('When ErrorMessage receives errorType:"tooManyTodos", then tooManyTodos case is being rendered', () => {
   // arrange
-  let tooManyTodos = {
+  const tooManyTodos = {
     error: { errorText: "", errorType: "tooManyTodos" },
     resetError: () => resetError("tooManyTodos"),
   };
 
   // act
-  let wrapper = shallow(<ErrorMessage {...tooManyTodos} />);
+  const wrapper = shallow(<ErrorMessage {...tooManyTodos} />);
 
   //assert
   const inputComponent = findByTestAttr(wrapper, "component-tooManyTodos");
