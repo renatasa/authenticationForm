@@ -6,8 +6,6 @@ import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 
 Enzyme.configure({ adapter: new Adapter() });
 
-
-
 test("When Auth component receives loading: true as expected prop, Spinner , ErrorMessage components are being rendered , login form, Redirect component are not being rendered", () => {
   // arrange
   const expectedPropsFromReduxStore = {
@@ -79,3 +77,4 @@ test("When Auth component receives loading: false and isAuthenticated: true as p
   expect(authComponent.length).toBe(1);
   expect(redirectToTodos.length).toBe(1);
 });
+

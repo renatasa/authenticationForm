@@ -1,137 +1,86 @@
 import {
-  rulesRequired,
-  minLengthRule,
-  emailRule,
-  checkValidity,
+  checkIfThereIsAuthorizationError,
+  createFormElementsArray,
 } from "./service.js";
 
-// testing rulues required validation function
-test("rulesRequired validation function result should be truthy", () => {
-  const rulesSet = {
-    required: true,
-  };
-  const testValue = "randomWord";
-  const isPrevValidationRulePassed = true;
+const emptyString = "";
+const errorType = "errorAuthorization";
 
-  expect(
-    rulesRequired(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeTruthy();
+test("When checkIfThereIsAuthorizationError receives null as a prop, then it returns object with values of emptyString, otherwise - object with non empty values", () => {
+  // arrange
+  const errorNotNull = { message: "Random error" };
+  const errorNull = null;
+  const expectedObjectWhenErrorNotNull = {
+    errorText: errorNotNull.message,
+    errorType: errorType,
+  };
+  const expectedObjectWhenErrorNull = {
+    errorText: emptyString,
+    errorType: errorType,
+  };
+
+  // act
+  const actualObjectWhenErrorNotNull = checkIfThereIsAuthorizationError(
+    errorNotNull
+  );
+  const actualObjectWhenErrorNull = checkIfThereIsAuthorizationError(errorNull);
+
+  // assert
+  expect(actualObjectWhenErrorNotNull).toEqual(expectedObjectWhenErrorNotNull);
+  expect(actualObjectWhenErrorNull).toEqual(expectedObjectWhenErrorNull);
 });
 
-test("rulesRequired validation function result should be falsy", () => {
-  const rulesSet = {
-    required: true,
+test("When createFormElementsArray receives object of nested object of nested object, then it returns array of nested object of nested object", () => {
+  // arrange
+  const expectedInput = {
+    
+      email: {
+        elementType: "input",
+        elementConfig: {
+          type: "email",
+          placeholder: "Mail Address",
+        },
+        value: "",
+        touched: false,
+      },
+      password: {
+        elementType: "input",
+        elementConfig: {
+          type: "password",
+          placeholder: "Password",
+        },
+        value: "",
+        touched: false,
+    
+    },
   };
-  const testValue = "randomWord";
-  const isPrevValidationRulePassed = false;
 
-  expect(
-    rulesRequired(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeFalsy();
-});
+  const expectedResult = [
+    {
+      config: {
+        elementType: "input",
+        elementConfig: { type: "email", placeholder: "Mail Address" },
+        value: "",
+        touched: false,
+  
+      },
+      id: "email",
+    },
+    {
+      config: {
+        elementConfig: { type: "password", placeholder: "Password" },
+        elementType: "input",
+        value: "",
+        touched: false,
+      },
+      id: "password",
+    },
+  ];
 
-// testing minLength validation function
-test("minLength validation function result should be undefined", () => {
-  const rulesSet = {
-    required: false,
-    minLength: 6,
-  };
-  const testValue = "randomWord";
-  const isPrevValidationRulePassed = false;
+  // act
+  const actualResult=createFormElementsArray(expectedInput)
 
-  expect(
-    minLengthRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeUndefined();
-});
-
-test("minLength validation function result should be truthy", () => {
-  const rulesSet = {
-    required: true,
-    minLength: 6,
-  };
-  const testValue = "randomWord";
-  const isPrevValidationRulePassed = true;
-
-  expect(
-    minLengthRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeTruthy();
-});
-
-test("minLength validation function result should be falsy", () => {
-  const rulesSet = {
-    required: true,
-    minLength: 6,
-  };
-  const testValue = "Word";
-  const isPrevValidationRulePassed = true;
-
-  expect(
-    minLengthRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeFalsy();
-});
-
-// testing emailRule validation function
-test("emailRule validation function result should be undefined", () => {
-  const rulesSet = {
-    required: false,
-    isEmail: true,
-  };
-  const testValue = "mail@mail.com";
-  const isPrevValidationRulePassed = true;
-  expect(
-    emailRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeUndefined();
-});
-
-test("emailRule validation function result should be truthy", () => {
-  const rulesSet = {
-    required: true,
-    isEmail: true,
-  };
-  const testValue = "mail@mail.com";
-  const isPrevValidationRulePassed = true;
-
-  expect(
-    emailRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeTruthy();
-});
-
-test("emailRule validation function result should be falsy", () => {
-  const rulesSet = {
-    required: true,
-    isEmail: true,
-  };
-  const testValue = "mail";
-  const isPrevValidationRulePassed = true;
-  expect(
-    emailRule(testValue, rulesSet, isPrevValidationRulePassed)
-  ).toBeFalsy();
-});
-
-// testing checkValidity function result should be undefined
-test("checkValidity function result should be undefined", () => {
-  const rulesSet = {
-    required: true,
-  };
-  const testValue = null;
-  expect(checkValidity(testValue, rulesSet)).toBeUndefined();
-});
-
-// testing checkValidity function result should be truthy
-test("checkValidity function result should be truthy", () => {
-  const rulesSet = {
-    required: true,
-  };
-  const testValue = "randomWord";
-  expect(checkValidity(testValue, rulesSet)).toBeTruthy();
-});
-
-// testing checkValidity function result should be falsy
-test("checkValidity function result should be falsy", () => {
-  const rulesSet = {
-    required: true,
-    minLength: 6,
-  };
-  const testValue = "Word";
-  expect(checkValidity(testValue, rulesSet)).toBeFalsy();
+  // assert
+  expect(actualResult[0]).toEqual(expectedResult[0])
+  expect(actualResult[1]).toEqual(expectedResult[1])
 });
