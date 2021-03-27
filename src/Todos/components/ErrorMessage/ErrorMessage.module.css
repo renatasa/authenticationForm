@@ -1,0 +1,132 @@
+.alertWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.alertWrapperWithBackdrop {
+  height: 100%;
+  z-index: 1;
+}
+
+.alertBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #2d333f;
+  opacity: 0.9;
+  z-index: -1;
+}
+
+.alertItem {
+  z-index: 0;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  border-radius: 3px;
+  transition: all 1s ease;
+}
+
+.alertItemInactive {
+  position: fixed;
+  top: 120%;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  border-radius: 3px;
+  transition: all 1s ease;
+}
+
+.alertItemErrorColors {
+  background: #ecc8c5;
+  color: #b32f2d;
+}
+
+.alertItemWarningColors {
+  background: #f8f3d6;
+  color: #967132;
+}
+
+.alertItemTop {
+  top: 20%;
+}
+
+.alertItemBottom {
+  top: 68%;
+}
+
+.alertItemSub {
+  font-size: 14px;
+  font-weight: 100;
+}
+
+.alertItemData {
+  margin: 0 2rem;
+  flex-grow: 3;
+  text-align: center;
+}
+
+.alertItemTitle {
+  font-weight: 700;
+}
+
+.alertItemIcon {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.alertItemClose {
+  cursor: pointer;
+  margin: 0rem 0rem 0rem 1rem;
+}
+
+.alertItemClose:hover {
+  color: #c79995;
+}
+
+.alertItemTodoNotAdded {
+  opacity: 1;
+  position: fixed;
+  transform: translate(0%, -55%);
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.8rem;
+  border-radius: 0.5rem;
+  transition: all 0.5s ease;
+}
+
+.alertItemTodoNotAddedInactive {
+  opacity: 0;
+  position: fixed;
+  transform: translate(50%, -55%);
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.8rem;
+  border-radius: 0.5rem;
+  border-radius: 3px;
+  transition: all 0.5s ease;
+}
+
+.alertItemtodoNotAddedWidth {
+  flex-grow: 4;
+}
+
+@media (max-width: 650px) {
+  .alertItem {
+    width: 70%;
+  }
+}
+
+@media (max-width: 440px) {
+  .alertItem {
+    padding: 12px 25px;
+  }
+
+  .alertItemData {
+    margin: 0 1rem;
+  }
+}

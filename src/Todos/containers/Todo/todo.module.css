@@ -1,0 +1,58 @@
+.todoComponent {
+  background: #2d333f;
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+}
+
+.todoComponentForm {
+  min-height: 20vh;
+  min-width: 10vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 10%;
+  transition: all 0.5s ease;
+}
+
+.todoComponentInput,
+.todoComponentButton {
+  padding: 0.5rem;
+  font-size: 2rem;
+  border: 1px solid #e4bd9d;
+  border-radius: 0.4rem;
+  background: white;
+}
+
+.todoComponentButton {
+  color: #e4bd9d;
+  background: #f7fffe;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.todoComponentButton:hover {
+  background: #e4bd9d;
+  color: white;
+}
+
+
+@media (max-width: 480px) {
+  .todoComponentInput {
+    font-size: 1.5rem;
+  }
+
+  .todoComponentButton {
+    padding: 0.3rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .todoComponentInput {
+    font-size: 1rem;
+  }
+
+  .todoComponentButton {
+    padding: 0rem 0.2rem 0rem 0.2rem;
+  }
+}
