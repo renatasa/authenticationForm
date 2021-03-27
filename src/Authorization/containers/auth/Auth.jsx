@@ -108,11 +108,11 @@ export class Auth extends Component {
 
   createForm = (inputs) => {
     if (this.props.loading) {
-      return <Spinner />;
+      return <Spinner data-test="component-spinner" />;
     }
 
     let form = (
-      <form className={classes.containerAuth}>
+      <form className={classes.containerAuth} data-test="component-loginForm">
         <div>
           <div className={classes.formTitleAuth}>
             {this.state.isSignup ? "Login" : "Sing up"}
@@ -142,7 +142,7 @@ export class Auth extends Component {
     let authRedirect = null;
 
     if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to={this.props.authRedirectPath} />;
+      authRedirect = <Redirect to={this.props.authRedirectPath} data-test="component-redirectToTodos"/>;
     }
 
     return authRedirect;
@@ -159,7 +159,7 @@ export class Auth extends Component {
       <div className={classes.formContainer} data-test="component-auth">
         {this.createAuthRedirect()}
         {this.renderForm()}
-        <ErrorMessage
+        <ErrorMessage data-test="component-error"
           error={this.checkIfThereIsAuthorizationError()}
           resetError={this.props.onResetAuthError}
         />

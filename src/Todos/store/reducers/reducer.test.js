@@ -59,20 +59,20 @@ const constants = {
 
 test("When no Todo reducer is executed, then default state equals initialState", () => {
   // act
-  const newState = reducer(undefined, {});
+  const actualState = reducer(undefined, {});
 
   // assert
-  expect(newState).toEqual(initialState);
+  expect(actualState).toEqual(initialState);
 });
 
 test('When fetchTodoStart reducer receives type: FETCH_TODO_START, then loading becomes true and fetchTodoError becomes " " ', () => {
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.FETCH_TODO_START,
   });
   // assert
-  expect(newState.loading).toBe(true);
-  expect(newState.fetchTodoError).toBe("");
+  expect(actualState.loading).toBe(true);
+  expect(actualState.fetchTodoError).toBe("");
 });
 
 describe("When fetchTodoSuccess reducer receives type: FETCH_TODO_SUCCESS", () => {
@@ -87,15 +87,15 @@ describe("When fetchTodoSuccess reducer receives type: FETCH_TODO_SUCCESS", () =
     ];
 
     // act
-    const newState = reducer(initialState, {
+    const actualState = reducer(initialState, {
       type: actionTypes.FETCH_TODO_SUCCESS,
       todos: constants.mockTodosArrayWithEndpoints,
     });
 
     // assert
-    expect(newState.todos).toEqual(mockTodosArrayWithoutEndpoints);
-    expect(newState.endpointsArr).toEqual(mockEndpointsArrayWithoutTodos);
-    expect(newState.loading).toBe(false);
+    expect(actualState.todos).toEqual(mockTodosArrayWithoutEndpoints);
+    expect(actualState.endpointsArr).toEqual(mockEndpointsArrayWithoutTodos);
+    expect(actualState.loading).toBe(false);
   });
 
   test("and todos is empty array, todos and endpointsArr are empty arrays, state.loading becomes false", () => {
@@ -103,41 +103,41 @@ describe("When fetchTodoSuccess reducer receives type: FETCH_TODO_SUCCESS", () =
     const mockTodosArrayWithEndpoints = [];
 
     // act
-    const newState = reducer(initialState, {
+    const actualState = reducer(initialState, {
       type: actionTypes.FETCH_TODO_SUCCESS,
       todos: mockTodosArrayWithEndpoints,
     });
 
     // assert
-    expect(newState.todos).toEqual(constants.emptyArray);
-    expect(newState.endpointsArr).toEqual(constants.emptyArray);
-    expect(newState.loading).toBe(false);
+    expect(actualState.todos).toEqual(constants.emptyArray);
+    expect(actualState.endpointsArr).toEqual(constants.emptyArray);
+    expect(actualState.loading).toBe(false);
   });
 });
 
-test("When fetchTodoFail reducer receives type: FETCH_TODO_FAIL, then loading becomes true and fetchTodoError becomes not empty string ", () => {
+test("When reducer receives type: FETCH_TODO_FAIL, then loading becomes true and fetchTodoError becomes not empty string ", () => {
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.FETCH_TODO_FAIL,
     error: constants.fetchTodoError,
   });
   // assert
-  expect(newState.loading).toBe(false);
-  expect(newState.fetchTodoError).toBe(constants.fetchTodoError);
+  expect(actualState.loading).toBe(false);
+  expect(actualState.fetchTodoError).toBe(constants.fetchTodoError);
 });
 
-test("When submitTodoStart reducer receives type: SUBMIT_TODO_START, then loading becomes false, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes empty string ", () => {
+test("When reducer receives type: SUBMIT_TODO_START, then loading becomes false, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes empty string ", () => {
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.SUBMIT_TODO_START,
   });
   // assert
-  expect(newState.loading).toBe(true);
-  expect(newState.submitTodoSuccess).toBe(false);
-  expect(newState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
+  expect(actualState.loading).toBe(true);
+  expect(actualState.submitTodoSuccess).toBe(false);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
 });
 
-test("When submitTodoSuccess reducer receives type: SUBMIT_TODO_SUCCESS, then loading becomes false, submitTodoSuccess becomes true and submitCompleteDeleteTodoError becomes empty string ", () => {
+test("When reducer receives type: SUBMIT_TODO_SUCCESS, then loading becomes false, submitTodoSuccess becomes true and submitCompleteDeleteTodoError becomes empty string ", () => {
   // arrange
   const newTodosArray = [...initialState.todos, constants.randomTodo];
   const newEndpointsArray = [
@@ -146,45 +146,45 @@ test("When submitTodoSuccess reducer receives type: SUBMIT_TODO_SUCCESS, then lo
   ];
 
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.SUBMIT_TODO_SUCCESS,
     newTodo: constants.randomTodo,
     newEndpoint: constants.randomEndpoint,
   });
 
   // assert
-  expect(newState.loading).toBe(false);
-  expect(newState.submitTodoSuccess).toBe(true);
-  expect(newState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
-  expect(newState.todos).toEqual(newTodosArray);
-  expect(newState.endpointsArr).toEqual(newEndpointsArray);
+  expect(actualState.loading).toBe(false);
+  expect(actualState.submitTodoSuccess).toBe(true);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
+  expect(actualState.todos).toEqual(newTodosArray);
+  expect(actualState.endpointsArr).toEqual(newEndpointsArray);
 });
 
-test("When submitTodoFail reducer receives type: SUBMIT_TODO_FAIL, then loading becomes false, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes not empty string ", () => {
+test("When reducer receives type: SUBMIT_TODO_FAIL, then loading becomes false, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes not empty string ", () => {
   // arrange
   const submitTodoError = "submit todo error";
 
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.SUBMIT_TODO_FAIL,
     error: submitTodoError,
   });
 
   // assert
-  expect(newState.loading).toBe(false);
-  expect(newState.submitTodoSuccess).toBe(false);
-  expect(newState.submitCompleteDeleteTodoError).toBe(submitTodoError);
+  expect(actualState.loading).toBe(false);
+  expect(actualState.submitTodoSuccess).toBe(false);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(submitTodoError);
 });
 
-test("When markAsCompletedStart reducer receives type: MARK_AS_COMPLETED_START, then loading becomes false, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes empty string ", () => {
+test("When  reducer receives type: MARK_AS_COMPLETED_START, then loading becomes false, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes empty string ", () => {
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.MARK_AS_COMPLETED_START,
   });
   // assert
-  expect(newState.loading).toBe(true);
-  expect(newState.submitTodoSuccess).toBe(false);
-  expect(newState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
+  expect(actualState.loading).toBe(true);
+  expect(actualState.submitTodoSuccess).toBe(false);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
 });
 
 test("When markAsCompletedStart reducer receives type: MARK_AS_COMPLETED_SUCCESS, then loading becomes false, todos array updates, submitTodoSuccess becomes true and submitCompleteDeleteTodoError becomes empty string ", () => {
@@ -199,16 +199,16 @@ test("When markAsCompletedStart reducer receives type: MARK_AS_COMPLETED_SUCCESS
   ];
 
   // act
-  const newState = reducer(initialStateWithSomeTodos, {
+  const actualState = reducer(initialStateWithSomeTodos, {
     type: actionTypes.MARK_AS_COMPLETED_SUCCESS,
     index: completedTodoRandomIndex,
   });
 
   // assert
-  expect(newState.loading).toBe(false);
-  expect(newState.submitTodoSuccess).toBe(true);
-  expect(newState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
-  expect(newState.todos).toEqual(mockTodosArray);
+  expect(actualState.loading).toBe(false);
+  expect(actualState.submitTodoSuccess).toBe(true);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
+  expect(actualState.todos).toEqual(mockTodosArray);
 });
 
 test("When markAsCompletedFail reducer receives type: MARK_AS_COMPLETED_FAIL, then loading becomes false, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes not empty string ", () => {
@@ -216,27 +216,27 @@ test("When markAsCompletedFail reducer receives type: MARK_AS_COMPLETED_FAIL, th
   const randomError = "random error";
 
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.MARK_AS_COMPLETED_FAIL,
     error: randomError,
   });
 
   // assert
-  expect(newState.loading).toBe(false);
-  expect(newState.submitTodoSuccess).toBe(false);
-  expect(newState.submitCompleteDeleteTodoError).toBe(randomError);
+  expect(actualState.loading).toBe(false);
+  expect(actualState.submitTodoSuccess).toBe(false);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(randomError);
 });
 
 test("When deleteTodoStart reducer receives type: DELETE_TODO_START then loading becomes true, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes empty string ", () => {
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.DELETE_TODO_START,
   });
 
   // assert
-  expect(newState.loading).toBe(true);
-  expect(newState.submitTodoSuccess).toBe(false);
-  expect(newState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
+  expect(actualState.loading).toBe(true);
+  expect(actualState.submitTodoSuccess).toBe(false);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
 });
 
 test("When deleteTodoSuccess reducer receives type: DELETE_TODO_SUCCESS then loading becomes false, todos and endpointsArr array change, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes empty string ", () => {
@@ -256,59 +256,59 @@ test("When deleteTodoSuccess reducer receives type: DELETE_TODO_SUCCESS then loa
   ];
 
   // act
-  const newState = reducer(initialStateWithSomeTodos, {
+  const actualState = reducer(initialStateWithSomeTodos, {
     type: actionTypes.DELETE_TODO_SUCCESS,
     oldTodos: mockOldTodos,
     index: randomIndex,
   });
 
   // assert
-  expect(newState.loading).toBe(false);
-  expect(newState.submitTodoSuccess).toBe(true);
-  expect(newState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
-  expect(newState.todos).toEqual(mockOldTodos);
-  expect(newState.endpointsArr).toEqual(mockEndpointsArr);
+  expect(actualState.loading).toBe(false);
+  expect(actualState.submitTodoSuccess).toBe(true);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
+  expect(actualState.todos).toEqual(mockOldTodos);
+  expect(actualState.endpointsArr).toEqual(mockEndpointsArr);
 });
 
 test("When deleteTodoFail reducer receives type: DELETE_TODO_FAIL then loading becomes true, submitTodoSuccess becomes false and submitCompleteDeleteTodoError becomes not empty string ", () => {
   // arrange
   const randomError = "random error";
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.DELETE_TODO_FAIL,
     error: randomError,
   });
 
   // assert
-  expect(newState.loading).toBe(false);
-  expect(newState.submitTodoSuccess).toBe(false);
-  expect(newState.submitCompleteDeleteTodoError).toBe(randomError);
+  expect(actualState.loading).toBe(false);
+  expect(actualState.submitTodoSuccess).toBe(false);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(randomError);
 });
 
 test("When resetError reducer receives type: RESET_ERROR and errorType : submitCompleteDeleteTodoError, then submitCompleteDeleteTodoError becomes not empty string ", () => {
   // arrange
   const errorType = "submitCompleteDeleteTodoError";
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.RESET_ERROR,
     errorType: errorType,
   });
 
   // assert
-  expect(newState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
+  expect(actualState.submitCompleteDeleteTodoError).toBe(constants.emptyString);
 });
 
 test("When logoutUserData reducer receives type:LOGOUT_USER_DATA, then todos , endpointsArr become empty arrays ", () => {
   // arrange
   const emptyArray=[];
   // act
-  const newState = reducer(initialState, {
+  const actualState = reducer(initialState, {
     type: actionTypes.LOGOUT_USER_DATA,
   });
 
   // assert
-  expect(newState.todos).toEqual(emptyArray);
-  expect(newState.endpointsArr).toEqual(emptyArray);
+  expect(actualState.todos).toEqual(emptyArray);
+  expect(actualState.endpointsArr).toEqual(emptyArray);
 });
 
 

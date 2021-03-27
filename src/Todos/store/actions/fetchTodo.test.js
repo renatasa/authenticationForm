@@ -76,7 +76,7 @@ test("When fetchTodoSuccess receives todos array of objects, then it returns typ
   const actionType = actionTypes.FETCH_TODO_SUCCESS;
 
   // act
-  actionResult = fetchTodoSuccess(todo);
+  const actionResult = fetchTodoSuccess(todo);
 
   // assert
   expect(actionResult).toEqual({
@@ -85,7 +85,7 @@ test("When fetchTodoSuccess receives todos array of objects, then it returns typ
   });
 });
 
-test("When submitTodoSuccess receives type:actionTypes.SUBMIT_TODO_SUCCESS, newTodo and newEndpoint, then it returns type:actionTypes.SUBMIT_TODO_SUCCESS, newTodo and newEndpoint", () => {
+test("When submitTodoSuccess receives newTodo object, then object with type SUBMIT_TODO_SUCCESS is created", () => {
   // arrange
   const newTodo = { completed: false, delete: false, todo: "6" };
   const newEndpoint = "-MVacg3vLa0YlgUnvBxW";
@@ -134,7 +134,7 @@ test("When deleteTodoSuccess receives type:actionTypes.DELETE_TODO_SUCCESS, inde
   ];
 
   // act
-  const actionResult= deleteTodoSuccess(oldTodosInput, randomIndex);
+  const actionResult = deleteTodoSuccess(oldTodosInput, randomIndex);
 
   // assert
   expect(actionResult).toEqual({
@@ -149,11 +149,11 @@ test("When resetError receives type:actionTypes.RESET_ERROR and errorType, then 
   const actionType = actionTypes.RESET_ERROR;
   const errorTypeInput = "tooManyTodos";
 
-// act 
-const actionResult=resetError(errorTypeInput);
+  // act
+  const actionResult = resetError(errorTypeInput);
 
-// assert
-expect(actionResult).toEqual({
+  // assert
+  expect(actionResult).toEqual({
     type: actionType,
     errorType: errorTypeInput,
   });
@@ -164,7 +164,7 @@ test("When logoutUserData receives type:actionTypes.LOGOUT_USER_DATA, then it re
   const actionType = actionTypes.LOGOUT_USER_DATA;
 
   // act
-  const actionResult = logoutUserData() ;
+  const actionResult = logoutUserData();
 
   // assert
   expect(actionResult).toEqual({
