@@ -1,72 +1,29 @@
-let rulesRequired = (value, rules, isValid) => {
-  if (!rules.required) {
-    return;
-  }
+const constants={
+  emptyString: "",
+  errorType: "errorAuthorization"
+}
 
-  if (rules.required && value.trim() !== "" && isValid) {
-    return true;
-  }
+const checkIfThereIsAuthorizationError = (error) => {
+  let authorizationError = error
+    ? { errorText: error.message, errorType: constants.errorType }
+    : { errorText: constants.emptyString, errorType: constants.errorType };
 
-  if ((rules.required && value.trim() === "") || !isValid) {
-    return false;
-  }
+  return authorizationError;
 };
 
-let minLengthRule = (value, rules, isValid) => {
-  if (!rules.required) {
-    return;
+
+const createFormElementsArray = (controls) => {
+  let formElementsArray = [];
+  for (let key in controls) {
+    formElementsArray.push({
+      id: key,
+      config: controls[key],
+    });
   }
 
-  if (rules.required && value.length >= rules.minLength && isValid) {
-    return true;
-  }
+  console.log(formElementsArray)
 
-  if ((rules.required && value.length < rules.minLength) || !isValid) {
-    return false;
-  }
+  return formElementsArray;
 };
 
-let emailRule = (value, rules, isValid) => {
-  if (!rules.required) {
-    return;
-  }
-
-  const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-
-  if (rules.required && rules.isEmail && pattern.test(value) && isValid) {
-    return true;
-  }
-
-  if ((rules.required && rules.isEmail && !pattern.test(value)) || !isValid) {
-    return false;
-  }
-};
-
-let checkValidity = (value, rules) => {
-  if (value !== null) {
-    let isValid = true;
-    let returnedValue;
-
-    returnedValue = rulesRequired(value, rules, isValid);
-
-    if (typeof returnedValue === "boolean") {
-      isValid = returnedValue;
-    }
-
-    returnedValue = minLengthRule(value, rules, isValid);
-
-    if (typeof returnedValue === "boolean") {
-      isValid = returnedValue;
-    }
-
-    returnedValue = emailRule(value, rules, isValid);
-
-    if (typeof returnedValue === "boolean") {
-      isValid = returnedValue;
-    }
-
-    return isValid;
-  }
-};
-
-export { rulesRequired, minLengthRule, emailRule, checkValidity };
+export {checkIfThereIsAuthorizationError, createFormElementsArray};

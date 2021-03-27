@@ -65,19 +65,6 @@ test("When logout executes, then it returns type: actionTypes.AUTH_LOGOUT", () =
   });
 });
 
-test("When logout executes, then it returns type: actionTypes.AUTH_LOGOUT", () => {
-  // arrange
-  const actionType = actionTypes.AUTH_LOGOUT;
-
-  // act
-  const actionResult = logout();
-
-  // assert
-  expect(actionResult).toEqual({
-    type: actionType,
-  });
-});
-
 test("When setAuthRedirectPath executes, then it returns type: actionTypes.SET_AUTH_REDIRECT_PATH", () => {
   // arrange
   const actionType = actionTypes.SET_AUTH_REDIRECT_PATH;

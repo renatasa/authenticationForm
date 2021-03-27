@@ -12,75 +12,81 @@ const initialState = {
 
 test("When no action is passed to reducer, then default state equals initialState", () => {
   // act
-  const newState = reducer(undefined, {});
+  const actualState = reducer(undefined, {});
 
   // assert
-  expect(newState).toEqual(initialState);
+  expect(actualState).toEqual(initialState);
 });
 
 test("When reducer receives { type: actionTypes.AUTH_START }, then error becomes null, loading becomes true", () => {
   // arrange
-  const error = null;
-  const loading = true;
+  const expectedStateError = null;
+  const expectedStateLoading = true;
   const action = { type: actionTypes.AUTH_START };
 
   // act
-  const newState = reducer(initialState, action);
+  const actualState = reducer(initialState, action);
 
   // assert
-  expect(newState.loading).toBe(loading);
-  expect(newState.error).toBe(error);
+  expect(actualState.loading).toBe(expectedStateLoading);
+  expect(actualState.error).toBe(expectedStateError);
 });
 
-test("When reducer receives { type: actionTypes.AUTH_START, userId: \"random user ID\", idToken : \"random token\" }, then userId becomes action.userId, token becomes idToken, error becomes null, loading becomes true", () => {
+test("When reducer receives { type: actionTypes.AUTH_START }, then userId and idToken are being updated in state, error becomes null, loading becomes true", () => {
   // arrange
-  const error = null;
-  const loading = false;
-  const action = { type: actionTypes.AUTH_SUCCESS, userId: "random user ID", idToken : "random token" };
+  const expectedStateError = null;
+  const expectedStateLoading = false;
+  const action = {
+    type: actionTypes.AUTH_SUCCESS,
+    userId: "random user ID",
+    idToken: "random token",
+  };
 
   // act
-  const newState = reducer(initialState, action);
+  const actualState = reducer(initialState, action);
 
   // assert
-  expect(newState.userId).toBe(action.userId)
-  expect(newState.token).toBe(action.idToken)
-  expect(newState.loading).toBe(loading);
-  expect(newState.error).toBe(error);
+  expect(actualState.userId).toBe(action.userId);
+  expect(actualState.token).toBe(action.idToken);
+  expect(actualState.loading).toBe(expectedStateLoading);
+  expect(actualState.error).toBe(expectedStateError);
 });
 
-test("When reducer receives { type: actionTypes.AUTH_FAIL, error: \"random error\"}, then error becomes action.error, loading becomes false", () => {
+test("When reducer receives { type: actionTypes.AUTH_FAIL }, then error updates, loading becomes false", () => {
   // arrange
-  const loading = false;
-  const action = { type: actionTypes.AUTH_FAIL, error: "random error"};
+  const expectedStateLoading = false;
+  const action = { type: actionTypes.AUTH_FAIL, error: "random error" };
 
   // act
-  const newState = reducer(initialState, action);
+  const actualState = reducer(initialState, action);
 
   // assert
-  expect(newState.error).toBe(action.error);
-  expect(newState.loading).toBe(loading);
+  expect(actualState.error).toBe(action.error);
+  expect(actualState.loading).toBe(expectedStateLoading);
 });
 
-test("When reducer receives { type: actionTypes.SET_AUTH_REDIRECT_PATH, path: \"/randomPath\"}, then authRedirection becomes action.path", () => {
+test("When reducer receives { type: actionTypes.SET_AUTH_REDIRECT_PATH }, then authRedirection updates in state", () => {
   // arrange
-  const action = { type: actionTypes.SET_AUTH_REDIRECT_PATH, path: "/randomPath"};
+  const action = {
+    type: actionTypes.SET_AUTH_REDIRECT_PATH,
+    path: "/randomPath",
+  };
 
   // act
-  const newState = reducer(initialState, action);
+  const actualState = reducer(initialState, action);
 
   // assert
-  expect(newState.authRedirection).toBe(action.path);
+  expect(actualState.authRedirection).toBe(action.path);
 });
 
-test("When reducer receives { type: actionTypes.SET_AUTH_REDIRECT_PATH, path: \"/randomPath\"}, then authRedirection becomes action.path", () => {
+test("When reducer receives { type: actionTypes.SET_RESET_ERROR}, then error becomes null in state", () => {
   // arrange
-  const action = { type: actionTypes.RESET_ERROR};
-  const errorAfterReset=null;
+  const action = { type: actionTypes.RESET_ERROR };
+  const expectedStateErrorAfterReset = null;
 
   // act
-  const newState = reducer(initialState, action);
+  const actualState = reducer(initialState, action);
 
   // assert
-  expect(newState.error).toBe(errorAfterReset);
+  expect(actualState.error).toBe(expectedStateErrorAfterReset);
 });
-

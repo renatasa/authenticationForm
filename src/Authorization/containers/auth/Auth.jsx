@@ -18,11 +18,6 @@ export class Auth extends Component {
           placeholder: "Mail Address",
         },
         value: "",
-        validation: {
-          required: true,
-          isEmail: true,
-        },
-        valid: false,
         touched: false,
       },
       password: {
@@ -32,11 +27,6 @@ export class Auth extends Component {
           placeholder: "Password",
         },
         value: "",
-        validation: {
-          required: true,
-          minLength: 6,
-        },
-        valid: false,
         touched: false,
       },
     },
@@ -49,10 +39,6 @@ export class Auth extends Component {
       [controlName]: {
         ...this.state.controls[controlName],
         value: event.target.value,
-        valid: service.checkValidity(
-          event.target.value,
-          this.state.controls[controlName].validation
-        ),
         touched: true,
       },
     };
@@ -74,26 +60,6 @@ export class Auth extends Component {
     });
   };
 
-  checkIfThereIsAuthorizationError = () => {
-    let authorizationError = this.props.error
-      ? { errorText: this.props.error.message, errorType: "errorAuthorization" }
-      : { errorText: "", errorType: "errorAuthorization" };
-
-    return authorizationError;
-  };
-
-  createFormElementsArray = () => {
-    let formElementsArray = [];
-    for (let key in this.state.controls) {
-      formElementsArray.push({
-        id: key,
-        config: this.state.controls[key],
-      });
-    }
-
-    return formElementsArray;
-  };
-
   createInputs = (formElementsArray) => {
     let inputs = formElementsArray.map((formElement) => (
       <Input
@@ -108,13 +74,13 @@ export class Auth extends Component {
 
   createForm = (inputs) => {
     if (this.props.loading) {
-      return <Spinner />;
+      return <Spinner data-test="component-spinner" />;
     }
 
     let form = (
-      <form className={classes.containerAuth}>
+      <form className={classes.containerAuth} data-test="component-loginForm">
         <div>
-          <div className={classes.formTitleAuth}>
+          <div className={classes.formTitleAuth} data-test="component-loginFormTitle">
             {this.state.isSignup ? "Login" : "Sing up"}
           </div>
           {inputs}
@@ -129,6 +95,7 @@ export class Auth extends Component {
         <div
           className={classes.formLinkAuth}
           onClick={this.switchAuthModeHandler}
+          data-test="component-loginFormSwitchToButton"
         >
           SWITCH TO {this.state.isSignup ? " SIGN UP" : " LOGIN"}
         </div>
@@ -142,14 +109,15 @@ export class Auth extends Component {
     let authRedirect = null;
 
     if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to={this.props.authRedirectPath} />;
+      authRedirect = <Redirect to={this.props.authRedirectPath} data-test="component-redirectToTodos"/>;
     }
 
     return authRedirect;
   };
 
+
   renderForm() {
-    const formElementsArray = this.createFormElementsArray();
+    const formElementsArray = service.createFormElementsArray(this.state.controls);
     const inputs = this.createInputs(formElementsArray);
     return this.createForm(inputs);
   }
@@ -159,8 +127,8 @@ export class Auth extends Component {
       <div className={classes.formContainer} data-test="component-auth">
         {this.createAuthRedirect()}
         {this.renderForm()}
-        <ErrorMessage
-          error={this.checkIfThereIsAuthorizationError()}
+        <ErrorMessage data-test="component-error"
+          error={service.checkIfThereIsAuthorizationError(this.props.error)}
           resetError={this.props.onResetAuthError}
         />
       </div>
