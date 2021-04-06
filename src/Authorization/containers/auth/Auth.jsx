@@ -7,6 +7,7 @@ import ErrorMessage from "../../../Todos/components/ErrorMessage/ErrorMessage.js
 import * as actions from "../../store/actions/index";
 import * as service from "./service";
 import classes from "./Auth.module.css";
+import PropTypes from 'prop-types';
 
 export class Auth extends Component {
   state = {
@@ -140,7 +141,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
-    isAuthenticated: state.auth.token !== null,
+    isAuthenticated: state.auth.token !== '',
     authRedirectPath: state.auth.authRedirection,
   };
 };
@@ -152,5 +153,14 @@ const mapDispatchToProps = (dispatch) => {
     onResetAuthError: () => dispatch(actions.resetError()),
   };
 };
+
+Auth.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired, 
+  isAuthenticated: PropTypes.bool.isRequired,
+  authRedirectPath: PropTypes.string.isRequired,
+  onAuth : PropTypes.func.isRequired,
+  onResetAuthError: PropTypes.func.isRequired
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

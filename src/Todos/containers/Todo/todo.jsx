@@ -5,6 +5,7 @@ import ErrorMessage from "../../components/ErrorMessage/ErrorMessage.jsx";
 import SignOutButton from "../../../Authorization/components/UI/SignOutButton/SignOutButton.jsx";
 import * as actions from "../../store/actions/index";
 import * as service from "./service";
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import classes from "./todo.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -121,53 +122,70 @@ export class Todo extends Component {
     }
 
     return (
-      <div className={classes.todoComponent}>
-        <SignOutButton />
-        <form
-          onSubmit={this.submitHandler}
-          className={classes.todoComponentForm}
-        >
-          <input
-            type="text"
-            value={this.state.inputText}
-            className={classes.todoComponentInput}
-            onChange={this.inputChangedHandler}
-          />
-          <button
-            className={classes.todoComponentButton}
-            type="submit"
-            onClick={this.submitHandler}
-          >
-            <FontAwesomeIcon icon={faPlusSquare} />
-          </button>
-        </form>
-        <ErrorMessage
-          error={{
-            errorText: this.props.fetchTodoError,
-            errorType: "fetchTodoError",
-          }}
-        />
-        <ErrorMessage
-          error={{
-            errorText: this.props.submitTodoError,
-            errorType: "submitCompleteDeleteTodoError",
-          }}
-          resetError={this.props.onResetError}
-        />
-        <ErrorMessage
-          error={service.createMaxTodosLimitExceeded(this.state.tooManyTodos)}
-          resetError={this.errorWarningResetFunction}
-        />
+     <div className={classes.todoComponent} data-test="component-Todo">
+    <SignOutButton  data-test="component-SignOutButton"/>
+    <form  data-test="component-todoForm"
+      onSubmit={this.submitHandler}
+      className={classes.todoComponentForm}
+    >
+      <input
+        type="text"
+        value={this.state.inputText}
+        className={classes.todoComponentInput}
+        onChange={this.inputChangedHandler}
+      />
+      <button
+        className={classes.todoComponentButton}
+        type="submit"
+        onClick={this.submitHandler}
+      >
+        <FontAwesomeIcon icon={faPlusSquare} />
+      </button>
+    </form>
+    <ErrorMessage  data-test="component-fetchTodoError"
+      error={{
+        errorText: this.props.fetchTodoError,
+        errorType: "fetchTodoError",
+      }}
+    />
+    <ErrorMessage  data-test="component-submitCompleteDeleteTodoError"
+      error={{
+        errorText: this.props.submitTodoError,
+        errorType: "submitCompleteDeleteTodoError",
+      }}
+      resetError={this.props.onResetError}
+    />
+    <ErrorMessage  data-test="component-maxTodoLimitExceededError"
+      error={service.createMaxTodosLimitExceeded(this.state.tooManyTodos)}
+      resetError={this.errorWarningResetFunction}
+    />
 
-        {this.createTodoList()}
+    {this.createTodoList()}
 
-        <ErrorMessage
-          error={service.createWarning(this.state.warning)}
-          resetError={this.errorWarningResetFunction}
-        />
-      </div>
+    <ErrorMessage  data-test="component-warning"
+      error={service.createWarning(this.state.warning)}
+      resetError={this.errorWarningResetFunction}
+    />
+  </div>
     );
   }
+}
+
+Todo.propTypes = {
+  todos: PropTypes.array.isRequired,
+  endpointsArr: PropTypes.array.isRequired, 
+  loading: PropTypes.bool.isRequired,
+  fetchTodoError: PropTypes.string.isRequired,
+  submitTodoError : PropTypes.string.isRequired,
+  submitTodoSuccess: PropTypes.bool.isRequired,
+  token: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  onFetchTodo: PropTypes.func.isRequired,
+  onSubmitTodo: PropTypes.func.isRequired,
+  onMarkAsCompleted: PropTypes.func.isRequired,
+  onDeleteTodo: PropTypes.func.isRequired,
+  onResetError: PropTypes.func.isRequired,
+  onLogoutUserData: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {

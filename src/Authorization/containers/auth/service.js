@@ -21,8 +21,6 @@ const createFormElementsArray = (controls) => {
     });
   }
 
-  console.log(formElementsArray)
-
   return formElementsArray;
 };
 
