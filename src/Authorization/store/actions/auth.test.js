@@ -1,12 +1,74 @@
 import * as actionTypes from "./actionTypes";
+import axios from 'axios';
+import moxios from 'moxios';
+import Enzyme from "enzyme";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import { createStore, applyMiddleware, compose, combineReducers } from "redux";
+import thunk from "redux-thunk";
+import authReducer from "../reducers/auth";
+import todosReducer from "../../../Todos/store/reducers/reducer";
+
+Enzyme.configure({ adapter: new Adapter() });
+
 import {
   authStart,
   authSuccess,
   authFail,
+  auth,
   logout,
   setAuthRedirectPath,
   resetError,
 } from "./auth.js";
+
+describe('integration test', () => {
+  beforeEach(() => {
+    moxios.install({baseURL:"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCmT_Z0Oh8gopkFVIKavmOUFknOQWono5M"});
+  });
+  afterEach(() => {
+    moxios.uninstall();
+  });
+test("When auth completes axios request with response code 200, then token, userId, authRedirection are updated in redux store", ()=>{
+  
+  // arrange
+  const email = "email@email.com";
+  const password = "password";
+  const isSignUp = true;
+  const responseData={idToken: "someToken", localId:"someLocalId", expiresIn: 1000}
+
+  // act
+  moxios.wait(() => {
+    console.log('moxios1')
+    const request = moxios.requests.mostRecent();
+    console.log('moxios2')
+    request.respondWith({
+      status: 200,
+      response: responseData,
+    });
+  });
+
+  // assert
+  const rootReducer = combineReducers({
+    auth: authReducer,
+    todos: todosReducer,
+  });
+
+  const store = createStore(
+    rootReducer, 
+    applyMiddleware(thunk)
+  );
+
+  let x =store.getState();
+  console.log('store token', x);
+  console.log(store);
+  console.log(request)
+
+  return store.dispatch(auth(email, password, isSignUp)).then(() => {
+        const newState = store.getState();
+        expect(newState.auth.token).toBe(responseData.idToken);
+      })
+})
+});
+
 
 test("When authStart executes, then it returns type: actionTypes.AUTH_START", () => {
   // arrange
@@ -51,6 +113,8 @@ test("When authFail receives type:actionTypes.AUTH_FAIL and error, then it retur
     error: inputError,
   });
 });
+
+
 
 test("When logout executes, then it returns type: actionTypes.AUTH_LOGOUT", () => {
   // arrange

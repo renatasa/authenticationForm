@@ -3,9 +3,9 @@ import reducer from "./auth";
 
 // arrange
 const initialState = {
-  token: null,
-  userId: null,
-  error: null,
+  token: "",
+  userId: "",
+  error: "",
   loading: false,
   authRedirection: "/",
 };
@@ -20,7 +20,7 @@ test("When no action is passed to reducer, then default state equals initialStat
 
 test("When reducer receives { type: actionTypes.AUTH_START }, then error becomes null, loading becomes true", () => {
   // arrange
-  const expectedStateError = null;
+  const expectedStateError = "";
   const expectedStateLoading = true;
   const action = { type: actionTypes.AUTH_START };
 
@@ -34,7 +34,7 @@ test("When reducer receives { type: actionTypes.AUTH_START }, then error becomes
 
 test("When reducer receives { type: actionTypes.AUTH_START }, then userId and idToken are being updated in state, error becomes null, loading becomes true", () => {
   // arrange
-  const expectedStateError = null;
+  const expectedStateError = "";
   const expectedStateLoading = false;
   const action = {
     type: actionTypes.AUTH_SUCCESS,
@@ -82,7 +82,7 @@ test("When reducer receives { type: actionTypes.SET_AUTH_REDIRECT_PATH }, then a
 test("When reducer receives { type: actionTypes.SET_RESET_ERROR}, then error becomes null in state", () => {
   // arrange
   const action = { type: actionTypes.RESET_ERROR };
-  const expectedStateErrorAfterReset = null;
+  const expectedStateErrorAfterReset = "";
 
   // act
   const actualState = reducer(initialState, action);

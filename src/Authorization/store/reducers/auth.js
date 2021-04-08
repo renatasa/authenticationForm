@@ -2,22 +2,22 @@ import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../utility";
 
 const initialState = {
-  token: null,
-  userId: null,
-  error: null,
+  token: "",
+  userId: "",
+  error: "",
   loading: false,
   authRedirection: "/",
 };
 
 const authStart = (state, action) => {
-  return updateObject(state, { error: null, loading: true });
+  return updateObject(state, { error: "", loading: true });
 };
 
 const authSuccess = (state, action) => {
   return updateObject(state, {
     token: action.idToken,
     userId: action.userId,
-    error: null,
+    error: "",
     loading: false,
   });
 };
@@ -31,8 +31,8 @@ const authFail = (state, action) => {
 
 const authLogout = (state, action) => {
   return updateObject(state, {
-    token: null,
-    userId: null,
+    token: "",
+    userId: "",
     authRedirection: "/",
   });
 };
@@ -42,7 +42,7 @@ const setAuthRedirectPath = (state, action) => {
 };
 
 const resetError = (state, action) => {
-  return { ...state, error: null };
+  return { ...state, error: "" };
 };
 
 const reducer =(state = initialState, action) => {
