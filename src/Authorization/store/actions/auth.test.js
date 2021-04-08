@@ -22,13 +22,12 @@ import {
 
 describe('integration test', () => {
   beforeEach(() => {
-    moxios.install({baseURL:"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCmT_Z0Oh8gopkFVIKavmOUFknOQWono5M"});
+    moxios.install();
   });
   afterEach(() => {
     moxios.uninstall();
   });
 test("When auth completes axios request with response code 200, then token, userId, authRedirection are updated in redux store", ()=>{
-  // {baseURL:"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCmT_Z0Oh8gopkFVIKavmOUFknOQWono5M"}
   
   // arrange
   const email = "email@email.com";
