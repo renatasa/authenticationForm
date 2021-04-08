@@ -22,7 +22,7 @@ import {
 
 describe('integration test', () => {
   beforeEach(() => {
-    moxios.install(axios);
+    moxios.install({baseURL:"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCmT_Z0Oh8gopkFVIKavmOUFknOQWono5M"});
   });
   afterEach(() => {
     moxios.uninstall();
