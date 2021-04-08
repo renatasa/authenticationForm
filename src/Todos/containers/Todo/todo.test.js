@@ -4,13 +4,11 @@ import Todo from "./Todo";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import * as actions from "../../store/actions/fetchTodo";
-Enzyme.configure({ adapter: new Adapter() });
-
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import authReducer from "../../../Authorization/store/reducers/auth";
 import todosReducer from "../../store/reducers/reducer";
-import { Provider } from "react-redux";
+Enzyme.configure({ adapter: new Adapter() });
 
 test("When Todo component receives required props from Redux, then it renders without throwing warning", () => {
   //arrange
