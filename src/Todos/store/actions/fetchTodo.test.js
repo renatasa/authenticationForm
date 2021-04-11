@@ -16,6 +16,7 @@ import {
   fetchTodoSuccess,
   fetchTodo,
   submitTodo,
+  markAsCompleted,
   createUrlWithUserId,
   submitTodoSuccess,
   markAsCompletedSuccess,
@@ -223,6 +224,141 @@ describe("integration test", () => {
         ).toBe(responseData.message);
       });
   });
+
+
+  test("When markAsCompleted receives server response 200, then todos array gets updated, submitCompleteDeleteTodoError is empty string in redux store", () => {
+     // testing if second todo in todos array gets set as completed, after receiving server response 200 from backend
+    // arrange
+    const inputConstants = {
+      token: "someToken",
+      userId: "someUserId",
+      todos: [
+        { completed: false, delete: false, todo: "1" },
+        { completed: false, delete: false, todo: "2" },
+        { completed: false, delete: false, todo: "3" },
+      ],
+      endpointOfUpdatedTodo: "randomEndpoint2",
+      indexOfUpdatedTodo :1
+    };
+
+    const initialState = {
+      todos: {
+        todos: [
+          { completed: false, delete: false, todo: "1" },
+          { completed: false, delete: false, todo: "2" },
+          { completed: false, delete: false, todo: "3" },
+        ],
+        endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
+        submitCompleteDeleteTodoError: "",
+      },
+    };
+
+    const serverResponseOk = 200;
+
+    // act
+    mockRequest(serverResponseOk);
+
+    const rootReducer = combineReducers({
+      auth: authReducer,
+      todos: todosReducer,
+    });
+
+    const store = createStore(
+      rootReducer,
+      initialState,
+      applyMiddleware(thunk)
+    );
+
+    // assert
+    return store
+      .dispatch(
+        markAsCompleted(
+          inputConstants.endpointOfUpdatedTodo,
+          inputConstants.indexOfUpdatedTodo,
+          inputConstants.todos[inputConstants.indexOfUpdatedTodo], 
+          inputConstants.token, 
+          inputConstants.userId
+        )
+      )
+      .then(() => {
+        const actualState = store.getState();
+        expect(actualState.todos.todos[inputConstants.indexOfUpdatedTodo].completed).toBe(
+          !initialState.todos.todos[inputConstants.indexOfUpdatedTodo].completed
+        );
+        expect(
+          actualState.todos.submitCompleteDeleteTodoError
+        ).toBe(initialState.todos.submitCompleteDeleteTodoError);
+      });
+  });
+
+
+  test("When markAsCompleted receives server response 400, then todos stays intact, submitCompleteDeleteTodoError is updated in redux store", () => {
+    // testing if second todo in todos array stays unchanged, after receiving server response 400 from backend
+   // arrange
+   const inputConstants = {
+     token: "someToken",
+     userId: "someUserId",
+     todos: [
+       { completed: false, delete: false, todo: "1" },
+       { completed: false, delete: false, todo: "2" },
+       { completed: false, delete: false, todo: "3" },
+     ],
+     endpointOfUpdatedTodo: "randomEndpoint2",
+     indexOfUpdatedTodo :1
+   };
+
+   const initialState = {
+     todos: {
+       todos: [
+         { completed: false, delete: false, todo: "1" },
+         { completed: false, delete: false, todo: "2" },
+         { completed: false, delete: false, todo: "3" },
+       ],
+       endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
+       submitCompleteDeleteTodoError: "",
+     },
+   };
+
+   const badRequest = 400;
+   const responseData= {message: "Request failed with status code 400"}
+
+   // act
+   mockRequest(badRequest, responseData);
+
+   const rootReducer = combineReducers({
+     auth: authReducer,
+     todos: todosReducer,
+   });
+
+   const store = createStore(
+     rootReducer,
+     initialState,
+     applyMiddleware(thunk)
+   );
+
+   // assert
+   return store
+     .dispatch(
+       markAsCompleted(
+         inputConstants.endpointOfUpdatedTodo,
+         inputConstants.indexOfUpdatedTodo,
+         inputConstants.todos[inputConstants.indexOfUpdatedTodo], 
+         inputConstants.token, 
+         inputConstants.userId
+       )
+     )
+     .then(() => {
+       const actualState = store.getState();
+       expect(actualState.todos.todos[inputConstants.indexOfUpdatedTodo].completed).toBe(
+         initialState.todos.todos[inputConstants.indexOfUpdatedTodo].completed
+       );
+       expect(
+         actualState.todos.submitCompleteDeleteTodoError
+       ).toBe(responseData.message);
+     });
+ });
+
+
 });
 
   test("When actionStart receives type: actionTypes.FETCH_TODO_START, then it returns type: actionTypes.FETCH_TODO_START", () => {

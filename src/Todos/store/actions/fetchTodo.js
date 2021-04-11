@@ -90,7 +90,7 @@ export const markAsCompleted = (endpoint, index, todo, token, userId) => {
 
   return (dispatch) => {
     dispatch(actionStart(actionTypes.MARK_AS_COMPLETED_START));
-    axios
+    return axios
       .put(url, newTodo)
       .then((response) => {
         if (response.status === 200) {
