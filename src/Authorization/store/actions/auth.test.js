@@ -1,12 +1,8 @@
 import * as actionTypes from "./actionTypes";
-import axios from 'axios';
-import moxios from 'moxios';
+import moxios from "moxios";
 import Enzyme from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-import { createStore, applyMiddleware, compose, combineReducers } from "redux";
-import thunk from "redux-thunk";
-import authReducer from "../reducers/auth";
-import todosReducer from "../../../Todos/store/reducers/reducer";
+import { creatingStore, mockRequest } from "../../../test/testUtils";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -20,55 +16,84 @@ import {
   resetError,
 } from "./auth.js";
 
-describe('integration test', () => {
+describe("integration test", () => {
   beforeEach(() => {
     moxios.install();
   });
   afterEach(() => {
     moxios.uninstall();
   });
-test("When auth completes axios request with response code 200, then token, userId, authRedirection are updated in redux store", ()=>{
-  
-  // arrange
-  const email = "email@email.com";
-  const password = "password";
-  const isSignUp = true;
-  const responseData={idToken: "someToken", localId:"someLocalId", expiresIn: 1000}
 
-  // act
-  moxios.wait(() => {
-    console.log('moxios1')
-    const request = moxios.requests.mostRecent();
-    console.log('moxios2')
-    request.respondWith({
-      status: 200,
-      response: responseData,
-    });
+  test("When auth action creator completes axios request with response code 200, then token, userId, authRedirection are updated in redux store", () => {
+    // arrange
+    const inputConstants = {
+      email: "email@email.com",
+      password: "password",
+      isSignUp: true,
+    };
+    const serverResponseOk = 200;
+    const responseData = { idToken: "someToken", localId: "someLocalId" };
+    const updatedAuthRedirection = "/todos";
+
+    // act
+    mockRequest(serverResponseOk, responseData);
+    const store = creatingStore();
+
+    // assert
+
+    return store
+      .dispatch(
+        auth(
+          inputConstants.email,
+          inputConstants.password,
+          inputConstants.isSignUp
+        )
+      )
+      .then(() => {
+        const actualState = store.getState();
+        expect(actualState.auth.token).toBe(responseData.idToken);
+        expect(actualState.auth.userId).toBe(responseData.localId);
+        expect(actualState.auth.authRedirection).toBe(updatedAuthRedirection);
+      });
   });
 
-  // assert
-  const rootReducer = combineReducers({
-    auth: authReducer,
-    todos: todosReducer,
+  test("When auth action creator completes axios request with response code 400, then error in redux store is updated", () => {
+    // arrange
+    const inputConstants = {
+      email: "email@email.com",
+      password: "password",
+      isSignUp: true,
+    };
+    const badRequest = 400;
+    const emptyStoreData = { idToken: "", localId: "", authRedirection: "/" };
+    const responseData = { error: "Request failed with status code 400" };
+
+    // act
+    mockRequest(badRequest, responseData);
+
+    const store = creatingStore();
+
+    // assert
+
+    return store
+      .dispatch(
+        auth(
+          inputConstants.email,
+          inputConstants.password,
+          inputConstants.isSignUp
+        )
+      )
+      .then(() => {
+        const actualState = store.getState();
+        expect(actualState.auth.token).toBe(emptyStoreData.idToken);
+        expect(actualState.auth.userId).toBe(emptyStoreData.localId);
+        expect(actualState.auth.authRedirection).toBe(
+          emptyStoreData.authRedirection
+        );
+        expect(actualState.auth.error).toBe(responseData.error);
+      });
   });
-
-  const store = createStore(
-    rootReducer, 
-    applyMiddleware(thunk)
-  );
-
-  let x =store.getState();
-  console.log('store token', x);
-  console.log(store);
-  console.log(request)
-
-  return store.dispatch(auth(email, password, isSignUp)).then(() => {
-        const newState = store.getState();
-        expect(newState.auth.token).toBe(responseData.idToken);
-      })
-})
 });
-
 
 test("When authStart executes, then it returns type: actionTypes.AUTH_START", () => {
   // arrange
@@ -113,8 +138,6 @@ test("When authFail receives type:actionTypes.AUTH_FAIL and error, then it retur
     error: inputError,
   });
 });
-
-
 
 test("When logout executes, then it returns type: actionTypes.AUTH_LOGOUT", () => {
   // arrange

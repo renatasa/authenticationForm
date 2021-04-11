@@ -28,7 +28,7 @@ export const fetchTodo = (token, userId) => {
       `${process.env.REACT_APP_GET_TODO}/${userId.toString()}.json?auth=` +
       token;
     dispatch(actionStart(actionTypes.FETCH_TODO_START));
-    axios
+    return axios
       .get(url)
       .then((response) => {
         console.log(response);
@@ -60,7 +60,7 @@ export const submitTodo = (userId, allTodos, token) => {
 
   return (dispatch) => {
     dispatch(actionStart(actionTypes.SUBMIT_TODO_START));
-    axios
+    return axios
       .post(url, newTodo)
       .then((response) => {
         if (response.status === 200) {
