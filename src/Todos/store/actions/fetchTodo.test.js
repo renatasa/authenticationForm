@@ -62,7 +62,9 @@ describe("integration test", () => {
       .dispatch(fetchTodo(inputConstants.token, inputConstants.userId))
       .then(() => {
         const actualState = store.getState();
-        expect(actualState.todos.todos).toEqual([...Object.values(responseData)]);
+        expect(actualState.todos.todos).toEqual([
+          ...Object.values(responseData),
+        ]);
         expect(actualState.todos.endpointsArr).toEqual([
           ...Object.keys(responseData),
         ]);
@@ -95,7 +97,6 @@ describe("integration test", () => {
       });
   });
 
-
   test("When submitTodo receives server response 200, then new todo and new endpoint are being added to todos and endpointsArr arrays,  submitCompleteDeleteTodoError equals empty string in redux store", () => {
     // arrange
     const inputConstants = {
@@ -118,6 +119,12 @@ describe("integration test", () => {
         submitCompleteDeleteTodoError: "",
       },
     };
+
+    const endpointsAfterSubmitingTodo = [
+      "randomEndpoint1",
+      "randomEndpoint2",
+      "randomEndpoint3",
+    ];
 
     const responseData = { name: "randomEndpoint3" };
 
@@ -148,21 +155,17 @@ describe("integration test", () => {
       )
       .then(() => {
         const actualState = store.getState();
-        console.log(actualState.todos.submitCompleteDeleteTodoError)
-        expect(actualState.todos.todos[actualState.todos.todos.length - 1]).toEqual(
-          inputConstants.todos[inputConstants.todos.length - 1]
+        expect(actualState.todos.todos).toEqual(inputConstants.todos);
+        expect(actualState.todos.endpointsArr).toEqual(
+          endpointsAfterSubmitingTodo
         );
-        expect(
-          actualState.todos.endpointsArr[actualState.todos.endpointsArr.length - 1]
-        ).toEqual(responseData.name);
-        expect(
-          actualState.todos.submitCompleteDeleteTodoError
-        ).toBe(initialState.todos.submitCompleteDeleteTodoError);
+        expect(actualState.todos.submitCompleteDeleteTodoError).toBe(
+          initialState.todos.submitCompleteDeleteTodoError
+        );
       });
   });
 
-
-  test("When submitTodo receives server response 400, then todos and endpointsArr arrays remains the same , submitCompleteDeleteTodoError is updated in redux store", () => {
+  test("When submitTodo receives server response 400, then todos and endpointsArr arrays remain unchanged, submitCompleteDeleteTodoError is updated in redux store", () => {
     // arrange
     const inputConstants = {
       token: "someToken",
@@ -214,21 +217,18 @@ describe("integration test", () => {
       )
       .then(() => {
         const actualState = store.getState();
-        expect(actualState.todos.todos).toEqual(
-          initialState.todos.todos
+        expect(actualState.todos.todos).toEqual(initialState.todos.todos);
+        expect(actualState.todos.endpointsArr).toEqual(
+          initialState.todos.endpointsArr
         );
-        expect(
-          actualState.todos.endpointsArr
-        ).toEqual(initialState.todos.endpointsArr);
-        expect(
-          actualState.todos.submitCompleteDeleteTodoError
-        ).toBe(responseData.message);
+        expect(actualState.todos.submitCompleteDeleteTodoError).toBe(
+          responseData.message
+        );
       });
   });
 
-
   test("When markAsCompleted receives server response 200, then todos array gets updated, submitCompleteDeleteTodoError is empty string in redux store", () => {
-     // testing if second todo in todos array gets set as completed, after receiving server response 200 from backend
+    // testing if second todo in todos array gets set as completed, after receiving server response 200 from backend
     // arrange
     const inputConstants = {
       token: "someToken",
@@ -239,7 +239,7 @@ describe("integration test", () => {
         { completed: false, delete: false, todo: "3" },
       ],
       endpointOfUpdatedTodo: "randomEndpoint2",
-      indexOfUpdatedTodo :1
+      indexOfUpdatedTodo: 1,
     };
 
     const initialState = {
@@ -276,325 +276,320 @@ describe("integration test", () => {
         markAsCompleted(
           inputConstants.endpointOfUpdatedTodo,
           inputConstants.indexOfUpdatedTodo,
-          inputConstants.todos[inputConstants.indexOfUpdatedTodo], 
-          inputConstants.token, 
+          inputConstants.todos[inputConstants.indexOfUpdatedTodo],
+          inputConstants.token,
           inputConstants.userId
         )
       )
       .then(() => {
         const actualState = store.getState();
-        expect(actualState.todos.todos[inputConstants.indexOfUpdatedTodo].completed).toBe(
+        expect(
+          actualState.todos.todos[inputConstants.indexOfUpdatedTodo].completed
+        ).toBe(
           !initialState.todos.todos[inputConstants.indexOfUpdatedTodo].completed
         );
-        expect(
-          actualState.todos.submitCompleteDeleteTodoError
-        ).toBe(initialState.todos.submitCompleteDeleteTodoError);
+        expect(actualState.todos.submitCompleteDeleteTodoError).toBe(
+          initialState.todos.submitCompleteDeleteTodoError
+        );
       });
   });
 
-
   test("When markAsCompleted receives server response 400, then todos stays intact, submitCompleteDeleteTodoError is updated in redux store", () => {
     // testing if second todo in todos array stays unchanged, after receiving server response 400 from backend
-   // arrange
-   const inputConstants = {
-     token: "someToken",
-     userId: "someUserId",
-     todos: [
-       { completed: false, delete: false, todo: "1" },
-       { completed: false, delete: false, todo: "2" },
-       { completed: false, delete: false, todo: "3" },
-     ],
-     endpointOfUpdatedTodo: "randomEndpoint2",
-     indexOfUpdatedTodo :1
-   };
+    // arrange
+    const inputConstants = {
+      token: "someToken",
+      userId: "someUserId",
+      todos: [
+        { completed: false, delete: false, todo: "1" },
+        { completed: false, delete: false, todo: "2" },
+        { completed: false, delete: false, todo: "3" },
+      ],
+      endpointOfUpdatedTodo: "randomEndpoint2",
+      indexOfUpdatedTodo: 1,
+    };
 
-   const initialState = {
-     todos: {
-       todos: [
-         { completed: false, delete: false, todo: "1" },
-         { completed: false, delete: false, todo: "2" },
-         { completed: false, delete: false, todo: "3" },
-       ],
-       endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
-       submitCompleteDeleteTodoError: "",
-     },
-   };
+    const initialState = {
+      todos: {
+        todos: [
+          { completed: false, delete: false, todo: "1" },
+          { completed: false, delete: false, todo: "2" },
+          { completed: false, delete: false, todo: "3" },
+        ],
+        endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
+        submitCompleteDeleteTodoError: "",
+      },
+    };
 
-   const badRequest = 400;
-   const responseData= {message: "Request failed with status code 400"}
+    const badRequest = 400;
+    const responseData = { message: "Request failed with status code 400" };
 
-   // act
-   mockRequest(badRequest, responseData);
+    // act
+    mockRequest(badRequest, responseData);
 
-   const rootReducer = combineReducers({
-     auth: authReducer,
-     todos: todosReducer,
-   });
+    const rootReducer = combineReducers({
+      auth: authReducer,
+      todos: todosReducer,
+    });
 
-   const store = createStore(
-     rootReducer,
-     initialState,
-     applyMiddleware(thunk)
-   );
-
-   // assert
-   return store
-     .dispatch(
-       markAsCompleted(
-         inputConstants.endpointOfUpdatedTodo,
-         inputConstants.indexOfUpdatedTodo,
-         inputConstants.todos[inputConstants.indexOfUpdatedTodo], 
-         inputConstants.token, 
-         inputConstants.userId
-       )
-     )
-     .then(() => {
-       const actualState = store.getState();
-       expect(actualState.todos.todos[inputConstants.indexOfUpdatedTodo].completed).toBe(
-         initialState.todos.todos[inputConstants.indexOfUpdatedTodo].completed
-       );
-       expect(
-         actualState.todos.submitCompleteDeleteTodoError
-       ).toBe(responseData.message);
-     });
- });
-
- test("When deleteTodo receives server response 200, then user selected todo and it's endpoint is deleted from redux, submitCompleteDeleteTodoError equals empty string", () => {
-  // testing if second todo in todos array stays unchanged, after receiving server response 400 from backend
- // arrange
- const inputConstants = {
-   token: "someToken",
-   userId: "someUserId",
-   todos: [
-     { completed: false, delete: false, todo: "1" },
-     { completed: false, delete: false, todo: "2" },
-     { completed: false, delete: false, todo: "3" },
-   ],
-   endpointOfDeletedTodo: "randomEndpoint2",
-   indexOfDeletedTodo :1
- };
-
- const emptyString="";
-
- const initialState = {
-   todos: {
-     todos: [
-       { completed: false, delete: false, todo: "1" },
-       { completed: false, delete: false, todo: "2" },
-       { completed: false, delete: false, todo: "3" },
-     ],
-     endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
-     submitCompleteDeleteTodoError: "",
-   },
- };
-
-const todosAfterDelete=[      
-{ completed: false, delete: false, todo: "1" },
-{ completed: false, delete: false, todo: "3" },
-]
-
-const endpointsAfterDelete=["randomEndpoint1", "randomEndpoint3"]
-
- const serverResponseOk = 200;
-
- // act
- mockRequest(serverResponseOk);
-
- const rootReducer = combineReducers({
-   auth: authReducer,
-   todos: todosReducer,
- });
-
- const store = createStore(
-   rootReducer,
-   initialState,
-   applyMiddleware(thunk)
- );
-
- // assert
- return store
-   .dispatch(
-     deleteTodo(
-       inputConstants.endpointOfDeletedTodo,
-       inputConstants.indexOfDeletedTodo,
-       inputConstants.todos, 
-       inputConstants.token, 
-       inputConstants.userId
-     )
-   )
-   .then(() => {
-     const actualState = store.getState();
-     expect(actualState.todos.todos).toEqual(
-       todosAfterDelete
-     );
-     expect(actualState.todos.endpointsArr).toEqual(endpointsAfterDelete);
-     expect(
-      actualState.todos.submitCompleteDeleteTodoError
-    ).toBe(emptyString);
-   });
-});
-
-test("When deleteTodo receives server response 400, then  ", () => {
-  // testing if second todo in todos array stays unchanged, after receiving server response 400 from backend
- // arrange
- const inputConstants = {
-   token: "someToken",
-   userId: "someUserId",
-   todos: [
-     { completed: false, delete: false, todo: "1" },
-     { completed: false, delete: false, todo: "2" },
-     { completed: false, delete: false, todo: "3" },
-   ],
-   endpointOfDeletedTodo: "randomEndpoint2",
-   indexOfDeletedTodo :1
- };
-
- const initialState = {
-   todos: {
-     todos: [
-       { completed: false, delete: false, todo: "1" },
-       { completed: false, delete: false, todo: "2" },
-       { completed: false, delete: false, todo: "3" },
-     ],
-     endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
-     submitCompleteDeleteTodoError: "",
-   },
- };
-
- const badRequest = 400;
- const responseData={message: "Request failed with status code 400"}
-
- // act
- mockRequest(badRequest, responseData);
-
- const rootReducer = combineReducers({
-   auth: authReducer,
-   todos: todosReducer,
- });
-
- const store = createStore(
-   rootReducer,
-   initialState,
-   applyMiddleware(thunk)
- );
-
- // assert
- return store
-   .dispatch(
-     deleteTodo(
-       inputConstants.endpointOfDeletedTodo,
-       inputConstants.indexOfDeletedTodo,
-       inputConstants.todos, 
-       inputConstants.token, 
-       inputConstants.userId
-     )
-   )
-   .then(() => {
-     const actualState = store.getState();
-     expect(actualState.todos.todos).toEqual(
-       initialState.todos.todos
-     );
-     expect(actualState.todos.endpointsArr).toEqual(
-      initialState.todos.endpointsArr
+    const store = createStore(
+      rootReducer,
+      initialState,
+      applyMiddleware(thunk)
     );
-     expect(
-      actualState.todos.submitCompleteDeleteTodoError
-    ).toBe(responseData.message);
-   });
-});
-
-});
-
-  test("When actionStart receives type: actionTypes.FETCH_TODO_START, then it returns type: actionTypes.FETCH_TODO_START", () => {
-    // arrange
-    const actionType = actionTypes.FETCH_TODO_START;
-
-    // act
-    const actionResult = actionStart(actionType);
 
     // assert
-    expect(actionResult).toEqual({
-      type: actionType,
-    });
+    return store
+      .dispatch(
+        markAsCompleted(
+          inputConstants.endpointOfUpdatedTodo,
+          inputConstants.indexOfUpdatedTodo,
+          inputConstants.todos[inputConstants.indexOfUpdatedTodo],
+          inputConstants.token,
+          inputConstants.userId
+        )
+      )
+      .then(() => {
+        const actualState = store.getState();
+        expect(
+          actualState.todos.todos[inputConstants.indexOfUpdatedTodo].completed
+        ).toBe(
+          initialState.todos.todos[inputConstants.indexOfUpdatedTodo].completed
+        );
+        expect(actualState.todos.submitCompleteDeleteTodoError).toBe(
+          responseData.message
+        );
+      });
   });
 
-  test("When actionFail receives type:actionTypes.FETCH_TODO_FAIL and error, then it returns type:actionTypes.FETCH_TODO_FAIL and error", () => {
+  test("When deleteTodo receives server response 200, then user selected todo and it's endpoint is deleted from redux, submitCompleteDeleteTodoError equals empty string", () => {
     // arrange
-    const actionType = actionTypes.FETCH_TODO_FAIL;
-    const inputError = "Request failed with status code 401";
+    const inputConstants = {
+      token: "someToken",
+      userId: "someUserId",
+      todos: [
+        { completed: false, delete: false, todo: "1" },
+        { completed: false, delete: false, todo: "2" },
+        { completed: false, delete: false, todo: "3" },
+      ],
+      endpointOfDeletedTodo: "randomEndpoint2",
+      indexOfDeletedTodo: 1,
+    };
 
-    // act
-    const actionResult = actionFail(inputError, actionType);
+    const emptyString = "";
 
-    // assert
-    expect(actionResult).toEqual({
-      type: actionType,
-      error: inputError,
-    });
-  });
-
-  test("When createUrlWithUserId receives initialUrl, userId and token, then finalUrl is returned", () => {
-    // arrange
-    const initialUrl = `${process.env.REACT_APP_POST_TODO_DYNAMIC}`;
-    const userId = "randomUserId";
-    const token = "randomToken";
-    const finalUrl =
-      `${process.env.REACT_APP_POST_TODO_DYNAMIC}` +
-      `/randomUserId.json?auth=randomToken`;
-
-    // act
-    const functionResult = createUrlWithUserId(initialUrl, userId, token);
-
-    // assert
-    expect(functionResult).toBe(finalUrl);
-  });
-
-  test("When fetchTodoSuccess receives todos array of objects, then it returns type: actionTypes.FETCH_TODO_SUCCESS and todos array of objects", () => {
-    // arrange
-    const todo = [
-      {
-        "-MVSiQiKk_syfF9JsBkx": { completed: false, delete: false, todo: "1" },
+    const initialState = {
+      todos: {
+        todos: [
+          { completed: false, delete: false, todo: "1" },
+          { completed: false, delete: false, todo: "2" },
+          { completed: false, delete: false, todo: "3" },
+        ],
+        endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
+        submitCompleteDeleteTodoError: "",
       },
-      {
-        "-MVSiR0oDck8IDv3HtqJ": { completed: false, delete: false, todo: "2" },
-      },
-      { "-MVSiRNuIGz7PHDbPhQo": { completed: true, delete: false, todo: "3" } },
-      {
-        "-MVSiSdowPA5Cc1WlcnR": { completed: false, delete: false, todo: "4" },
-      },
-      {
-        "-MVacg3vLa0YlgUnvBxW": { completed: false, delete: false, todo: "5" },
-      },
+    };
+
+    const todosAfterDelete = [
+      { completed: false, delete: false, todo: "1" },
+      { completed: false, delete: false, todo: "3" },
     ];
 
-    const actionType = actionTypes.FETCH_TODO_SUCCESS;
+    const endpointsAfterDelete = ["randomEndpoint1", "randomEndpoint3"];
+
+    const serverResponseOk = 200;
 
     // act
-    const actionResult = fetchTodoSuccess(todo);
+    mockRequest(serverResponseOk);
+
+    const rootReducer = combineReducers({
+      auth: authReducer,
+      todos: todosReducer,
+    });
+
+    const store = createStore(
+      rootReducer,
+      initialState,
+      applyMiddleware(thunk)
+    );
 
     // assert
-    expect(actionResult).toEqual({
-      type: actionType,
-      todos: todo,
-    });
+    return store
+      .dispatch(
+        deleteTodo(
+          inputConstants.endpointOfDeletedTodo,
+          inputConstants.indexOfDeletedTodo,
+          inputConstants.todos,
+          inputConstants.token,
+          inputConstants.userId
+        )
+      )
+      .then(() => {
+        const actualState = store.getState();
+        expect(actualState.todos.todos).toEqual(todosAfterDelete);
+        expect(actualState.todos.endpointsArr).toEqual(endpointsAfterDelete);
+        expect(actualState.todos.submitCompleteDeleteTodoError).toBe(
+          emptyString
+        );
+      });
   });
 
-  test("When submitTodoSuccess receives newTodo object, then object with type SUBMIT_TODO_SUCCESS is created", () => {
+  test("When deleteTodo receives server response 400, then todos and endpointsArr in initialState are left unchanged, submitCompleteDeleteTodoError equals error message from server", () => {
     // arrange
-    const newTodo = { completed: false, delete: false, todo: "6" };
-    const newEndpoint = "-MVacg3vLa0YlgUnvBxW";
-    const actionType = actionTypes.SUBMIT_TODO_SUCCESS;
+    const inputConstants = {
+      token: "someToken",
+      userId: "someUserId",
+      todos: [
+        { completed: false, delete: false, todo: "1" },
+        { completed: false, delete: false, todo: "2" },
+        { completed: false, delete: false, todo: "3" },
+      ],
+      endpointOfDeletedTodo: "randomEndpoint2",
+      indexOfDeletedTodo: 1,
+    };
+
+    const initialState = {
+      todos: {
+        todos: [
+          { completed: false, delete: false, todo: "1" },
+          { completed: false, delete: false, todo: "2" },
+          { completed: false, delete: false, todo: "3" },
+        ],
+        endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
+        submitCompleteDeleteTodoError: "",
+      },
+    };
+
+    const badRequest = 400;
+    const responseData = { message: "Request failed with status code 400" };
 
     // act
-    const actionResult = submitTodoSuccess(newTodo, newEndpoint);
-    // assert
-    expect(actionResult).toEqual({
-      type: actionType,
-      newTodo: newTodo,
-      newEndpoint: newEndpoint,
-    });
-  });
+    mockRequest(badRequest, responseData);
 
+    const rootReducer = combineReducers({
+      auth: authReducer,
+      todos: todosReducer,
+    });
+
+    const store = createStore(
+      rootReducer,
+      initialState,
+      applyMiddleware(thunk)
+    );
+
+    // assert
+    return store
+      .dispatch(
+        deleteTodo(
+          inputConstants.endpointOfDeletedTodo,
+          inputConstants.indexOfDeletedTodo,
+          inputConstants.todos,
+          inputConstants.token,
+          inputConstants.userId
+        )
+      )
+      .then(() => {
+        const actualState = store.getState();
+        expect(actualState.todos.todos).toEqual(initialState.todos.todos);
+        expect(actualState.todos.endpointsArr).toEqual(
+          initialState.todos.endpointsArr
+        );
+        expect(actualState.todos.submitCompleteDeleteTodoError).toBe(
+          responseData.message
+        );
+      });
+  });
+});
+
+test("When actionStart receives type: actionTypes.FETCH_TODO_START, then it returns type: actionTypes.FETCH_TODO_START", () => {
+  // arrange
+  const actionType = actionTypes.FETCH_TODO_START;
+
+  // act
+  const actionResult = actionStart(actionType);
+
+  // assert
+  expect(actionResult).toEqual({
+    type: actionType,
+  });
+});
+
+test("When actionFail receives type:actionTypes.FETCH_TODO_FAIL and error, then it returns type:actionTypes.FETCH_TODO_FAIL and error", () => {
+  // arrange
+  const actionType = actionTypes.FETCH_TODO_FAIL;
+  const inputError = "Request failed with status code 401";
+
+  // act
+  const actionResult = actionFail(inputError, actionType);
+
+  // assert
+  expect(actionResult).toEqual({
+    type: actionType,
+    error: inputError,
+  });
+});
+
+test("When createUrlWithUserId receives initialUrl, userId and token, then finalUrl is returned", () => {
+  // arrange
+  const initialUrl = `${process.env.REACT_APP_POST_TODO_DYNAMIC}`;
+  const userId = "randomUserId";
+  const token = "randomToken";
+  const finalUrl =
+    `${process.env.REACT_APP_POST_TODO_DYNAMIC}` +
+    `/randomUserId.json?auth=randomToken`;
+
+  // act
+  const functionResult = createUrlWithUserId(initialUrl, userId, token);
+
+  // assert
+  expect(functionResult).toBe(finalUrl);
+});
+
+test("When fetchTodoSuccess receives todos array of objects, then it returns type: actionTypes.FETCH_TODO_SUCCESS and todos array of objects", () => {
+  // arrange
+  const todo = [
+    {
+      "-MVSiQiKk_syfF9JsBkx": { completed: false, delete: false, todo: "1" },
+    },
+    {
+      "-MVSiR0oDck8IDv3HtqJ": { completed: false, delete: false, todo: "2" },
+    },
+    { "-MVSiRNuIGz7PHDbPhQo": { completed: true, delete: false, todo: "3" } },
+    {
+      "-MVSiSdowPA5Cc1WlcnR": { completed: false, delete: false, todo: "4" },
+    },
+    {
+      "-MVacg3vLa0YlgUnvBxW": { completed: false, delete: false, todo: "5" },
+    },
+  ];
+
+  const actionType = actionTypes.FETCH_TODO_SUCCESS;
+
+  // act
+  const actionResult = fetchTodoSuccess(todo);
+
+  // assert
+  expect(actionResult).toEqual({
+    type: actionType,
+    todos: todo,
+  });
+});
+
+test("When submitTodoSuccess receives newTodo object, then object with type SUBMIT_TODO_SUCCESS is created", () => {
+  // arrange
+  const newTodo = { completed: false, delete: false, todo: "6" };
+  const newEndpoint = "-MVacg3vLa0YlgUnvBxW";
+  const actionType = actionTypes.SUBMIT_TODO_SUCCESS;
+
+  // act
+  const actionResult = submitTodoSuccess(newTodo, newEndpoint);
+  // assert
+  expect(actionResult).toEqual({
+    type: actionType,
+    newTodo: newTodo,
+    newEndpoint: newEndpoint,
+  });
+});
 
 test("When markAsCompletedSuccess receives type:actionTypes.MARK_AS_COMPLETED_SUCCESS and index, then it returns actionTypes.MARK_AS_COMPLETED_SUCCESS and index", () => {
   // arrange
