@@ -17,6 +17,7 @@ import {
   fetchTodo,
   submitTodo,
   markAsCompleted,
+  deleteTodo,
   createUrlWithUserId,
   submitTodoSuccess,
   markAsCompletedSuccess,
@@ -358,6 +359,149 @@ describe("integration test", () => {
      });
  });
 
+ test("When deleteTodo receives server response 200, then user selected todo and it's endpoint is deleted from redux, submitCompleteDeleteTodoError equals empty string", () => {
+  // testing if second todo in todos array stays unchanged, after receiving server response 400 from backend
+ // arrange
+ const inputConstants = {
+   token: "someToken",
+   userId: "someUserId",
+   todos: [
+     { completed: false, delete: false, todo: "1" },
+     { completed: false, delete: false, todo: "2" },
+     { completed: false, delete: false, todo: "3" },
+   ],
+   endpointOfDeletedTodo: "randomEndpoint2",
+   indexOfDeletedTodo :1
+ };
+
+ const emptyString="";
+
+ const initialState = {
+   todos: {
+     todos: [
+       { completed: false, delete: false, todo: "1" },
+       { completed: false, delete: false, todo: "2" },
+       { completed: false, delete: false, todo: "3" },
+     ],
+     endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
+     submitCompleteDeleteTodoError: "",
+   },
+ };
+
+const todosAfterDelete=[      
+{ completed: false, delete: false, todo: "1" },
+{ completed: false, delete: false, todo: "3" },
+]
+
+const endpointsAfterDelete=["randomEndpoint1", "randomEndpoint3"]
+
+ const serverResponseOk = 200;
+
+ // act
+ mockRequest(serverResponseOk);
+
+ const rootReducer = combineReducers({
+   auth: authReducer,
+   todos: todosReducer,
+ });
+
+ const store = createStore(
+   rootReducer,
+   initialState,
+   applyMiddleware(thunk)
+ );
+
+ // assert
+ return store
+   .dispatch(
+     deleteTodo(
+       inputConstants.endpointOfDeletedTodo,
+       inputConstants.indexOfDeletedTodo,
+       inputConstants.todos, 
+       inputConstants.token, 
+       inputConstants.userId
+     )
+   )
+   .then(() => {
+     const actualState = store.getState();
+     expect(actualState.todos.todos).toEqual(
+       todosAfterDelete
+     );
+     expect(actualState.todos.endpointsArr).toEqual(endpointsAfterDelete);
+     expect(
+      actualState.todos.submitCompleteDeleteTodoError
+    ).toBe(emptyString);
+   });
+});
+
+test("When deleteTodo receives server response 400, then  ", () => {
+  // testing if second todo in todos array stays unchanged, after receiving server response 400 from backend
+ // arrange
+ const inputConstants = {
+   token: "someToken",
+   userId: "someUserId",
+   todos: [
+     { completed: false, delete: false, todo: "1" },
+     { completed: false, delete: false, todo: "2" },
+     { completed: false, delete: false, todo: "3" },
+   ],
+   endpointOfDeletedTodo: "randomEndpoint2",
+   indexOfDeletedTodo :1
+ };
+
+ const initialState = {
+   todos: {
+     todos: [
+       { completed: false, delete: false, todo: "1" },
+       { completed: false, delete: false, todo: "2" },
+       { completed: false, delete: false, todo: "3" },
+     ],
+     endpointsArr: ["randomEndpoint1", "randomEndpoint2", "randomEndpoint3"],
+     submitCompleteDeleteTodoError: "",
+   },
+ };
+
+ const badRequest = 400;
+ const responseData={message: "Request failed with status code 400"}
+
+ // act
+ mockRequest(badRequest, responseData);
+
+ const rootReducer = combineReducers({
+   auth: authReducer,
+   todos: todosReducer,
+ });
+
+ const store = createStore(
+   rootReducer,
+   initialState,
+   applyMiddleware(thunk)
+ );
+
+ // assert
+ return store
+   .dispatch(
+     deleteTodo(
+       inputConstants.endpointOfDeletedTodo,
+       inputConstants.indexOfDeletedTodo,
+       inputConstants.todos, 
+       inputConstants.token, 
+       inputConstants.userId
+     )
+   )
+   .then(() => {
+     const actualState = store.getState();
+     expect(actualState.todos.todos).toEqual(
+       initialState.todos.todos
+     );
+     expect(actualState.todos.endpointsArr).toEqual(
+      initialState.todos.endpointsArr
+    );
+     expect(
+      actualState.todos.submitCompleteDeleteTodoError
+    ).toBe(responseData.message);
+   });
+});
 
 });
 

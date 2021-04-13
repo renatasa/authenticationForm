@@ -114,7 +114,9 @@ export const deleteTodoSuccess = (oldTodos, index) => {
 
 export const deleteTodo = (endpoint, index, todos, token, userId) => {
   let oldTodos = [...todos];
+  console.log(oldTodos.length);
   oldTodos.splice(index, 1);
+  console.log(oldTodos.length);
   let todosObj = {};
 
   for (let i = 0; i < oldTodos.length; i++) {
@@ -129,7 +131,7 @@ export const deleteTodo = (endpoint, index, todos, token, userId) => {
 
   return (dispatch) => {
     dispatch(actionStart(actionTypes.DELETE_TODO_START));
-    axios
+    return axios
       .delete(url)
       .then((response) => {
         if (response.status === 200) {
