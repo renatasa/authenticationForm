@@ -51,7 +51,7 @@ export const auth = (email, password, isSignup) => {
       url = process.env.REACT_APP_SIGN_UP;
     }
 
-    axios
+    return axios
       .post(url, authData)
       .then((response) => {
         dispatch(authSuccess(response.data.idToken, response.data.localId));

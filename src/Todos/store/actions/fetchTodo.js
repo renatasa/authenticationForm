@@ -28,7 +28,7 @@ export const fetchTodo = (token, userId) => {
       `${process.env.REACT_APP_GET_TODO}/${userId.toString()}.json?auth=` +
       token;
     dispatch(actionStart(actionTypes.FETCH_TODO_START));
-    axios
+    return axios
       .get(url)
       .then((response) => {
         console.log(response);
@@ -60,7 +60,7 @@ export const submitTodo = (userId, allTodos, token) => {
 
   return (dispatch) => {
     dispatch(actionStart(actionTypes.SUBMIT_TODO_START));
-    axios
+    return axios
       .post(url, newTodo)
       .then((response) => {
         if (response.status === 200) {
@@ -90,7 +90,7 @@ export const markAsCompleted = (endpoint, index, todo, token, userId) => {
 
   return (dispatch) => {
     dispatch(actionStart(actionTypes.MARK_AS_COMPLETED_START));
-    axios
+    return axios
       .put(url, newTodo)
       .then((response) => {
         if (response.status === 200) {
@@ -114,7 +114,9 @@ export const deleteTodoSuccess = (oldTodos, index) => {
 
 export const deleteTodo = (endpoint, index, todos, token, userId) => {
   let oldTodos = [...todos];
+  console.log(oldTodos.length);
   oldTodos.splice(index, 1);
+  console.log(oldTodos.length);
   let todosObj = {};
 
   for (let i = 0; i < oldTodos.length; i++) {
@@ -125,11 +127,11 @@ export const deleteTodo = (endpoint, index, todos, token, userId) => {
   const url =
     `${
       process.env.REACT_APP_POST_TODO_DYNAMIC
-    }/${userId.toString()}/${endpoint.toString()}.json?auth=` + token;
+    }/${userId.toString()}/${endpoint.toString()}.json?auth` + token;
 
   return (dispatch) => {
     dispatch(actionStart(actionTypes.DELETE_TODO_START));
-    axios
+    return axios
       .delete(url)
       .then((response) => {
         if (response.status === 200) {

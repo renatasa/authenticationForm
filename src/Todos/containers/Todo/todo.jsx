@@ -1,15 +1,17 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import TodoList from "../../components/TodoList/todoList.jsx";
 import Spinner from "../../components/Spinner/spinnerTodo.jsx";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage.jsx";
 import SignOutButton from "../../../Authorization/components/UI/SignOutButton/SignOutButton.jsx";
 import * as actions from "../../store/actions/index";
 import * as service from "./service";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classes from "./todo.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import { auth } from "../../../Authorization/store/actions/auth.js";
 
 export class Todo extends Component {
   state = {
@@ -109,74 +111,96 @@ export class Todo extends Component {
       );
     }
 
-    if (this.props.todos.length === 0 && this.props.loading) {
+    if (this.props.token && this.props.userId && this.props.loading) {
       todoList = <Spinner />;
     }
 
     return todoList;
   };
 
+  createContentWhenUserLoggedIn = () => {
+    if (this.props.token && this.props.userId) {
+      return (
+        <div className={classes.todoComponent} data-test="component-Todo">
+          <SignOutButton data-test="component-SignOutButton" />
+          <form
+            data-test="component-todoForm"
+            onSubmit={this.submitHandler}
+            className={classes.todoComponentForm}
+          >
+            <input
+              type="text"
+              value={this.state.inputText}
+              className={classes.todoComponentInput}
+              onChange={this.inputChangedHandler}
+            />
+            <button
+              className={classes.todoComponentButton}
+              type="submit"
+              onClick={this.submitHandler}
+            >
+              <FontAwesomeIcon icon={faPlusSquare} />
+            </button>
+          </form>
+          <ErrorMessage
+            data-test="component-fetchTodoError"
+            error={{
+              errorText: this.props.fetchTodoError,
+              errorType: "fetchTodoError",
+            }}
+          />
+          <ErrorMessage
+            data-test="component-submitCompleteDeleteTodoError"
+            error={{
+              errorText: this.props.submitTodoError,
+              errorType: "submitCompleteDeleteTodoError",
+            }}
+            resetError={this.props.onResetError}
+          />
+          <ErrorMessage
+            data-test="component-maxTodoLimitExceededError"
+            error={service.createMaxTodosLimitExceeded(this.state.tooManyTodos)}
+            resetError={this.errorWarningResetFunction}
+          />
+
+          {this.createTodoList()}
+
+          <ErrorMessage
+            data-test="component-warning"
+            error={service.createWarning(this.state.warning)}
+            resetError={this.errorWarningResetFunction}
+          />
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+
   render() {
+    let authRedirect = null;
+
+    // celaning todos, endpoints arrays and redirecting to login form
     if (!this.props.token && !this.props.userId && !this.props.loading) {
       this.props.onLogoutUserData();
+      authRedirect = <Redirect to="/" data-test="component-redirectToAuth" />;
     }
 
     return (
-     <div className={classes.todoComponent} data-test="component-Todo">
-    <SignOutButton  data-test="component-SignOutButton"/>
-    <form  data-test="component-todoForm"
-      onSubmit={this.submitHandler}
-      className={classes.todoComponentForm}
-    >
-      <input
-        type="text"
-        value={this.state.inputText}
-        className={classes.todoComponentInput}
-        onChange={this.inputChangedHandler}
-      />
-      <button
-        className={classes.todoComponentButton}
-        type="submit"
-        onClick={this.submitHandler}
-      >
-        <FontAwesomeIcon icon={faPlusSquare} />
-      </button>
-    </form>
-    <ErrorMessage  data-test="component-fetchTodoError"
-      error={{
-        errorText: this.props.fetchTodoError,
-        errorType: "fetchTodoError",
-      }}
-    />
-    <ErrorMessage  data-test="component-submitCompleteDeleteTodoError"
-      error={{
-        errorText: this.props.submitTodoError,
-        errorType: "submitCompleteDeleteTodoError",
-      }}
-      resetError={this.props.onResetError}
-    />
-    <ErrorMessage  data-test="component-maxTodoLimitExceededError"
-      error={service.createMaxTodosLimitExceeded(this.state.tooManyTodos)}
-      resetError={this.errorWarningResetFunction}
-    />
-
-    {this.createTodoList()}
-
-    <ErrorMessage  data-test="component-warning"
-      error={service.createWarning(this.state.warning)}
-      resetError={this.errorWarningResetFunction}
-    />
-  </div>
+      <div>
+        {authRedirect}
+        {this.createContentWhenUserLoggedIn()}
+      </div>
     );
   }
 }
 
 Todo.propTypes = {
   todos: PropTypes.array.isRequired,
-  endpointsArr: PropTypes.array.isRequired, 
+  endpointsArr: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   fetchTodoError: PropTypes.string.isRequired,
-  submitTodoError : PropTypes.string.isRequired,
+  submitTodoError: PropTypes.string.isRequired,
   submitTodoSuccess: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
@@ -186,7 +210,7 @@ Todo.propTypes = {
   onDeleteTodo: PropTypes.func.isRequired,
   onResetError: PropTypes.func.isRequired,
   onLogoutUserData: PropTypes.func.isRequired,
-}
+};
 
 const mapStateToProps = (state) => {
   return {

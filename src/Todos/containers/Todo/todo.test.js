@@ -97,3 +97,62 @@ test("When Todo component receives token and userId props from Redux, then it re
   expect(maxTodoLimitExceededErrorComponent.length).toBe(1);
 });
 
+test("When Todo component receives token and userId props as empty strings from Redux, then it does not render todoComponent, SignOutButtonComponent, todoForm, fetchTodoError, submitCompleteDeleteTodoError, maxTodoLimitExceededError  ", () => {
+  // arrange
+  const expectedPropsFromReduxStore = {
+    todos: {
+      todos: [],
+      endpointsArr: [],
+      loading: false,
+      fetchTodoError: "",
+      submitCompleteDeleteTodoError: "",
+      submitTodoSuccess: false,
+      onFetchTodo: (token, userId) =>
+        dispatch(actions.fetchTodo(token, userId)),
+    },
+    auth: {token: "", userId: "" },
+  };
+
+  const rootReducer = combineReducers({
+    auth: authReducer,
+    todos: todosReducer,
+  });
+
+  const store = createStore(
+    rootReducer,
+    expectedPropsFromReduxStore,
+    applyMiddleware(thunk)
+  );
+
+  // act
+  const wrapper = shallow(<Todo store={store} />)
+    .dive()
+    .dive();
+  const todoComponent = findByTestAttr(wrapper, "component-Todo");
+  const SignOutButtonComponent = findByTestAttr(
+    wrapper,
+    "component-SignOutButton"
+  );
+  const todoFormComponent = findByTestAttr(wrapper, "component-todoForm");
+  const fetchTodoErrorComponent = findByTestAttr(
+    wrapper,
+    "component-fetchTodoError"
+  );
+  const submitCompleteDeleteTodoErrorComponent = findByTestAttr(
+    wrapper,
+    "component-submitCompleteDeleteTodoError"
+  );
+  const maxTodoLimitExceededErrorComponent = findByTestAttr(
+    wrapper,
+    "component-maxTodoLimitExceededError"
+  );
+
+  // assert
+  expect(todoComponent.length).toBe(0);
+  expect(SignOutButtonComponent.length).toBe(0);
+  expect(todoFormComponent.length).toBe(0);
+  expect(fetchTodoErrorComponent.length).toBe(0);
+  expect(submitCompleteDeleteTodoErrorComponent.length).toBe(0);
+  expect(maxTodoLimitExceededErrorComponent.length).toBe(0);
+});
+
