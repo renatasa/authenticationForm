@@ -127,7 +127,7 @@ export const deleteTodo = (endpoint, index, todos, token, userId) => {
   const url =
     `${
       process.env.REACT_APP_POST_TODO_DYNAMIC
-    }/${userId.toString()}/${endpoint.toString()}.json?auth=` + token;
+    }/${userId.toString()}/${endpoint.toString()}.json?auth` + token;
 
   return (dispatch) => {
     dispatch(actionStart(actionTypes.DELETE_TODO_START));
